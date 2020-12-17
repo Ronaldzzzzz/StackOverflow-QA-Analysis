@@ -1,0 +1,2653 @@
+,Id,OwnerUserId,CreationDate,ClosedDate,Score,Title,Body
+523064,18165270,1375068.0,2013-08-10T18:49:10Z,,2,Enum property in parent class should change inside derive class,"<p>If I have in my Parent class property ConditionStatus of datatype ConditionEnum like</p>
+
+<pre><code>interface IArticle
+{
+    ConditionEnum ConditionStatus {get; set;}
+}
+</code></pre>
+
+<p>enum is represent like <code>ConditionEnum {New, Used};</code></p>
+
+<p>I'm wonder how can I change this <code>ConditionEnum</code> in child class so that <code>ArticleA</code> which implements <code>IArticle</code> can have enum like <code>ConditionEnum {Red, Blue, Yellow};</code>
+and <code>ArticleB</code> which also implements <code>IArticle</code> have <code>enum</code> like <code>ConditionEnum {Point, Comma, Slash};</code> I think you've got an idea.</p>
+
+<p>How would you do it?</p>
+"
+6596,450630,379.0,2009-01-16T14:57:48Z,,0,Visual C++ 2005 hangs during qt builds,"<p>At my shop, the main product app is a mongrel built on MFC, QT and other random things devs have thrown in over the years.
+In the current stack, Qt toolkit is on the way out, but still features heavily.</p>
+
+<p>If I have SQL 2005 Management studio open and have to do a full build, it usually hangs a CPU (even after the offending process is taken out back and shot...) during the qt specific parts of the build (Moc'ing and UIC'ing)</p>
+
+<p>has anyone seen anything like this? any ideas what the problem could be?</p>
+"
+1153885,37279810,2092927.0,2016-05-17T15:03:16Z,,1,Phinx migrations - explicit length of integer column,"<p>Can you tell me please if is possible to set explicit length of integer column via Phinx migrations <code>addColumn()</code> method? </p>
+
+<p>Documentation uses limit option with <code>MysqlAdapter::INT_REGULAR</code> like <code>['limit' =&gt; MysqlAdapter::INT_SMALL, 'signed' =&gt; false]</code> but it automatically sets the length for column e.g. <code>int(10)</code>.</p>
+
+<p>But what should I do if I need <code>int(11)</code> e.g for foreign key column?</p>
+
+<p>Thx.</p>
+"
+1083874,35395440,4305114.0,2016-02-14T18:26:42Z,,0,Is object-oriented programming in Matlab suited to an econometric analysis workflow?,"<p>I have been reading about the benefits of object-oriented programming, but I cannot quite imagine how this would work for the kind of work I do in MATLAB. So far, I have mostly used scripts, functions, and structures for econometric analysis; importing and reformatting data from Excel (with some tolerance to non-standardised formatting of the Excel file); estimating a variety of models (whose specification at times differs only by a single parameter); creating and exporting figures, etc.</p>
+
+<p>I am interested in the OOP paradigm because I have the impression that it may clean up my work space and reduce redundancy. However, all examples I have encountered pertain to applications that allow for a straightforward identification of which ""objects in the real world"" can be implemented as instances of a class in OOP. For econometrics, data analysis, and the like, I don't fully understand where the benefits of OOP would come in. I don't even know what would be the objects in my workflow (apart from the obvious model objects, which could just as well be structures).</p>
+
+<p>If someone could outline whether and how OOP is applicable and valuable to an econometrics or general data analysis workflow, that would help me a lot.</p>
+"
+1039984,34189440,5659817.0,2015-12-09T21:35:27Z,,0,IMFSinkWriterCallback Never happens,"<p>I'm trying to get my IMFSinkWriter's Finalize() call to be asynchronous.</p>
+
+<p>So I created this</p>
+
+<pre><code>class MyMFSinkWriterCallback : public IMFSinkWriterCallback
+{
+public:
+    MyMFSinkWriterCallback();
+    virtual ~MyMFSinkWriterCallback();
+
+    // IMFSinkWriterCallback methods
+    STDMETHODIMP OnFinalize(HRESULT hrStatus);
+    STDMETHODIMP OnMarker(DWORD dwStreamIndex, LPVOID pvContext);
+
+    // IUnknown methods
+    STDMETHODIMP QueryInterface(REFIID iid, void** ppv);
+    STDMETHODIMP_(ULONG) AddRef();
+    STDMETHODIMP_(ULONG) Release();
+
+private:
+    long m_nRefCount;
+};
+
+HRESULT MyMFSinkWriterCallback::OnFinalize(HRESULT hrStatus)
+{
+    OutputDebugStringA(""MyMFSinkWriterCallback::OnFinalize\n"");
+    return S_OK;
+}
+</code></pre>
+
+<p>And I installed it like this</p>
+
+<pre><code>hr = pAttributes-&gt;SetUnknown(MF_SINK_WRITER_ASYNC_CALLBACK, new MyMFSinkWriterCallback());
+
+if (SUCCEEDED(hr))
+{
+    hr = MFCreateSinkWriterFromURL(L""C:\test.mp4"", NULL, pAttributes, &amp;MySinkWriter);
+}
+</code></pre>
+
+<p>QueryInterface, AddRef, and Release are all being called but when I end my capture like this</p>
+
+<pre><code>OutputDebugStringA(""MySinkWriter-&gt;Finalize START\n"");
+HRESULT hr = MySinkWriter-&gt;Finalize();
+OutputDebugStringA(""MySinkWriter-&gt;Finalize END\n"");
+</code></pre>
+
+<p>All I see in my output log is</p>
+
+<p>MySinkWriter->Finalize START</p>
+
+<p>MySinkWriter->Finalize END</p>
+
+<p>I never see</p>
+
+<p>MyMFSinkWriterCallback::OnFinalize</p>
+"
+328199,11817340,909902.0,2012-08-05T14:45:56Z,,1,Scaling in ASP.NET,"<p>I have some questions about scaling with ASP.NET environment. I'm in the start to build an application that I hope will get a lots of users, and if that's the case I need to know more about scaling.</p>
+
+<p>It's heavly depends on user generated content, other users needs to be notified when content change by pooling AJAX calls, WebSockets it's not an option.</p>
+
+<p>I know the basic stuff don't read from DB, put in memory, but how to do this in a webfarm?</p>
+
+<p>How should the system handle if user content are created on Webserver 1, and the other users are request objects from Webserver 2. How does we notify the users without haveing to go thru DB? Making a lots of internal requests? Using some distributed cache?</p>
+"
+674989,23071370,1283845.0,2014-04-14T22:15:13Z,,0,Add Hyperlink to Alert with Titanium,"<p>Is it possible to add a hyperlink to an alert box when using Titanium? If so, how? </p>
+"
+909296,30368940,4923784.0,2015-05-21T08:55:06Z,,0,How to select Values from Datatable which appears once,"<p>myDataTable has a column named <code>ORDER_NO</code>. I would like to select the rows from this table which appears once. If a value appears two times than it should not selected. 
+<code>ORDER_NO</code> contain Values</p>
+
+<pre><code>1000A
+1001A
+1001B
+1002A
+1002B
+1002C
+1000A
+1001A
+1001B
+</code></pre>
+
+<p>I want to select only form the values above are:</p>
+
+<pre><code>1002A
+1002B
+1002C
+</code></pre>
+
+<p>as they appears once in the column. Can anyone help?</p>
+"
+949085,31573240,5144257.0,2015-07-22T20:20:32Z,,1,SQL Query: how to return only the first and last instance?,"<p>I have a table that shows the status of each case with multiple jobs being performed simultaneously, I would like to have the results displayed so that it only shows the first and last instance.  (Mainly I want to know when the job was first started and what's its last known status).  </p>
+
+<p>I've managed to get the results with 2 similar min, max, and group by queries joined by an UNION function.  But is there a simpler way?   </p>
+
+<p>However, would it be possible to display the 2 instances on one line instead of 2 separate lines?  because the date from the first instance will be the start date and the last instance will be the end date, and i don't really care about the first status because it's always pending, i just want to know what's the last known status</p>
+
+<p>1st table shows unfiltered results and 2nd table is desired results (but if we can combine the first and last instance on one line that'd be even better)                       </p>
+
+<pre><code>ID  Status      Date       Job  Note
+1   pending     1-Jul       A   abc
+1   pending     2-Jul       A   xyz
+1   pending     2-Jul       A   abc
+1   done        3-Jul       B   xyz
+1   done        4-Jul       A   abc
+2   pending     1-Jul       A   abc
+2   done        2-Jul       A   xyz
+2   done        2-Jul       A   abc
+2   pending     3-Jul       C   xyz
+2   pending     4-Jul       C   xyz
+2   pending     5-Jul       C   xyz
+2   pending     6-Jul       C   xyz
+3   pending     2-Jul       D   xyz
+3   done        3-Jul       D   abc
+3   pending     4-Jul       D   abc
+3   pending     1-Jul       E   xyz
+3   done        3-Jul       E   xyz
+
+ID  Status      Date       Job  Note
+1   pending     1-Jul       A   abc
+1   done        3-Jul       B   xyz
+1   done        4-Jul       A   abc
+2   pending     1-Jul       A   abc
+2   done        2-Jul       A   abc
+2   pending     3-Jul       C   xyz
+2   pending     6-Jul       C   xyz
+3   pending     2-Jul       D   xyz
+3   pending     4-Jul       D   abc
+3   pending     1-Jul       E   xyz
+3   done        3-Jul       E   xyz
+</code></pre>
+
+<p>Thank you very much in advance</p>
+"
+1028493,33880150,4646662.0,2015-11-23T20:32:39Z,,0,Creating a centered View with Labels,"<p>I am trying to create a <code>UIView A</code> that's has a <code>UIView B</code> which is centered in <code>UIView A</code> and holds two <code>UILabel A &amp; B</code>, but it's not centering the <code>UILabels</code>. This is my code</p>
+
+<pre><code>private func generateView(header: String, below: String) {
+    let size: CGSize = self.view.frame.size
+    let mainView = UIView(frame: CGRectMake(0, 0, size.width, size.height))
+    mainView.backgroundColor = UIColor.clearColor()
+    let contentHolderView = UIView(frame: CGRectMake(0, 0, 350, 172))
+    contentHolderView.backgroundColor = UIColor.clearColor()
+    let headerLabel = UILabel(frame: CGRectMake(38, 24, 298, 34))
+    let belowLabel = UILabel(frame: CGRectMake(14, 66, 344, 83))
+    belowLabel.numberOfLines = 0
+
+    headerLabel.text = header
+    belowLabel.text = below
+
+    headerLabel.textColor = UIColor.blackColor()
+    belowLabel.textColor = UIColor.blackColor()
+
+    headerLabel.font = UIFont(name: ""BrandonGrotesque-Bold"", size: 30)
+    belowLabel.font = UIFont(name: ""BrandonGrotesque-Light"", size: 20)
+
+    headerLabel.textAlignment = .Center
+    belowLabel.textAlignment = .Center
+
+    contentHolderView.addSubview(headerLabel)
+    contentHolderView.addSubview(belowLabel)
+    contentHolderView.center = mainView.center
+    mainView.addSubview(contentHolderView)
+    mainView.center = self.view.center
+    self.view.addSubview(mainView)
+}
+</code></pre>
+
+<p>And this is what I'm trying to achieve and this is what I'm getting and what I'm trying to achieve</p>
+
+<p><a href=""http://i.stack.imgur.com/SLiIr.png"" rel=""nofollow""><img src=""http://i.stack.imgur.com/SLiIr.png"" alt=""My Achievement""></a></p>
+"
+154114,6064650,144542.0,2011-05-19T20:42:59Z,,2,How do I create a new development environment for a Sitecore project already in production?,"<p>My coworker and I are taking over a Sitecore project that was built by some other entity and is currently in production. What's the process for creating a local development environment so we can begin making changes?</p>
+"
+576416,19909240,2326907.0,2013-11-11T14:54:02Z,,0,jsp form selection not working,"<p>I have following jsp page, when i select MYAP_FORM i expect the hidden form to be displayed but it is not.</p>
+
+<p>Right now i have only one form with display none, i will be adding more  and based on the selection will display right one.</p>
+
+<p>Any inputs why i dont see the corresponding form displayed ...</p>
+
+<p>Thanks</p>
+
+<pre><code>&lt;%@ page language=""java"" contentType=""text/html; charset=UTF-8""
+    pageEncoding=""UTF-8""%&gt;
+&lt;!DOCTYPE html PUBLIC ""-//W3C//DTD HTML 4.01 Transitional//EN"" ""http://www.w3.org/TR/html4/loose.dtd""&gt;
+&lt;%@ page import=""java.io.*""%&gt;
+&lt;%@taglib prefix=""c"" uri=""http://java.sun.com/jsp/jstl/core"" %&gt;
+&lt;%@taglib prefix=""fn"" uri=""http://java.sun.com/jsp/jstl/functions"" %&gt;
+&lt;c:set var=""url""&gt;${pageContext.request.requestURL}&lt;/c:set&gt;
+&lt;c:set var=""baseURL"" value=""${fn:replace(url, pageContext.request.requestURI, pageContext.request.contextPath)}"" /&gt;
+
+&lt;html&gt;
+&lt;head&gt;
+&lt;meta http-equiv=""Content-Type"" content=""text/html; charset=UTF-8""&gt;
+&lt;link type=""text/css"" rel=""stylesheet"" href=""${baseURL}/bootstrap/css/bootstrap.css""&gt;
+&lt;title&gt;Testing&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;script src=""${baseURL}/bootstrap/js/bootstrap.js""&gt;&lt;/script&gt;
+
+        &lt;form id=""platform"" class=""container text-center""&gt;
+        &lt;select id=""myselect""&gt;
+        &lt;option value="""" selected=""selected""&gt;&lt;/option&gt;
+        &lt;option value=""MYAP_FORM""&gt;MYAP_FORM&lt;/option&gt;
+        &lt;option value=""XYZ_FORM""&gt;XYZ_FORM&lt;/option&gt;
+        &lt;/select&gt;
+        &lt;/form&gt;
+
+    &lt;%
+        String file = application.getRealPath(""/"") + ""xzyFiles.txt"";
+        FileInputStream fis = new FileInputStream(file);
+        BufferedReader br = new BufferedReader(new InputStreamReader(fis)); 
+        String tmp;
+
+
+
+        out.println(""&lt;form class=\""container\"" id=\""MYAP_FORM\"" style=\""display:none\""&gt;"");
+        while ((tmp = br.readLine()) != null) {
+           out.print(""&lt;label class=\""checkbox text-left\""&gt;"");
+           out.print(""&lt;input type=\""checkbox\"" id=\"""" + tmp +""\"" value=\""1\""&gt;"" + tmp + ""&lt;/BR&gt;"");
+           out.print(""&lt;/label&gt;"");
+        }       
+        fis.close();
+        out.println(""&lt;button class=\""btn btn-primary\""&gt;Submit&lt;/button&gt;"");
+        out.println(""&lt;button class=\""btn btn-primary\""&gt;Clear&lt;/button&gt;"");
+        out.println(""&lt;/form&gt;"");
+    %&gt;
+
+    &lt;script&gt;
+    $(""#myselect"").on(""change"", function() {
+        $(""#"" + $(this).val()).show();
+    })
+    &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+"
+958990,31872170,2406032.0,2015-08-07T07:41:04Z,,0,Content falls beneath navigation bar when embedded in custom container view controller and UISplitViewController,"<p>I am using UISplitViewController and UIContainerView as shown in fig.</p>
+
+<p><a href=""http://i.stack.imgur.com/XeEuZ.png"" rel=""nofollow""><img src=""http://i.stack.imgur.com/XeEuZ.png"" alt=""enter image description here""></a></p>
+
+<p>Code for displaying this is:</p>
+
+<pre><code>self.slidingViewController.topViewController = [self.storyboard instantiateViewControllerWithIdentifier:@""SplitContainerVC""];
+</code></pre>
+
+<p>It am Pretty sure auto layouts for container view are accurate.</p>
+
+<p>Why my content view (search bar etc) is beneath <code>UINavigation bar</code>? Please see attached fig.</p>
+
+<p><a href=""http://i.stack.imgur.com/CbWuK.png"" rel=""nofollow""><img src=""http://i.stack.imgur.com/CbWuK.png"" alt=""enter image description here""></a></p>
+
+<p>I have removed following code and its work fine:</p>
+
+<pre><code>- (BOOL)splitViewController:(UISplitViewController *)svc shouldHideViewController:(UIViewController *)vc inOrientation:(UIInterfaceOrientation)orientation
+{
+    return NO;
+}
+</code></pre>
+
+<p>But i need this above code. What's an issue behind this?</p>
+"
+1058675,34705350,1534371.0,2016-01-10T12:28:20Z,,0,vs 2015 comunity deploye error Could not locate the appxrecipe file,"<p>i'm truing to run a  cordova app using vs 2015 community the deplooy failed with the following error 
+ <strong>vs 2015 Could not locate the appxrecipe file. You may need to build your project</strong> </p>
+
+<p><em>while it was working fine before</em></p>
+
+<p>here is the out</p>
+
+<pre><code>    1&gt;------ Build started: Project: BlankCordovaApp1, Configuration: Debug Windows Phone (Universal) ------
+1&gt;  Your environment has been set up for using Node.js 5.4.0 (ia32) and npm.
+1&gt;  ------ Ensuring correct global installation of package from source package directory: C:\Program Files (x86)\Microsoft Visual Studio 14.0\Common7\IDE\Extensions\ApacheCordovaTools\packages\vs-tac
+1&gt;  ------ Name from source package.json: vs-tac
+1&gt;  ------ Version from source package.json: 1.0.16
+1&gt;  ------ Package already installed globally at correct version.
+1&gt;  ------ Cordova tools 5.3.3 already installed.
+1&gt;  ------ Build Settings:
+1&gt;  ------ Build Settings:
+1&gt;  ------    platformConfigurationBldDir: F:\#01.Hager\#01.work\Projects\Wesseya\Merge1\BlankCordovaApp1\bld\Windows Phone (Universal)\Debug
+1&gt;  ------    platformConfigurationBinDir: F:\#01.Hager\#01.work\Projects\Wesseya\Merge1\BlankCordovaApp1\bin\Windows Phone (Universal)\Debug
+1&gt;  ------    buildCommand: build
+1&gt;  ------    platform: Windows Phone (Universal)
+1&gt;  ------    cordovaPlatform: windows
+1&gt;  ------    configuration: Debug
+1&gt;  ------    cordovaConfiguration: Debug
+1&gt;  ------    projectName: BlankCordovaApp1
+1&gt;  ------    projectSourceDir: F:\#01.Hager\#01.work\Projects\Wesseya\Merge1\BlankCordovaApp1
+1&gt;  ------    npmInstallDir: C:\Users\Hager\AppData\Roaming\npm
+1&gt;  ------    buildTarget: AppHostLocalDebugger
+1&gt;  ------    language: en-US
+1&gt;  ------    changeList.changedFilesIos: bower.json,res\icons\android\icon-72-hdpi.png,res\screens\android\screen-mdpi-landscape.png,merges\android\scripts\android2.3-jscompat.js,merges\windows\scripts\winstore-jscompat.js,res\icons\ios\icon-60.png,res\screens\ios\screen-iphone-landscape-736h.png,res\icons\windows\StoreLogo.scale-100.png,www\scripts\index.js,res\icons\android\icon-48-mdpi.png,res\icons\ios\icon-72.png,res\icons\ios\icon-76.png,res\screens\ios\screen-ipad-portrait-2x.png,res\screens\ios\screen-iphone-portrait-2x.png,res\icons\windows\Square71x71Logo.scale-240.png,merges\android\scripts\platformOverrides.js,res\screens\android\screen-hdpi-portrait.png,www\css\index.css,res\icons\windows\StoreLogo.scale-240.png,res\screens\ios\screen-ipad-landscape.png,res\icons\ios\icon-60-3x.png,res\screens\wp8\SplashScreenImage.jpg,res\screens\ios\screen-ipad-landscape-2x.png,res\screens\ios\screen-iphone-568h-2x.png,res\icons\windows\Square150x150Logo.scale-100.png,package.json,res\screens\android\screen-ldpi-landscape.png,res\icons\windows\Wide310x150Logo.scale-240.png,res\icons\windows\Wide310x150Logo.scale-100.png,res\icons\ios\icon-72-2x.png,res\icons\ios\icon-76-2x.png,res\icons\ios\icon-small.png,res\icons\windows\Square30x30Logo.scale-100.png,build.json,res\icons\wp8\Background.png,www\index.html,res\icons\ios\icon-40.png,res\icons\ios\icon-60-2x.png,res\screens\android\screen-ldpi-portrait.png,res\native\android\ant.properties,res\icons\windows\Square310x310Logo.scale-100.png,www\scripts\platformOverrides.js,taco.json,res\icons\windows\Square150x150Logo.scale-240.png,res\icons\android\icon-36-ldpi.png,merges\windows\scripts\platformOverrides.js,res\screens\ios\screen-iphone-portrait.png,Project_Readme.html,res\screens\android\screen-xhdpi-portrait.png,res\icons\ios\icon-50-2x.png,res\icons\ios\icon-57-2x.png,res\icons\ios\icon-50.png,res\icons\ios\icon-57.png,res\icons\ios\icon-small-2x.png,res\icons\windows\Square70x70Logo.scale-100.png,res\screens\windows\SplashScreen.scale-240.png,res\icons\android\icon-96-xhdpi.png,res\icons\wp8\ApplicationIcon.png,res\icons\ios\icon-40-2x.png,res\screens\ios\screen-iphone-portrait-667h.png,res\screens\android\screen-hdpi-landscape.png,res\screens\windows\SplashScreenPhone.scale-240.png,res\screens\windows\SplashScreen.scale-100.png,res\screens\ios\screen-iphone-portrait-736h.png,res\screens\ios\screen-ipad-portrait.png,res\screens\android\screen-xhdpi-landscape.png,res\icons\windows\Square44x44Logo.scale-240.png,res\screens\android\screen-mdpi-portrait.png,config.xml
+1&gt;  ------    changeList.deletedFilesIos:
+1&gt;  ------    changeList.addedPluginsIos:
+1&gt;  ------    changeList.deletedPluginsIos:
+1&gt;  ------    changeList.addedPlugins:
+1&gt;  ------    changeList.deletedPlugins:
+1&gt;  ------ Platform windows already exists
+1&gt;  ------ Updating plugins
+1&gt;  ------ Currently installed plugins:
+1&gt;  ------ Currently installed dependent plugins:
+1&gt;  ------ Currently configured plugins:
+1&gt;  ------ Preparing platform: windows
+2&gt;------ Deploy started: Project: BlankCordovaApp1, Configuration: Debug Windows Phone (Universal) ------
+2&gt;Could not locate the appxrecipe file. You may need to build your project.
+2&gt;Deployment failed.
+========== Build: 1 succeeded, 0 failed, 0 up-to-date, 0 skipped ==========
+========== Deploy: 0 succeeded, 1 failed, 0 skipped ==========
+</code></pre>
+"
+38679,1915010,233017.0,2009-12-16T14:33:36Z,,1,"VS 2008 MSI Installer: Context.Parameters[""TARGETSITE""] empty when repairing","<p>i created a web setup project in vs 2008 and added some custom actions.
+While installing i get the default forms (apppool, appname, website), some pre-defined custom forms and some selfmade custom forms.
+Now while installation i add some data in the registry.</p>
+
+<p>I have only one problem: TARGETSITE property.
+This property is filled by default form (Context.Parameters[""TargetSite""] is something like ""/LM/W3SVC/1"" for defaultWebSite) and its value properly added to the registry.
+Everthing is fine until i use the repair function...</p>
+
+<p>Whilst repairing, the first few default forms will be skipped by installation, therefore the TARGETSITE property will be empty (Context.Parameters[""Targetsite""] is """").
+Sadly i can not interfere with that to get the needed value from registry where i added it for exactly that reason.
+Because the registry values will be updated before custom code is triggered in the ""override Install"" method.
+Even onBeforeInstall is fired after the registry has been updated.</p>
+
+<p>If a rollback is done, while repairing, the registry key will be reset to the correct value before, so i have to believe, that somehow i can access this value from within my custom action code.</p>
+
+<p>Someone has any suggestion on how to get this important value?</p>
+
+<p>P.S.: 
+i tried to set the condition within the registrykey, so that it would only be updated when the TARGETSITE value is not empty, but iÂ´m afraid this will be ignored big time...
+TARGETSITE != """" in the registry keys condition-field has absolutely no efect whatsoever...</p>
+"
+268921,9906720,1085457.0,2012-03-28T11:38:53Z,,0,Proper exception handling when invoking WCF callback method,"<p>I have a series of WCF services that invoke methods on the client again (using WcfDuplexChannels) based on events at the server side. However, it seems there are quite some exceptions that can occur, so right now I have a huge try/catch block around every line calling back to the client, ending with disabling of the event in case any exception occurs. Besides being cumbersome to write every time, <strong>I'm not sure if I could simplify the try catch block by catching just a few base exceptions?</strong> Right now I don't really care what's causing the exceptions (I don't care whether it's faulted, aborted, disposed or timed out) but I do log the different exceptions.</p>
+
+<p><strong>I also read about IErrorHandler, but will that actually be suitable when invoking a method on the client?</strong></p>
+
+<p>Here's a sample of my current strategy:</p>
+
+<pre><code>    private void OnProductChanged(List&lt;DTO&gt; products)
+    {
+        try
+        {
+            client.OnProductChanged(products);
+            return;
+        }
+        catch (TimeoutException)
+        {
+            log.Info(""Communication to client timed out."");
+        }
+        catch (CommunicationObjectAbortedException)
+        {
+            log.Info(""Connection to client is in aborted state."");
+        }
+        catch (CommunicationObjectFaultedException)
+        {
+            log.Info(""Connection to client is in faulted state."");
+        }
+        catch (CommunicationException ce)
+        {
+            log.InfoFormat(""CommunicationException occured on product change notification: {0}."", ce.Message);
+        }
+        catch (ObjectDisposedException)
+        {
+            log.Info(""Communication channel is disposed."");
+        }
+        catch (Exception e)
+        {
+            log.WarnFormat(""Unhandled {0} on client callback: {1}"", e.GetType(), e.Message);
+        }
+
+        SendProductChanged = false;
+    }
+</code></pre>
+
+<p>The <code>SendProductChanged = false;</code> line will take care of unbinding the event handler.</p>
+"
+628412,21608740,208696.0,2014-02-06T16:39:17Z,,0,EF: How to use custom selectors to project related entities?,"<p>Let's say I have 2 entities (1-to-many) relation: <code>Component</code> and <code>Part</code> like so:</p>
+
+<pre><code>public Component
+{
+   string CompName { get; set; }
+   byte[] CompBlob { get; set; }
+   ICollection&lt;Part&gt; Parts { get; set; }
+}
+public Part
+{
+   string PartName { get; set; }
+   byte[] PartBlob { get; set; }
+}
+</code></pre>
+
+<p>When I load a <code>Component</code>, I want to always load its <code>Parts</code> for this particular entity. </p>
+
+<p>I want to know how to select / project a list of components so that EF will not load additional inner properties (eg: only <code>CompName</code> and <code>PartName</code> to be loaded but <strong>not</strong> <code>CompBlob</code> and inner <code>PartBlob</code>). </p>
+
+<p>Maybe something like below, but how to apply a selector for <code>Parts</code>? </p>
+
+<pre><code>//
+dbContext.Components.Include(c =&gt; c.Parts).Where(filterComponents).Select(.?.)
+//
+</code></pre>
+
+<p>If needed, I have <code>LazyLoadingEnabled</code> set to false</p>
+"
+1001835,33167910,3486978.0,2015-10-16T10:12:23Z,,0,Retrieve all products from Shoplo API,"<p>Is there a way to retrieve all products from a URL of a shoplo website?</p>
+
+<p>I know I can create partner account, attach shop inside there, generate keys and retrieve all products for this specific shop. But what about other people's shops?</p>
+"
+208940,7919170,551947.0,2011-10-27T16:26:36Z,,2,"cell in Excel ""Number stored as text""","<p>I have a C# program that takes a text file of a legacy report and maps to an excel sheet.
+but for the transaction cells it is output as ""Number stored as text"" this does not allow 
+any formatting. We want to show 1,000.00 but it only as 1000.</p>
+
+<p>Is there a way I can get this formatting? those columns are Balance and Amount.
+here it is defined:</p>
+
+<pre><code>ndcRange = currentSheet.Cells[transactionRowNo + pageOffset, 13];
+ndcRange.NumberFormat = ""@"";
+ndcRange.Value2 = tr.Amount;
+
+ndcRange = currentSheet.Cells[transactionRowNo + pageOffset, 16];
+ndcRange.NumberFormat = ""@"";
+ndcRange.Value2 = tr.Balance;
+</code></pre>
+
+<p>Here is some code where some formatting is done:</p>
+
+<pre><code>string balance = transaction;
+
+if (lastSpaceIndex != -1)
+{
+
+   balance = transaction.Substring(lastSpaceIndex, (transaction.Length)lastSpaceIndex);
+
+}
+
+transac.Balance = balance;
+transaction = transaction.Replace(balance, """");
+
+
+transaction = transaction.Trim();
+
+if (!string.IsNullOrWhiteSpace(transaction))
+{
+    transac.Description = transaction;
+}
+patient.TransactionsList.Add(transac);
+</code></pre>
+"
+840158,28254950,1219368.0,2015-01-31T18:18:58Z,,0,Polymer: How to show a DOM element not decleared in the custom/core element definition?,"<pre><code>&lt;core-scaffold&gt;
+    &lt;core-header-panel navigation flex&gt;
+      &lt;core-toolbar id=""navheader"" style=""height:100px; background-color:#E5E5E5; padding-top:18px;""&gt;
+        &lt;span&gt;&lt;my-logo&gt;
+          &lt;img src=""images/logo.png"" /&gt;
+        &lt;/my-logo&gt;&lt;/span&gt;
+      &lt;/core-toolbar&gt;
+      &lt;core-menu&gt;
+        &lt;core-item name=""livemusic"" label=""Live music""&gt;&lt;paper-ripple&gt;&lt;/paper-ripple&gt;&lt;/core-item&gt;
+      &lt;/core-menu&gt;
+    &lt;/core-header-panel&gt;
+    &lt;paper-input label=""Your Name"" block&gt;&lt;/paper-input&gt;
+ &lt;/core-scaffold&gt;
+</code></pre>
+
+<p>I want the <strong>paper-input</strong> to show in the navigation bar. But it doesn't. how do I do it? (I tried to put it within the <strong>core-toolbar</strong> tags)</p>
+
+<p>Thanks in advance</p>
+"
+625365,21512490,2604378.0,2014-02-02T15:41:39Z,,1,prevent django-allauth login on confirm email,"<p>I am using django-allauth to handle user registration in my site. I noticed a strange behavior. Let's say I register a new user in the site. That user get's a new email with a link to click. When the user clicks that link it takes him in the confirm page. There the user clicks the confirm button and users email is confirmed. </p>
+
+<p>The problem is that as as a side effect the user is also logged in. I don't want that. This only happens only the first time I visit that page. If I visit that page again and confirms the email the user does not log in automatically. </p>
+
+<p>My question is how can I prevent the user log in even in the first time he confirms the email. I searched the documentation but couldn't not find any setting to prevent this. Also I looked in the source code of ConfirmEmailView and I can't see a way to turn off this behavior besides manually commenting this line </p>
+
+<pre><code>resp = self.login_on_confirm(confirmation)
+</code></pre>
+
+<p><strong>Update:</strong></p>
+
+<p>I think I found a workaround to the problem without having to fork or whatever. I just copied that class in my own views file trying to make sure I also imported all the other dependencies that are needed. Then I just deleted that call on login and the function that it calls. I hope I did a good job with that. After that in my urls.py, right before the imports for allauth, I copied the line that is used for confirm-email and redirected it to my own view. And now it looks like this</p>
+
+<pre><code>url(r'^accounts/confirm-email/(?P&lt;key&gt;\w+)/$', 'userprofile.views.confirm_email',
+                       name=""account_confirm_email""),
+</code></pre>
+
+<p>Seems a bit hackish but it seems to work well. I hope someone comes up with a better solution.</p>
+"
+104337,4343390,434153.0,2010-12-03T07:35:35Z,,5,Is there a way to put UITextView's scroll indicator to outside UITextView?,"<p>It might be a silly question.
+I'm trying to set left/right margins like the attached picture. I succeeded to implement it by adding UITextView to UIScrollView.
+However, I could achieve almost everything I want with UITextView alone. For example, with UIScrollView, when I manually change the text of UITextView, it automatically scrolls to bottom regardless of setting its .scrollEnabled to No. </p>
+
+<p>It would be perfect if a scroll indicator of UITextView appears outside UITextView.
+In the attached picture, let's say the red box represents the entire UITextView. I tried to change UITextView's scrollIndicatorInsets property, but a scroll indicator can be moved only inward to be visible.</p>
+
+<p>Several apps such as Pages, aWriter, Plaintext achieve this feature.
+Could you give any suggestion?</p>
+
+<p>Thank you!</p>
+
+<p>I <img src=""http://i.stack.imgur.com/8euXV.png"" alt=""alt text""></p>
+"
+19591,1096000,43.0,2009-07-08T03:25:58Z,,1,RSS <link> tag not appearing in <head> of Drupal view page display output,"<p>I have a Drupal 6 site with a view that has a page and a feed display. Both the page and the feed work great. The view just shows content type Story in reverse chronological order- basic blog listing page.</p>
+
+<p>While the RSS look good, the page display doesn't include the  tag in the header for auto-discovery. I've outputting $head in my page.tpl.php, so it should be there. Also, I noticed the $feed_icons variable is empty.</p>
+
+<p>Any ideas?</p>
+"
+833466,28049400,4343021.0,2015-01-20T15:41:14Z,,0,Curl (7) Failed to connect to xx.xxx.xx.xxx port 4121,"<p>I am trying to request json data from my server that allows sockets to my main webserver using Curl. It keep getting a message </p>
+
+<blockquote>
+  <p>""Curl (7) Failed to connect to xx.xxx.xx.xxx port 4121"" error. </p>
+</blockquote>
+
+<p>I have tried to Curl google and this works.
+I have also googled around for maybe something that needs to be changed in the apache or php settings but i can't find anything.</p>
+
+<p>This is the code I used:</p>
+
+<pre><code>$url = ""http://xx.xxx.xx.xxx:4121/serverlist/core/MinecraftQuery.php?ip=play.preludecraft.com&amp;port=25565"";
+
+
+$ch = curl_init();
+curl_setopt( $ch, CURLOPT_USERAGENT, ""Mozilla/5.0 (Windows; U; Windows NT 5.1; rv:1.7.3) Gecko/20041001 Firefox/0.10.1"" );
+curl_setopt($ch, CURLOPT_URL, $url);
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+if(!$data = curl_exec($ch)){
+    die('Error: ""' . curl_error($ch) . '"" - Code: ' . curl_errno($ch));
+} else {
+    print_r($data);
+}
+</code></pre>
+
+<p>main webserver: jonassnellinckx.com (godaddy)</p>
+
+<p>allows sockets: xx.xxx.xx.xxx:4121 (limestone network)</p>
+
+<p>Does anyone know what the problem is here? I can't seem to find a proper solution anywhere.</p>
+"
+354628,12680020,1120574.0,2012-10-01T19:48:47Z,,-1,While Statement and Divs,"<p>I am trying to get the code below to loop using a while statement. The problem I am having is getting the divs to worth with in the PHP. Any ideas on how I can make this happen? My database consists of a columns called month, day, description, and location.     </p>
+
+<pre><code>&lt;div class=""events-module""&gt;
+
+&lt;?php
+$con = mysql_connect(""localhost"",""username"",""password"");
+if (!$con)
+  {
+  die('Could not connect: ' . mysql_error());
+  }
+
+mysql_select_db(""sandbox"", $con);
+
+
+$result = mysql_query(""SELECT * FROM events""); ?&gt;
+
+&lt;?php while($row = mysql_fetch_array($result)) ?&gt;
+
+&lt;div class=""date""&gt;
+&lt;div id=""month""&gt;&lt;h4&gt;&lt;?php echo $row['month']; ?&gt;&lt;/h4&gt;&lt;/div&gt;
+&lt;div id=""day""&gt;&lt;h3&gt;&lt;?php echo $row['day']; ?&gt;&lt;/h3&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class=""event""&gt;
+&lt;div id=""description""&gt;&lt;p&gt;&lt;?php echo $row['description']; ?&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;div id=""location""&gt;&lt;p&gt;&lt;b&gt;&lt;?php echo $row['location']; ?&gt;&lt;/b&gt;&lt;/p&gt;&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;?php endwhile;
+
+ mysql_close($con);
+
+ ?&gt;
+
+&lt;/div&gt;
+</code></pre>
+"
+1083987,35399300,879515.0,2016-02-14T23:26:42Z,,0,How to let user select which arg to print,"<p>As a way to learn python, I am building  Yahtzee.py. </p>
+
+<p>After the first roll, I would like the user to decide what to keep or what to reroll (up to 3 times). </p>
+
+<p>So as to avoid writing a code for every scenario how can I allow user to select which dice to reroll. ie( keep die 1 or  keep dice 2, 3,5)</p>
+
+<p>Here is the code I have so far:</p>
+
+<pre><code>    import random
+
+rollCount=1
+roll1 = random.randint(1,6)
+roll2 = random.randint(1,6)
+roll3 = random.randint(1,6)
+roll4 = random.randint(1,6)
+roll5 = random.randint(1,6)
+
+def rollAll():
+    roll1
+    roll2
+    roll3
+    roll4
+    roll5
+
+
+
+def printAll():
+    print(""roll 1:"",roll1,""\nroll 2:"",roll2,""\nroll 3:"",roll3,""\nroll 4:"",roll4,""\nroll 5:"",roll5)
+
+def printRoll():
+
+print(""press any key to roll dice"")
+input()
+str(printAll())
+print(""Would you like to roll again?\nroll all, roll 1, roll 2 , roll 3, roll 4 , roll 5"")
+rollAgain = input()
+if rollAgain== ""roll all"":
+    rollCount=2
+    rollAll()
+    str(printAll())
+</code></pre>
+"
+1164297,37553090,4704661.0,2016-05-31T18:27:45Z,,0,From eclipse to phonegap - signing android phonegap app,"<p>I have developed an app i eclipse, signed it and uploaded it to google play. I still have the keystore on my computer. </p>
+
+<p>Now i have turned my fate to phonegap and HTML development. And my eclipse Android app need to be replaced on google play. </p>
+
+<p>My challenge is now when i use: </p>
+
+<p>$ keytool -genkey -v -keystore my-release-key.keystore
+-alias alias_name -keyalg RSA -keysize 2048 -validity 10000</p>
+
+<p>and upload this to build.phonegap.com it works fine. But when i upload it to google play it says that the fingerprint do not match. </p>
+
+<p>What am i doing wrong? I use the same keystore, the right alias and password. When i am using -genkey and filling out the first name and last name, city etc. i do not remember the original details. Is that the problem, do i have to be 100% correct in these details? is it important?</p>
+
+<p>When i am signing with eclipse and upload to google play it works fine.</p>
+"
+540347,18736300,2767795.0,2013-09-11T08:33:12Z,,6,Android: Change color of line below ActionBar,"<p>I want to change the color of the orange line below the ActionBar.</p>
+
+<p><img src=""http://i.stack.imgur.com/4oPbp.png"" alt=""http://s14.directupload.net/images/130911/3suejbj2.png""></p>
+
+<p>I've tried a few things but nothing has helped so far.</p>
+
+<p>The current theme on my Galaxy S2 is an orange theme.
+So changing the theme, also changes the line.
+But I donÂ´t know how to get access to that line, in order to change the color.</p>
+"
+1238244,39520930,6837144.0,2016-09-15T21:55:29Z,,0,proper async/await code node js,"<p>Im learning nodejs through building an API, this the registration part.</p>
+
+<p>After trying all existing methods to write async code, i've come to this result. Is this the proper way to do it?</p>
+
+<p>I first thought await/async replace Promise... Do they?</p>
+
+<p>Do I really need to return Promises that way on my 2 functions?</p>
+
+<p>Do I call them that way before returning the result?</p>
+
+<pre><code>import * as db from '../../db';
+
+const addToDatabase = (req) =&gt; {
+    return new Promise((res, rej) =&gt; {
+
+        db.get().collection('users').insertOne({
+            req.body
+        }, (err) =&gt; {
+            if (err) {
+                rej('Unable to insert to database on registration');
+            }
+            else {
+                res();
+            }
+        });
+    });
+};
+
+const checkDuplicate = (req) =&gt; {
+    return new Promise( async (res, rej) =&gt; {
+        let collection = await db.get().collection('users');
+
+        collection.find(/* query */).toArray( (err, docs) =&gt; {
+            if (err) {
+                rej('Unable to check database.');
+            }
+            else {
+                if (docs.length) {
+                    rej('Email/login already used');
+                }
+                else {
+                    res();
+                }
+            }
+        });
+    });
+};
+
+const register = async (req, res) =&gt; {
+    try {
+        await checkDuplicate(req);
+        await addToDatabase(req);
+        return res.send({success: true, msg: 'Successful registration'});
+    } catch(err) {
+        return res.send({success: false, error: err});
+    }
+};
+
+export default register;
+</code></pre>
+
+<p>I appreciate your help!</p>
+"
+1137093,36824990,3425503.0,2016-04-24T15:16:09Z,,2,Read from a file line by line block by block in C,"<p>I need to read 4000 lines from a file, do some manipulations with them, then read next 4000 lines, do some manipulations with them, then read next 4000 lines and so on till the end of some BIG file. How to do this correctly?</p>
+
+<p>Here is my basic code which is just reading all lines but not block by block from a file:</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;string.h&gt;
+
+#define bufSize 1024
+
+int main(int argc, char *argv[])
+{
+    FILE* fp;
+    char buf[bufSize];
+    if (argc != 2)
+    {
+        fprintf(stderr, ""Usage: %s &lt;soure-file&gt;\n"", argv[0]);
+        return 1;
+    }
+    if ((fp = fopen(argv[1], ""r"")) == NULL)
+    { /* Open source file. */
+        perror(""fopen source-file"");
+        return 1;
+    }
+
+    while (fgets(buf, sizeof(buf), fp) != NULL)
+    {
+        buf[strlen(buf) - 1] = '\0'; /* eat the newline fgets() stores */
+        printf(""%s\n"", buf);
+    }
+    fclose(fp);
+    return 0;
+}
+</code></pre>
+"
+88030,3765940,95272.0,2010-09-22T02:36:47Z,,1,Parsing text using Ruby,"<p>I have the following text which will always follow the same format:</p>
+
+<pre><code> 1
+ ""13""
+ ""241""
+ ""Rabun""
+ ""06""
+ ""County""
+
+ 2
+ ""13""
+ ""281""
+ ""Towns""
+ ""06""
+ ""County""
+</code></pre>
+
+<p>I would like to assign each section to a hash like:</p>
+
+<pre><code>locality= {:id =&gt; """", :fips1 =&gt; """", :fips2 =&gt; """", :county =&gt; """", :stateid =&gt; """", :type =&gt; """"}
+</code></pre>
+
+<p>How would I go about doing this in Ruby? Any help is greatly appreciated.</p>
+"
+158883,6228550,140750.0,2011-06-03T14:42:32Z,,6,Should change to code be committed separately from corresonding change to test suite?,"<p>Should a code change and the corresponding change to the test suite be made in one commit, or split into two?  Consider the case of a bug fix which causes a small change in the expected output, forcing a minor change in the test suite.  It is extremely convenient to have both changes in the same commit, since it makes it obvious to the reviewer exactly what is changed in the output.  On the other hand,  sometimes you might just want to view the diffs to the source, or the diffs to the expected output and it is much easier to do that if the commits are separate.  Also, the two things are logically distinct so it makes sense to make distinct commits.</p>
+
+<p>I would love to be able to make two distinct commits, but somehow have the two commits linked together in some way (so that I can cherry-pick, revert, etc. both commits as an atomic unit).
+Also, if two distinct commits are made, then the test suite will fail on the first commit (unless a third commit is introduced to relax the test suite), making future bisects a pain.   The issue of future bisects failing generally encourages me to make a single commit, but commits should be logically distinct units and a commit to code is logically distinct from a commit to the expected output in the test suite.</p>
+
+<p>Is there a way to make two distinct commits and not have to bend over backwards to prevent bisect from failing on one of them?  (eg, having to explicitly mention commits to skip)</p>
+"
+1182611,38039810,3669709.0,2016-06-26T15:02:41Z,,0,Sort by metavalue does not work in Wordpress WP_User_Query Pagination,"<p>I have create a custom usermeta field named ""designation"" and i want to sort user list by designation then i added a select option form in my template file the code is given below its working fine but when i <strong>goto page no.2</strong> it does not work to sort. This is the <a href=""http://pronetworker.com/subscriber_list.zip"" rel=""nofollow"">link</a> of my template file Please guide me</p>
+
+<pre><code>&lt;form action="""" method=""post"" &gt;
+                    &lt;select name=""designation"" onchange=""if(this.value != 0) { this.form.submit(); }""&gt;
+                    &lt;option&gt;Select Category&lt;/option&gt;
+                        &lt;?php
+                        $args = array( 
+                        'role' =&gt; 'subscriber',
+                        'meta_key' =&gt; 'user_designation'
+                        );
+
+                        // The Query
+                        $user_query = new WP_User_Query( $args );
+
+                        // User Loop
+                        if ( ! empty( $user_query-&gt;results ) ) {
+                            foreach ( $user_query-&gt;results as $user ) {
+
+                        ?&gt;  &lt;option value=""&lt;?php  echo  get_user_meta($user-&gt;ID, 'user_designation', true); ?&gt;"" &lt;?php if (isset($_POST['designation']) &amp;&amp; $_POST['designation']==""Web Developer"") echo ""selected""; ?&gt; &gt;&lt;?php echo  get_user_meta($user-&gt;ID, 'user_designation', true); ?&gt;&lt;/option&gt;&lt;?php       
+                            }
+                        } else {
+                             ?&gt;&lt;option value=""0""&gt;No Category Found&lt;/option&gt;&lt;?php
+                        }
+                        ?&gt;
+
+
+                        &lt;/select&gt;
+                        &lt;/form&gt;
+</code></pre>
+"
+336038,12071390,1249066.0,2012-08-22T10:45:34Z,,1,DB connection InfoMessage callback not firing immediately for stored proc print statements,"<p>I have several long running Sybase stored procedures with print statements that output progress messages. We've always executed these SPs using isql or manually through aseisql or sqladvantage (all sybase specific tools). These tools correctly display the print messages as soon as they are output by the SP as the SPs all contain ""set flushmessage on"". </p>
+
+<p>I've written a C# console wrapper app which generically executes a procedure and transforms the results. However frustratingly I have been unable to capture the print messages and write them out to std out. This seems like it should be trivial and I'm amazed I cant turn up much on it on the internet.</p>
+
+<p>I'm using an ODBC connection and am adding the necessary event handler to the InfoMessage callback hook. In my testing, this is getting called with the print statement messages - <em>however not in realtime as they are issued</em>. It doesn't seem to get called until a resultset is sent back to the client, then it is called once only with all messages. I've tried using a DataAdapter to fill a DataSet, using ExecuteNonQuery, ExecuteReader and so on and it doesn't seem to change the behaviour. I've also tried both the Sybase System 11 and Adaptive Server Enterprise ODBC drivers and no difference.</p>
+
+<p>So my question is twofold:</p>
+
+<p>1) firstly I'd like to understand exactly what is occuring here - I know the stored procedure is immediately sending the message to the database server but it's obviously being cached somewhere - either not read off the server by the ODBC driver or read and cached in the driver memory itself? - Normally I just think of the calling thread in my app blocking on a database call, but trying to think through what's really going on I guess the thread is busy within the driver code polling for results/messages and I don't know how that kind of works in with the callback function and when that is processed. Debugging in my app it seems to be called just before I get control back to process results.</p>
+
+<p>2) Secondly, what I'd really like to know is whether there is any way to change the behaviour so the messages are sent back to the client immediately.</p>
+
+<p>Any help would be greatly appreciated, but please refrain from ""why don't you do things XYZ way instead"" suggestions as I'm really after specific help solving and understanding this problem -I can think of many alternatives should the issue prove to be insurmountable.</p>
+
+<p>Here's a little test-rig to illutsrate the code:</p>
+
+<p>Stored proc:</p>
+
+<pre><code>create procedure sp_test
+as
+begin
+    set flushmessage on
+
+    print ""Step 1""
+
+    waitfor delay ""00:00:10""
+
+    print ""Step 2""
+
+    waitfor delay ""00:00:10""
+
+    select 10 as ""number""  -- preferably put some sort of select from a table here
+
+    print ""Final Step""
+
+end
+go
+grant execute on sp_test to public
+go
+</code></pre>
+
+<p>.NET Code snippet:</p>
+
+<pre><code>using System.Collections.Generic;
+using System.Data;
+using System.Data.Odbc;
+using System.Data.SqlClient;
+using System.Linq;
+using System.Text;
+
+namespace ConsoleApplication1
+{
+class Program
+{
+    static void Main(string[] args)
+    {
+        using (var conn = new OdbcConnection(@""&lt;connection string here&gt;""))
+        {
+            conn.InfoMessage += OnInfoMessage;
+            conn.Open();
+            var command = new OdbcCommand(""sp_test"", conn);
+            command.Timeout = 50000;  // i added this later syntax might be wrong
+            var ds = new DataSet();
+            var da = new OdbcDataAdapter(command);
+            da.Fill(ds);
+            Console.ReadKey();
+        }
+    }
+
+    private static void OnInfoMessage(Object sender, OdbcInfoMessageEventArgs args)
+    {
+        foreach (OdbcError error in args.Errors)
+        {
+            Console.WriteLine(error.Message);
+        }
+    }
+}
+}
+</code></pre>
+"
+664564,22746300,488499.0,2014-03-30T16:09:31Z,,0,Create Debain image to restore later,"<p>I have remote hosted server with debian os.</p>
+
+<p>I need to some way create image of this so that I can restore it later if needed.</p>
+
+<p>suggestions please.</p>
+"
+432725,15222360,404305.0,2013-03-05T11:14:52Z,,0,Add-in for Outlook in C# (Saving the Attachment and adding a url reference to the saved file path as attachment),"<p>I am using VS 2010 &amp; Dot Net Framework 2.0. I have created a project in Extensibility->Shared Add-ins for Outlook. 
+I want to save a file (any file) in my Hard Disk ,deleting that attachment and adding the path of this file as attachment if user clicks on this file it should open that saved file in my HDD.
+I am able to save a file , delete the attachment but i am not able to save path of the file as attachment
+Here is the code written for saving and deleting</p>
+
+<pre><code>                if (item is Outlook.MailItem)
+                {
+                    Outlook.MailItem mi = (Outlook.MailItem)item;
+                    if (mi != null)
+                    {                            
+                        for (int i = 1; i &lt;= mi.Attachments.Count; i++)
+                        {
+                            string FilePath = @"""" + Settings.Default.browseFolderPath + @""\"" +
+                                mi.Attachments[i].FileName;
+                            mi.Attachments[i].SaveAsFile(FilePath);                                
+                            mi.Attachments.Remove(i);                                
+                            mi.Attachments.Add(creatingLinkToFile(FilePath), Type.Missing, i, Type.Missing);
+                            mi.Save();
+                        }                           
+                    }
+                } 
+
+
+    private string creatingLinkToFile(string url)
+    {
+        string lnkPath =@""C:\shortcut.lnk"";
+        WshShellClass shell = new WshShellClass();           
+        IWshShortcut shortcut = (IWshShortcut)shell.CreateShortcut(lnkPath);
+        shortcut.TargetPath = @"""" + url;
+        shortcut.Description = ""Trial"";
+        shortcut.Save();
+        return lnkPath;
+    }
+</code></pre>
+
+<p>Please can anybody give me and idea as i have used lnk file but that is not working the outlook. </p>
+"
+451561,15837630,2059625.0,2013-04-05T15:22:01Z,,1,"What is wrong with Map<Object, Collection<Object>>?","<p>I'm trying to build a data structure in Java where I'll be inserting about 200,000 Keys of strings each with ""an average"" of 1000 Integers <code>Map&lt;String, Arraylist&lt;Integer&gt;&gt;</code>. The map will eventually have around 200 millions of values.</p>
+
+<p>The problem is that While inserting, I have to first check if the key is existed in the map, if true, get all values stored in a temp collection then add the new integer to the collection and put them back to map, or instantiate a new collection with a new integer.</p>
+
+<p>This is so slow when I get to the point where a collection contains around 50000 integers. I usually got a java out of heap space error.</p>
+
+<p>Is there a way to get rid of the get process? where I only check for the key existence and then immediately add the value to the existed collection, something like posh to a stack, especially that the map is in the memory, or is it what makes the difference between Java and C++, where in C++ I can benefit from using pointers?</p>
+
+<p>Keeping the fact that I dont prefer to increase the size of the map by using things like multimaps, as the structure seems almost straightforward.</p>
+
+<p>Many thanks in advance.</p>
+"
+324649,11700850,641235.0,2012-07-28T12:03:36Z,,3,How can I initialize MPI in a function?,"<p>I want to use multi-processes in a function and how can I make it.</p>
+
+<p>As you know, MPI_Init needs two parameter: ""int argc, char **argv"". Does it mean that I must add these two parameters in the function definition?</p>
+
+<p>My requirement is that I want to parallelize a step in function in stead of the step in main program. </p>
+
+<p>For example, </p>
+
+<pre><code>func(mat &amp;A, vec &amp;x) {
+  some computation on A;
+  auto B = sub_mat(A, 0, 10);
+  B*x; // I want to parallelize this computation
+}
+main(){
+  mat A;
+  vec x;
+  func(A, x);
+}
+</code></pre>
+
+<p>I just want to use MPI in B*x, but I don't know how to init MPI? By the way, if I can init MPI int func, does A exist in every processes at this time?</p>
+
+<p>Help me &amp; thanks!</p>
+"
+264587,9764170,866659.0,2012-03-19T02:10:24Z,,1,Create the menu and sub menu using jquery,"<p>What I want is to loop the data from database and create the menu, if each content of the menu
+have the sub menu, then it will show the sub menu as :</p>
+
+<pre><code>&lt;ul&gt;
+&lt;li&gt;test1&lt;/li&gt;
+&lt;li&gt;test2&lt;/li&gt;
+&lt;li&gt;test3
+    &lt;ul&gt;
+       &lt;li&gt;sub menu1&lt;/li&gt;
+       &lt;li&gt;sub menu2&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<p>I create the menu with the Jquery as below :</p>
+
+<pre><code>$(document).ready(function () {
+ $.getJSON(url, function (data) {
+    $.each(data, function (index, dataOption) {
+        $(""#navmenu-v"").append(""&lt;li id='testList'&gt;
+            &lt;a href='javascript:void(0);' id='"" + dataOption.ID + ""'&gt;"" +
+                    dataOption.Name + ""&lt;/a&gt;"");
+            if (dataOption.NumCat &gt; 0) { //NumCat is the amount of sub menu
+              $(""#testList"").append(""&lt;ul&gt;&lt;li&gt;&lt;a&gt;Testing cate&lt;/a&gt;&lt;/li&gt;&lt;/ul&gt;"");
+            }
+        $(""#navmenu-v"").append(""&lt;/li&gt;"");
+    });
+  });
+  });
+
+  &lt;div id=""content""&gt;
+     &lt;ul id='navmenu-v'&gt;
+
+     &lt;/ul&gt;
+   &lt;/div&gt;
+</code></pre>
+
+<p>But the ""Testing cate"" shows only in the first list of the menu. </p>
+
+<p>Could anyone tell me how to do that please. Thanks so much.</p>
+"
+858118,28805230,2423419.0,2015-03-02T08:17:38Z,,1,"Java/MySQL timestamp difference, possible time zone issues?","<p>I am writing a method to determine if a mysql table has been modified since I last looked at it, to keep from having to load it again unless necessary. I have been able to get the last modified time and compare it to my current time, but unfortunately the sql server is located 3 hours ahead of me, and it causes issues. Please see the code below. Thank you.</p>
+
+<pre><code>private Boolean needsToBeRefreshed(Connection conn, String ID) {
+    try {
+        Statement sta3 = conn.createStatement();
+        ResultSet rs =
+            sta3.executeQuery(""show table status from "" + database + "" like '"" + ID + ""'"");
+        rs.next();
+        Date lastmod = rs.getTimestamp(""Update_time"");
+        System.out.println(""SQL "" + lastmod);
+        sta3 = conn.createStatement();
+        Calendar calGMT = Calendar.getInstance(TimeZone.getTimeZone(""GMT""));
+        Date now = calGMT.getTime();
+        System.out.println(""ID: "" + ID);
+        System.out.println(""Last refreshed: "" + lastModifiedMap.get(ID) + "" Last modified: "" + lastmod);
+        if (lastModifiedMap.get(ID) == null || lastmod.after(lastModifiedMap.get(ID))) {
+            System.out.println(now);
+            lastModifiedMap.put(ID,now);
+            System.out.println(""Accepted"");
+            return true;
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+        System.out.println(""SQL exception"");
+        System.out.println(""Accepted"");
+        return true;
+    }
+    System.out.println(""Rejected"");
+    return false;
+}
+</code></pre>
+
+<p>}</p>
+
+<p>That yields the following output:</p>
+
+<pre><code>SQL 2015-03-02 02:57:57.0
+ID: Testunits
+Last refreshed: null Last modified: 2015-03-02 02:57:57.0
+Mon Mar 02 00:11:55 PST 2015
+Accepted
+</code></pre>
+
+<p>Then on a second run-through:</p>
+
+<pre><code>SQL 2015-03-02 02:57:57.0
+ID: Testunits
+Last refreshed: Mon Mar 02 00:11:55 PST 2015 Last modified: 2015-03-02 02:57:57.0
+Mon Mar 02 00:12:43 PST 2015
+Accepted
+</code></pre>
+
+<p>I have been scouring the web and recognize that the Date class is not dependent on time-zones... I feel like this is a result of the SQL server being set to a different time zone and java not knowing it. So my question may be as simple as how do I get the time zone of the sql server and apply it to the date. Or if the SQL server has a non time-zone specific timestamp for last modified...</p>
+
+<p>Any help would be appreciated. Thanks!</p>
+
+<p>Edit:</p>
+
+<p>After comments I have changed my code to create my ""now"" time as a Calendar and have changed the output to display the time values. See edit above for new initialization. New output is below:</p>
+
+<pre><code>SQL 2015-03-02 02:57:58.0
+ID: Testunits
+Last refreshed: 1425286285712 Last modified: 1425293878000
+Mon Mar 02 00:51:30 PST 2015
+Accepted
+</code></pre>
+
+<p>As far as I can tell, my ""now"" time has to be correct, independent of time zones, but the time returned by the sql server is still several hours ahead.</p>
+
+<p>How can I compensate for this?</p>
+
+<p>Edit 2:</p>
+
+<p>Figured it out! The answer did end up helping me. Thank you.</p>
+
+<pre><code>private Boolean checkLastModified(Connection conn, String ID) {
+    try {
+        Statement sta3 = conn.createStatement();
+        ResultSet rs =
+            sta3.executeQuery(""show table status from "" + database + "" like '"" + ID + ""'"");
+        rs.next();
+        DateFormat dateFormat = new SimpleDateFormat(""yyyy-MM-dd HH:mm:ss"");
+        dateFormat.setTimeZone(TimeZone.getTimeZone(""EST""));
+        Date lastmod = dateFormat.parse(rs.getString(""Update_time""));
+        sta3 = conn.createStatement();
+        Calendar calGMT = Calendar.getInstance(TimeZone.getTimeZone(""GMT""));
+        Date now = calGMT.getTime();
+        if (lastModifiedMap.get(ID) == null || lastmod.after(lastModifiedMap.get(ID))) {
+            System.out.println(now);
+            lastModifiedMap.put(ID,now);
+            return true;
+        }
+
+    } catch (SQLException e) {
+        System.out.println(""SQL exception"");
+        return true;
+    } catch (ParseException e) {
+        System.out.println(""Parse exception"");
+        return true;
+    }
+    return false;
+}
+}
+</code></pre>
+"
+315115,11397030,1512193.0,2012-07-09T14:24:17Z,,3,Git remote: error- 'remote:error: unable to unlink old 'filename_here' (permission denied)' after git push,"<p>For about 2 weeks now whenever I did a git push I would get about 200 errors reading this- remote:error: unable to unlink old 'wp-plugins/foobar.php' (Permission denied). But I could still push files to the server- just not any files in the wp-plugins directory.</p>
+
+<p>Today after doing some research into the permission denied error I ran this command: git reset --hard master (from <a href=""https://github.com/mxcl/homebrew/issues/2906"" rel=""nofollow"">https://github.com/mxcl/homebrew/issues/2906</a>)</p>
+
+<p>Now every file in my Wordpress directory gives me the remote:error: unable to unlink old 'directory/filename.php' (Permission denied) error (about 2000 of them)! The push seems to go through properly, but when I check the file I tried to push, the local file is changed, but the remote file is still unchanged.</p>
+
+<p>If it is not painfully obvious by now, I am fairly new to Git. Please help. I have to use Git for my new job. As a freelancer I did not need version control, but now this is the only tool I have to update the website, and I can't, and I'm worried.</p>
+"
+932551,31072480,2718588.0,2015-06-26T11:50:31Z,,0,Objective-c timeIntervalSince1970 return 0,"<pre><code>NSUInteger currentTime = [[NSDate date] timeIntervalSince1970];
+</code></pre>
+
+<p>Here current time is 0.
+Can you tell me reason for this?</p>
+"
+522815,18157470,2668414.0,2013-08-10T00:29:08Z,,3,Looping through users with Instagram API requests is REALLY slow,"<p>I'm trying to loop through a list of user IDs to check the relationship status on a user.
+This (limiting the loop to 20) takes long enough to get the ""fatal PHP couldn't process in 30 secs error"".
+...and I would LIKE to do quite a bit more than 20 repetitions.</p>
+
+<p>Is there a way to make ""batch"" requests? Sending IG a list of ALL user IDs I want to check in one swoop?</p>
+
+<p>Here's my current snippet:</p>
+
+<pre><code>&lt;?php 
+$i = 0;
+foreach(get_user_meta($user_id, 'followed_users', false) as $followed){
+        if($i &lt; 20){
+                        //Makes sure it's a real Insta user ID
+            if(strlen($followed) &gt; 2){
+            $relationshipInfo = $instagram-&gt;getUserRelationship($followed);
+            $relationship = $relationshipInfo-&gt;data-&gt;outgoing_status;
+                if( $relationship == 'none' ){
+                    //BAN THEM
+                    update_user_meta($user_id, 'is_banned', 1);
+                    if(!is_page('banned') &amp;&amp; (get_user_meta($user_id, 'is_banned', true) == 1)){    
+                        //REDIRECT TO 'BANNED' PAGE             
+                        $redirect = get_bloginfo(""url"").'/banned/';
+                        wp_redirect( $redirect );
+                        exit;
+                    }
+                } else {
+                    //DON'T BAN
+                    update_user_meta($user_id, 'is_banned', 0);
+                }
+            }
+        }
+        $i++;
+    }
+?&gt;
+</code></pre>
+
+<p>I do just want to note: I know I could store a list of all users $current_user follows and check with foreach and inarray to find out if $current_user unfollowed anyone (as the list of users $current_user followed through my site is stored to the database) except I'm having trouble getting the FULL list of users $current_user follows... so solving that would also, in effect, solve my dilemma.</p>
+
+<p>EDIT: Although I still would like to know about a faster looping method, somehow, getting (almost) an accurate number of users $current_user is following seems to have started working... (???)...</p>
+
+<p>For anyone else trying to do something along the same lines as I, perhaps this code can point you in the right direction until someone answers the original.</p>
+
+<pre><code>$insta_id = get_user_meta($current_user-&gt;ID, 'instagram_id', true);
+$fObject = $instagram-&gt;getUserFollows($insta_id, -1);
+$fUsers = $fObject-&gt;data;
+//generate array of users currently followed
+$fArray = array();
+foreach ($fUsers as $fUser) {
+    $fArray[] = $fUser-&gt;id;
+}
+//list of people followed through insta-hashtag
+$wasFolloweds = get_user_meta($current_user-&gt;ID, 'followed_users', false);
+foreach ($wasFolloweds as $wasF) {
+    //check if they unfollowed
+    if(strlen($wasF) &gt; 2){
+        if(!in_array($wasF, $fArray)){
+            $userinfo = $instagram-&gt;getUserRelationship($wasF);
+            if(!$userinfo-&gt;meta-&gt;error_type == 'APINotAllowedError'){ 
+                //BAN THEM
+                update_user_meta($user_id, 'is_banned', 1);
+                if(!is_page('banned') &amp;&amp; (get_user_meta($current_user-&gt;ID, 'is_banned', true) == 1)){   
+                    //REDIRECT TO 'BANNED' PAGE             
+                    $redirect = get_bloginfo(""url"").'/banned/';
+                    wp_redirect( $redirect );
+                    exit;
+                }  
+            } else {
+                //DON'T BAN
+                update_user_meta($user_id, 'is_banned', 0);
+            }
+        } else {
+                //DON'T BAN
+                update_user_meta($user_id, 'is_banned', 0);
+        }
+    }
+}
+</code></pre>
+"
+169281,6586040,293956.0,2011-07-05T16:45:42Z,,8,django how to get the 0th item from a possibly empty list,"<p>I have a simple blog app with the model ""Post"". If I delete all the entries in the Post model I get an error when I try reference the first item in the post list ordered by date, which I did like this:</p>
+
+<pre><code>latest_post = Post.objects.order_by('-date_created')[0]
+</code></pre>
+
+<p>The error is: IndexError: list index out of range</p>
+
+<p>As a fix, I now get the item like this:</p>
+
+<pre><code>all_posts = Post.objects.order_by('-date_created')
+latest_post = ()
+if (all_posts):
+  latest_post = all_posts[0]
+</code></pre>
+
+<p>This works if there are no items in my model ""Post"", and no exception is thrown.
+However to me this seems like too much code to do something fairly simple. I assume there is a better way to do this using the django QuerySet API, but can't find anything in the documentation.</p>
+
+<p>Any ideas?</p>
+
+<p>EDIT: Strangely, this throws no error when there are no items in the Post model:</p>
+
+<pre><code>latest_post_list = Post.objects.all().order_by('-date_created')[1:10]
+</code></pre>
+"
+1177861,37915900,5629999.0,2016-06-20T06:31:25Z,,0,Add imageview and texview for each menu item in Navigation Drawer,"<p>I want to add an imageview and texview in each item of navigation drawer (like a cart image(Imageview) and items added in cart(Textview)) </p>
+
+<p><a href=""http://i.stack.imgur.com/YIC0U.png"" rel=""nofollow""><img src=""http://i.stack.imgur.com/YIC0U.png"" alt=""enter image description here""></a></p>
+"
+1032558,33990320,5501675.0,2015-11-30T01:46:46Z,,1,thread const error C++,"<p>Could anyone please tell me why this code is producing an error?</p>
+
+<pre><code>#include &lt;iostream&gt;
+#include &lt;map&gt;
+#include &lt;vector&gt;
+#include &lt;thread&gt;
+#include &lt;mutex&gt;
+#include &lt;stdexcept&gt;
+using namespace std;
+
+void thread_func(const std::map&lt;string, int&gt;&amp; shared) {
+    for (int i = 0; i &lt; 10000; ++i) {
+        if (shared[""what""] != 2 || shared[""when""] != 4) {
+            throw std::logic_error(""not read safe"");
+        }
+    }
+}
+
+int main() {
+    std::map&lt;string, int&gt; shared;
+    shared[""what""] = 2;
+    shared[""when""] = 4;
+
+    vector&lt;thread&gt; threads;
+    for (int i = 0; i &lt; 100; ++i) {
+        threads.push_back(thread(thread_func, shared));
+    }
+
+    for (auto&amp; th : threads) {
+        th.join();
+    }
+
+    return 0;
+}
+</code></pre>
+
+<p>This produces the following error</p>
+
+<pre><code>error: passing âconst std::map&lt;std::basic_string&lt;char&gt;, int&gt;â as âthisâ argument of âstd::map&lt;_Key, _Tp, _Compare, _Alloc&gt;::mapped_type&amp; std::map&lt;_Key, _Tp, _Compare, _Alloc&gt;::operator[](std::map&lt;_Key, _Tp, _Compare, _Alloc&gt;::key_type&amp;&amp;) [with _Key = std::basic_string&lt;char&gt;; _Tp = int; _Compare = std::less&lt;std::basic_string&lt;char&gt; &gt;; _Alloc = std::allocator&lt;std::pair&lt;const std::basic_string&lt;char&gt;, int&gt; &gt;; std::map&lt;_Key, _Tp, _Compare, _Alloc&gt;::mapped_type = int; std::map&lt;_Key, _Tp, _Compare, _Alloc&gt;::key_type = std::basic_string&lt;char&gt;]â discards qualifiers [-fpermissive]
+         if (shared[""what""] != 2 || shared[""when""] != 4) {
+</code></pre>
+
+<p>Could someone please guide me in the right direction with this?</p>
+
+<p>Thanks</p>
+"
+119365,4866970,490144.0,2011-02-01T19:17:23Z,,0,is there a way in hudson or with any plugins to archive artifacts from the last X number of successful builds?,"<p>i see options to either only archive artifacts from all builds, or only the artifacts from the last successful build. is there any way or with a plugin to say archive the artifacts from the last 10 successful builds?</p>
+
+<p>thanks</p>
+"
+247620,9206290,1194352.0,2012-02-09T06:18:52Z,,0,how to show two web pages in one window without frames,"<p>I want to show a web page within another web web in asp.net. I have a page named <code>home.aspx</code> and a page name <code>add.aspx</code> how can i do this.</p>
+"
+128472,5186470,620848.0,2011-03-03T20:59:32Z,,0,shooting a ball at an angle?,"<p>When I shoot the ball out of my cannon, the ball does not shoot exactly at the mouse position of the mouse click. At certain angles it seems fine, but others its off by several degrees. Is this the correct formualas?</p>
+
+<p>thanks</p>
+
+<pre><code>public function setPos() {
+    destX = gameManager.stage.mouseX;
+    destY = gameManager.stage.mouseY;
+    var dx:Number = destX -gameManager.tank.x;
+    var dy:Number = destY - gameManager.tank.y;
+
+    radians = Math.atan2(dy, dx);
+}
+
+public function Shoot() {
+     this.x +=  speed *  Math.cos(radians);
+    this.y +=  speed *Math.sin(radians);
+}
+</code></pre>
+"
+462850,16207840,1085457.0,2013-04-25T06:27:39Z,,2,Where to get windows binaries for gtk-sharp3,"<p>Similar to <a href=""http://stackoverflow.com/questions/6006689/where-can-i-download-precompiled-gtk-3-binaries-or-windows-installer"">this question about GTK+ 3 for Windows</a>, is there any place that offers compiled GTK# bindings for Windows? I searched for a while and can't find any official releases (which makes sense since there are no official GTK3 releases for Windows either), but also neither Banshee nor Xamarin come with GTK(#)-3.</p>
+
+<p>I'm also unsure if <a href=""http://www.mono-project.com/Compiling_GtkSharp"" rel=""nofollow"">these instructions for compiling GTK# 2 on Windows</a> are still valid, but the page doesn't provide an awful lot of detail, so I guess it'll take half a day to figure out of it works that way.</p>
+
+<p>Any other place where I might find the GTK# 3 binaries for Windows?</p>
+"
+494763,17247600,244330.0,2013-06-22T05:27:01Z,,0,present self.presentingViewController to the foreground,"<p>I have ViewControllers A and B in the code.</p>
+
+<p>A presents B when I press a button. Then in B I add a navigation bar which has a navigation item called ""Back to previous screen"". Then I try to do this logic: when press the navigation item, execute the following code to go back to B's presentingViewController, which, in this case I think it is A. </p>
+
+<pre><code>[self presentViewController:self.presentingViewController animated:YES completion:nil];
+</code></pre>
+
+<p>But unfortunately A doesn't show up. I use ""print [self.presentingViewController class]"" command in lldb and I can see the class is A. What have I done wrong?</p>
+"
+518353,18013700,521946.0,2013-08-02T09:42:56Z,,0,Can I use an AIR Component/Library for developing iOS App using Xcode?,"<p>I want to develop a Flash Live Stream Player on iOS. As you known, Flash does not supported on iOS platform. I searched Google, but all results are about the <a href=""http://www.adobe.com/cn/devnet/air/native-extensions-for-air.html"" rel=""nofollow"">ANE (Air Native Extensions)</a>.
+Is there any way that building <strong>Xcode usable</strong> component/control/library/framework from Flash/Flex/AIR? Or any other solutions that playing flash on iOS?
+Any advice would be grateful, thanks.</p>
+"
+956457,31794470,736643.0,2015-08-03T18:39:21Z,,0,Reading enviroment variable in osgi blueprint,"<p>I'm building some camel routes deployed in OSGi (JBoss Fuse)</p>
+
+<p>I'm reading my properties file using this:</p>
+
+<pre><code>  &lt;ext:property-placeholder id=""propiedades""&gt;
+    &lt;ext:location&gt;file:/C:/TestBed/sucursal.propiedades&lt;/ext:location&gt;
+  &lt;/ext:property-placeholder&gt;
+</code></pre>
+
+<p>But now I want change ""file:/C:TestBed/"" for some placeholder with some path (like KARAF_ETC). I know this enviroment variable exists because when I use it in the route, it works ok</p>
+
+<pre><code>    from(URI_IN)
+    .log(""{{env:KARAF_ETC}}"") //Output is: C:\jboss-fuse-6.2.0.redhat-133\bin\..\etc
+    .to(URI_OUT);
+</code></pre>
+
+<p>So, I want to do something like:</p>
+
+<pre><code>  &lt;ext:property-placeholder id=""propiedades""&gt;
+    &lt;ext:location&gt;file:{{env:KARAF_ETC}}/sucursal.propiedades&lt;/ext:location&gt;
+  &lt;/ext:property-placeholder&gt;
+</code></pre>
+
+<p>But does not work.</p>
+
+<p>Property placeholder is kinda tricky, so I tried with file:/{{env:KARAF_ETC}}, file:/{{KARAF_ETC}}, file:${KARAF_ETC} and more combinations but no one works (but some of them throw differents errors).</p>
+
+<p>What is the correct sintaxis to get the enviroments variables in blueprint?</p>
+"
+1057899,34683560,920267.0,2016-01-08T18:18:44Z,,0,ng-grid rowTemplates not rendering when using multiple grid configurations,"<p>I have a complex situation in which I have three different ng-grid configurations: one for each user role (superuser, admin, normal).</p>
+
+<p>I have each configuration defined as an angular.module().constant, and each uses the same rowTemplate html file (showing the 1st config; each config is minimally different in that some properties are false instead of true):</p>
+
+<pre><code>angular.module('myApp').constant('gridConfig1', {
+    data: 'rac.data',
+    primaryKey: 'Id', //may need to make this work to hide the id in the grid.
+    enableCellSelection: true,
+    enableCellEditOnFocus: false,
+    enableRowSelection: false,
+    multiSelect: false,
+    showGroupPanel: true,
+    rowTemplate: 'path/to/template.htm',
+    columnDefs: [
+                  { field: 'Name', displayName: 'Name', enableCellEdit: false, cellClass: ""overflowVisible smallerDropdowns"" }
+                , { field: 'QtyMinimum', displayName: 'Minimum', enableCellEdit: false, cellClass: ""overflowVisible smallerDropdowns"" }
+                , { field: 'QtyTotal', displayName: 'Total', enableCellEdit: false, cellClass: ""overflowVisible smallerDropdowns"" }
+                , { field: 'QtyAvailable', displayName: 'Available', enableCellEditOnFocus: false, editableCellTemplate: 'Redline/gridTemplates/EditInputTemplate.htm', cellClass: ""overflowVisible smallerDropdowns"" }
+                , { field: 'Category', displayName: 'Category', enableCellEdit: false, cellClass: ""overflowVisible smallerDropdowns"" }
+            ]
+</code></pre>
+
+<p>});</p>
+
+<p>Here is the row template:</p>
+
+<pre><code>&lt;div ng-class=""{'bg-danger': row.getProperty('insufficientValue') === true}""&gt;
+&lt;div ng-repeat=""col in renderedColumns"" ng-class=""col.colIndex()"" class=""ngCell ""&gt;
+    &lt;div ng-cell&gt;&lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p></p>
+
+<p>In my view, I have each ng-grid container represented, with an ng-show on each which calls a property on the controller that returns true/false based on the user's role.</p>
+
+<pre><code>&lt;div class=""col-md-12""&gt;
+            &lt;div class=""gridStyle condensed-table"" ng-grid=""rac.defaultReadOnlyGridConfig"" ng-show=""rac.readOnlyMode""&gt;&lt;/div&gt;
+            &lt;div class=""gridStyle condensed-table"" ng-grid=""rac.fullEditGridConfig"" ng-show=""rac.fullEditMode""&gt;&lt;/div&gt;
+            &lt;div class=""gridStyle condensed-table"" ng-grid=""rac.limitedEditGridConfig"" ng-show=""rac.limitedEditMode""&gt;&lt;/div&gt;
+        &lt;/div&gt;
+</code></pre>
+
+<p>Additionally, I have a dropdown that allows the user to switch between certain roles, based on the hierarchical level of that user's role.</p>
+
+<pre><code>&lt;ul class=""dropdown-menu"" role=""menu"" ng-show=""rac.superUser""&gt;
+                    &lt;li&gt;&lt;a href="""" ng-click=""rac.switchToReadOnlyMode()""&gt;&lt;i class=""fa fa-lock""&gt;&lt;/i&gt; Read Only Mode&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="""" ng-click=""rac.switchToLimitedEditMode()""&gt;&lt;i class=""fa fa-unlock-alt""&gt;&lt;/i&gt; Limited Edit Mode&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="""" ng-click=""rac.switchToFullEditMode()""&gt;&lt;i class=""fa fa-unlock""&gt;&lt;/i&gt; Full Edit Mode&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+
+                &lt;ul class=""dropdown-menu"" role=""menu"" ng-show=""rac.adminUser""&gt;
+                    &lt;li&gt;&lt;a href="""" ng-click=""rac.switchToReadOnlyMode()""&gt;&lt;i class=""fa fa-lock""&gt;&lt;/i&gt; Read Only Mode&lt;/a&gt;&lt;/li&gt;
+                    &lt;li&gt;&lt;a href="""" ng-click=""rac.switchToLimitedEditMode()""&gt;&lt;i class=""fa fa-unlock-alt""&gt;&lt;/i&gt; Limited Edit Mode&lt;/a&gt;&lt;/li&gt;
+                &lt;/ul&gt;
+</code></pre>
+
+<p>When I switch to a lesser role, the property that would force the other grid to show does so, and the html is rendered in the DOM; however, the grid does not visibly show.</p>
+
+<p>What could I possibly be missing here? Is there a problem with the use of rowTemplates in ng-grid in combination with multiple configurations, and how they are displayed as I have them set up?</p>
+
+<p>Two thoughts:</p>
+
+<ul>
+<li>If I comment out the row template on either of the other configurations, the default template shows up with no problem.</li>
+<li>If I show all of the grids without hiding them based on their visibility property, all are rendered as expected.</li>
+</ul>
+
+<p>Thanks in advance!!</p>
+"
+1017924,33598740,2823171.0,2015-11-08T20:33:03Z,,0,How can put random effects in the formula of Fit linear mixed model?,"<p>Suppose we have the data set :</p>
+
+<pre><code>ID   Res  X1   X2   Z1   Z2
+1     1   1.5  22   2.3  657
+1     2   1.8  23   2.4  674
+2     3   2.1  18   2.5  681
+2     1   2.5  20   2.4  682
+3     2   1.9  21   2.4  684
+3     3   1.5  25   2.1  674
+</code></pre>
+
+<p>(ID: Id number, Res: Response, X1,X2: fixed effects, Z1,Z2: random effect)</p>
+
+<p>To fit <code>Y=XA+ZB</code> I can use <code>lme = fitlme(tbl,formula)</code> in Matlab
+so I make the table </p>
+
+<pre><code>tbl=table(D(:,1),D(:,2),D(:,3),D(:,4),D(:,5),D(:,6),'VariableNames',{'Id','Response','FE1','FE2','RE1','RE1'});
+</code></pre>
+
+<p>Now to fit we need to use </p>
+
+<pre><code>lme = fitlme(tbl,'y ~ fixed + (random1|grouping1) + ... + (randomR|groupingR)');
+</code></pre>
+
+<p>So I put Response, FE1 and FE2 as y and fixed respectively: </p>
+
+<pre><code>lme = fitlme(tbl,'Response ~ FE1 + FE2 + (RF1|???)+(RF2|???)');
+</code></pre>
+
+<p>In the Matlab we need to use the grouping variables for the formula where the grouping variables can be categorical, logical, character arrays, or cell arrays of strings.</p>
+
+<p>My question is how can make the grouping variables ?! or how put random effects RF1 and RF2 in the formula with respect my data? or which formula is correct for my data?</p>
+
+<p>Bests
+Ali</p>
+"
+545489,18900720,950931.0,2013-09-19T16:56:15Z,,5,Where to see font files loaded by chrome in the inspector?,"<p>What tab in chrome inspector shows the font files you're loading via font-face? I can't find it under resources. I'm having an issue where one group of font-family files are loading, but another font-family is not. I have checked everything from going directly to the URL and seeing they are indeed present, but I would like to look in the inspector and see it loading the one font-family but not the other. Is this possible with chrome?</p>
+"
+363160,12959950,1756004.0,2012-10-18T17:04:09Z,2012-10-18T18:46:46Z,-1,How to get text output by pressing images in html page?,"<p>I'm writing an Android app using Phonegap. I want to be able to press an image, for instance numbers from 0-9 and as an output receive the result in a text box.</p>
+
+<p>For instance if I press image that states number one, I get ""1"" in my text-box.</p>
+
+<p>How can it be done using html and JavaScript? </p>
+"
+237358,8867920,1145015.0,2012-01-15T06:18:00Z,,0,Change Default Web page using htaccess,"<p>This is the file structure of my website</p>
+
+<ul>
+<li>app/view/home.php</li>
+<li>.index.php</li>
+<li>.htaccess</li>
+</ul>
+
+<p>Now, I want to redirect the server to app/view/home.php if index.php is accessed.</p>
+
+<p>By going to <a href=""http://localhost/"" rel=""nofollow"">http://localhost/</a>, the app/view/home.php must be the page to be served.</p>
+
+<p>Thanks!</p>
+"
+1023300,33742420,1359672.0,2015-11-16T18:48:23Z,,1,Android 6 Marshmallow ListView. Start activity with runtime permissions,"<p>I am developing an application for Android Marshmallow (API LEvel 23).</p>
+
+<p>I have an Activity which contains a ListView.<br>
+I populate that ListView by using a BaseView Adapter.</p>
+
+<p>I want to start an Activity whenever I push a button inside my ListView.<br>
+However, this Activity needs to access the camera which in the latest Android version means that I should ask for the camera permission during runtime.<br>
+The camera using Activity will be an ZXing Activity.</p>
+
+<p>Here is the Activity code:</p>
+
+<pre><code>public class ProviderListActivity extends AppCompatActivity {
+
+    public boolean can_access_camera = false;
+    public final int got_camera = PackageManager.PERMISSION_DENIED;
+
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_provider_list);
+        ListView listView = (ListView) findViewById(R.id.ProviderListView);
+        CardsDBHelper dbHelper = new CardsDBHelper(this);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        listView.setAdapter(new ProviderListAdapter(this, db));
+    }
+
+    public void start_scan(){
+        if (have_camera_permission()){
+            start_scan_activity();
+        } else {
+            Log.d(""ProviderListActivity"", ""I CANNOT ACCESS THE CAMERA"");
+        }
+    }
+
+    public void start_scan_activity(){
+        IntentIntegrator integrator = new IntentIntegrator(this);
+        integrator.initiateScan();
+    }
+
+    public boolean have_camera_permission(){
+        //Check for permissions
+        int permissionCheck = ContextCompat.checkSelfPermission(this, Manifest.permission.CAMERA);
+        if (permissionCheck == PackageManager.PERMISSION_DENIED){
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.CAMERA}, got_camera);
+        } else {
+            can_access_camera = true;
+        }
+        return can_access_camera;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case got_camera: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length &gt; 0 &amp;&amp; grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    can_access_camera = true;
+                } else {
+                    can_access_camera = false;
+                }
+                return;
+            }
+            // other 'case' lines to check for other
+            // permissions this app might request
+        }
+    }
+}
+</code></pre>
+
+<p>The <code>getView()</code> method in my Adapter is:</p>
+
+<pre><code>public View getView(int position, View convertView, final ViewGroup parent) {
+Button grid_button;
+    if (convertView == null) {
+        // if it's not recycled, initialize some attributes
+        grid_button = new Button(mContext);
+        grid_button.setText(""Hello Text"");
+        Drawable d = mContext.getDrawable(R.drawable.circle);
+    grid_button.setCompoundDrawablesRelativeWithIntrinsicBounds(null,d,null,null);
+    grid_button.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //What do I need to put inside here?
+        }
+    });
+} else {
+    grid_button = (Button) convertView;
+}
+
+return grid_button;
+}
+</code></pre>
+
+<p>You may have noticed that the Adapter gets an extra db argument.<br>
+This is a SQLite database object which is which is used inside the Adapter, but this is not relevant.</p>
+
+<p>I am not sure how to call my scan Activity by using the <code>onClick</code> override.<br>
+I tried passing the parent Activity as an argument in the Adapter and call the scan method, but I get the following exception:  </p>
+
+<pre><code>java.lang.IllegalArgumentException: Can only use lower 8 bits for requestCode` 
+</code></pre>
+
+<p>Does anyone have a solution for my problem?</p>
+"
+667725,22844450,2647888.0,2014-04-03T17:10:15Z,,-1,How to use awk/sed/grep to filter out only the latest string in a real-time log file,"<p>this thing is really confusing me. Suppose I have a file like this </p>
+
+<pre><code>09:35:24 03/04/2014  Pink Floyd the best band in the world KING KING
+09:44:21 03/04/2014 Led Zeppelin the greatest hard rock band ever 
+09:54:21 03/04/2014 Bon scott I love Bon scott KING KING
+10:15:23 03/04/2014 AC/DC is the best
+10:35:43 03/04/2014 It's all a joke 
+12:46:55 03/04/2014 No value nothing is there here KING KING 
+15:35:43 03/04/2014 It's all a joke1 
+15:39:43 03/04/2014 It's all a joker KING KING
+15:55:43 03/04/2014 It's all a jokeeyyyy 
+</code></pre>
+
+<p>Now the above one is a file which will be created in the morning and it keeps appending till midnight. Now I have to extract lines where the pattern KING KING exists. Mine is a monitoring script so it checks this file every 60s for the pattern KING KING and if it exists I shall put it in a new file for further operations. Now if you see <strong>timestamps</strong> are different.At 10:15 I got the first 2 lines with the matching pattern. Now at 12:46 when I run the script I don't want the previously found Matching Pattern again 
+I,e at 12:46 I only want <code>""12:46:55 03/04/2014 No value nothing is there here KING KING ""</code> 
+and not again the values at 09:54 and 09:35 (I,e Bon scott and Pink Floyd) So basically how do I use grep/sed/awk to filter only the latest and not give me the old ones. Thanks.</p>
+
+<p>EDIT:</p>
+
+<p>at 10:00 My script runs I grep for KING KING and get the Pink Floyd and Bon Scott lines. Now again (say) at 16:00 My script runs I only want the strings </p>
+
+<pre><code>12:46:55 03/04/2014 No value nothing is there here KING KING
+</code></pre>
+
+<p>and</p>
+
+<pre><code>15:39:43 03/04/2014 It's all a joker KING KING
+</code></pre>
+
+<p>and not the older ones. Please note there can be many occurrences of KING KING pattern not only 2.</p>
+"
+332639,11961410,1541722.0,2012-08-14T21:56:10Z,,-1,"Javascript, Getting Length of String Held in Array","<pre><code>k = [['a'], ['ab'], ['abc']];
+alert(k[2].length);
+</code></pre>
+
+<p>The above code fragment returns 1.</p>
+
+<p>How can I get the length of the string, 3 in this case?</p>
+"
+538485,18673900,2070518.0,2013-09-07T13:39:23Z,,34,how to center and Crop an image to square with CSS,"<p>I need to always crop a random-sized image to a square 160x160 using only CSS.
+The images should stay centered when cropped.</p>
+
+<p>My markup should be:</p>
+
+<pre><code>&lt;a href=""#"" class=""cropper""&gt;
+   &lt;img src=""image"" alt=""description"" /&gt;
+&lt;/a&gt;
+</code></pre>
+
+<p>Searching on Stackoverflow I've found some answers (ex: <a href=""http://stackoverflow.com/questions/17745559/css-how-to-crop-an-image-to-a-square-if-its-already-square-then-resize-it"">this</a>) but them doesn't work for horizontal OR vertical images.</p>
+
+<p>I need to be able to transform in a squares both:</p>
+
+<p><img src=""http://lorempixel.com/500/200"" alt=""img""></p>
+
+<p>and</p>
+
+<p><img src=""http://lorempixel.com/200/500"" alt=""img""></p>
+
+<p>Without know which one is an horizontal rectangle or a vertical rectangle, it should also support already squared images.</p>
+
+<p>I've no clues and I can't neither write some code to try it, no idea of where start to write it.</p>
+
+<p>Any suggestion?</p>
+"
+948393,31552090,4990983.0,2015-07-22T00:51:06Z,,1,How to deface the product form in spreecommerce admin panel?,"<p>I'm trying to deface the product form in spreecommerce admin panel.</p>
+
+<p>I have 5 taxonomies and many taxons. Adding all of them from a form is getting difficult.</p>
+
+<p>So, I'm trying add different fields for the taxons in each taxonomy. ie, there will be 5 fields for taxons.</p>
+
+<p>I'm started defacing the product form like this,</p>
+
+<h1>app/overrides/add_category_to_product_edit.rb</h1>
+
+<pre><code>Deface::Override.new(:virtual_path =&gt; 'spree/admin/products/_form',
+  :name =&gt; 'add_category_to_product_edit',
+  :insert_after =&gt;""[data-hook='admin_product_form_taxons']"",
+  :text =&gt; ""
+          &lt;%= f.field_container :categories, class: ['form-group'] do %&gt;
+          &lt;%= f.label :, Spree.t(:categories) %&gt;
+          &lt;%= f.collection_select(:) %&gt;
+          &lt;%= f.error_message_on :%&gt;
+          &lt;% end %&gt;
+
+  "")
+</code></pre>
+
+<p>I want to display the taxons belongs to a taxonomy id in that menu. How to get the taxons of a particular taxonomy? How can I complete this deface script?</p>
+"
+8287,548090,35615.0,2009-02-13T23:25:40Z,,64,Dynamic SQL - EXEC(@SQL) versus EXEC SP_EXECUTESQL(@SQL),"<p>What are the real world pros and cons of executing a dynamic SQL command in a stored procedure in SQL Server using</p>
+
+<pre><code>EXEC (@SQL)
+</code></pre>
+
+<p>versus</p>
+
+<pre><code>EXEC SP_EXECUTESQL @SQL
+</code></pre>
+
+<p>?</p>
+"
+849823,28551810,2868544.0,2015-02-16T22:58:32Z,,0,Passing json object to collection causes errors,"<p>So this is my code so far. Just trying to understand how all these libraries work but cant find the problem. Im using RequireJS, BackboneJS, Handlebars.</p>
+
+<p>As you can see in ClientsView.js im trying to create a new instance of ClientsCollection and pass json object. 
+This is the error I get in the chrome console, if you expand it:</p>
+
+<pre><code>Uncaught TypeError: Cannot read property 'prototype' of undefinedbackbone.js:689 i.extend.setbackbone.js:638 i.extend.addbackbone.js:769 i.extend.resetbackbone.js:607 e.Collectionbackbone.js:1566 sClientsView.js:17 Backbone.View.extend.initializebackbone.js:1001 e.Viewbackbone.js:1566 srouter.js:10 initializeapp.js:9 initializemain.js:15 (anonymous function)require.js:27 d.execCbrequire.js:10 orequire.js:12 arequire.js:12 orequire.js:12 arequire.js:12 orequire.js:12 arequire.js:12 orequire.js:12 arequire.js:12 orequire.js:12 arequire.js:12 orequire.js:15 xrequire.js:15 mrequire.js:21 g.completeLoadrequire.js:27 d.onScriptLoad
+</code></pre>
+
+<p>However if I pass nothing there are no errors.</p>
+
+<p>I checked requireJS paths and names, nothing.</p>
+
+<p>There must be something very stupid that I am missing. Thank you for your time.</p>
+
+<p>ClientModel.js</p>
+
+<pre><code>define([
+    'underscore',
+    'handlebars',
+    'backbone'
+], function(_, Handlebars, Backbone){
+
+    var ClientModel = Backbone.Model.extend({
+        defaults: {
+            'ID' : '',
+            'name' : '',
+            'birthdate' : '',
+            'email' : ''
+        }
+    });
+});
+</code></pre>
+
+<p>ClientsCollection.js</p>
+
+<pre><code>define([
+    'underscore',
+    'handlebars',
+    'backbone',
+    'models/Client/ClientModel'
+], function(_, handlebars, backbone, ClientModel){
+
+    var ClientsCollection = Backbone.Collection.extend({
+
+        model: ClientModel,
+
+        //initialize: function(models, options) {},
+
+        // comparator: function(client) {
+        //  return client.get('name');
+        // }
+    });
+
+    return ClientsCollection;
+});
+</code></pre>
+
+<p>ClientsView.js</p>
+
+<pre><code>define([
+    'jquery',
+    'underscore',
+    'handlebars',
+    'backbone',
+    'text!templates/clients/ClientsListTemplate.html',
+    'collections/ClientsCollection/ClientsCollection'
+], function($, _, Handlebars, Backbone, ClientsListTemplate, ClientsCollection){
+
+    var ClientsView = Backbone.View.extend({
+
+        tagName: 'div',
+
+        template: Handlebars.compile(ClientsListTemplate),
+
+        initialize: function() {
+            this.collection = new ClientsCollection([ { 'ID' : 1, 'name' : 'egis', 'birthdate' : '02', 'email' : 'email' } ]);
+            this.render();
+        },
+
+        render: function() {
+            this.$el.html(this.template({ clients : this.collection.toJSON() }));
+            return this;
+        }
+    });
+
+    return ClientsView;
+});
+</code></pre>
+
+<p>router.js</p>
+
+<pre><code>define([
+    'jquery',
+    'handlebars',
+    'underscore',
+    'backbone',
+    'views/clients/ClientsView'
+], function($, _, Handlebars, backbone, ClientsView){
+
+    var initialize = function() {
+        var newClientsView = new ClientsView();
+        $('#clients-list').html(newClientsView.render().el);
+    }
+
+    return {
+            initialize: initialize
+        }
+});
+</code></pre>
+"
+1083081,35372850,5920665.0,2016-02-12T21:56:41Z,,1,Alamofire request coming up nil,"<p>I'm developing an iOS app which user WebServices and I find Alamofire just perfect for what I'm doing but I'm having a problem; the app asks the user to login which is an Alamofire call and does it just fine.</p>
+
+<p>The problem is, it has to create a collection view based on the content of another Alamofire request but is always <code>nil</code>.</p>
+
+<pre><code>    func getJSON(URLToRequest: String) -&gt; JSON {
+
+    let comp:String = (prefs.valueForKey(""COMPANY"") as? String)!
+    let params = [""company"":comp]
+    var json:JSON!
+
+    let request = Alamofire.request(.POST, URLToRequest, parameters: params).responseJSON {
+        response in
+        switch response.result {
+        case .Success:
+            if let value = response.result.value {
+                json = JSON(value)
+            }
+        default:
+            json = JSON("""");
+
+        }
+    }
+    debugPrint(request.response)
+
+    return json;
+}
+</code></pre>
+
+<p>The same codeblock works perfect for the Login but doesn't in this case BTW the debug Print always print <code>nil</code></p>
+
+<p><a href=""http://i.stack.imgur.com/pDDhu.png"" rel=""nofollow""><img src=""http://i.stack.imgur.com/pDDhu.png"" alt=""Debug Print""></a></p>
+"
+160204,6274960,776638.0,2011-06-08T06:26:46Z,,1,design pattern - dispatcher,"<p>I have a use-case like the following:</p>
+
+<p>Lets say I have an  enumType Foo (possible values A,B,C).
+Suppose I have</p>
+
+<pre><code>Class Bar{
+ List&lt;Foo&gt; foos; // list of Foo objects where each object can have 1 of 3 possible values
+ long id;
+ String name;
+ String num;
+ ...
+}
+</code></pre>
+
+<p>My clients would call a method ""dispatch"" in Dispatcher class, which takes in ""Bar"".</p>
+
+<p>Now for each (Foo foo : foos), it delegates the actual dispatch to specific types (i.e. I want a seperate handler for A, B and C type of messages).</p>
+
+<p>Secondly, the message which has to be dispatched should be created differently for A, B and C. Based on the value of foo, we pick up the message from templates and insert ""name"", ""num"" as obtained from Bar).</p>
+
+<p>Are there specific patterns I am looking at for this design? How should I be designing such a system. would appreciate a discussion or pointers to existing patterns or best practices.</p>
+"
+149767,5915910,373715.0,2011-05-06T19:05:20Z,,3,How do I perform binary addition on a mod type in Ada?,"<p>Very specific issue hereâ¦and no this isnât homework (left that farâ¦far behind).  Basically I need to compute a checksum for code being written to an EPROM and Iâd like to write this function in an Ada program to practice my bit manipulation in the language.</p>
+
+<p>A section of a firmware data file for an EPROM is being changed by me and that change requires a new valid checksum at the end so the resulting system will accept the changed code.  This checksum starts out by doing a modulo 256 binary sum of all data it covers and then other higher-level operations are done to get the checksum which I wonât go into here.</p>
+
+<p>So now how do I do binary addition on a mod type?  </p>
+
+<p>I assumed if I use the â+â operator on a mod type it would be summed like an integer value operationâ¦a result I donât want.  Iâm really stumped on this one.  I donât want to really do a packed array and perform the bit carry if I donât have to, especially if thatâs considered âold hatâ.  References Iâm reading claim you need to use mod types to ensure more portable code when dealing with binary operations.  Iâd like to try that if itâs possible. I'm trying to target multiple platforms with this program so portability is what I'm looking for.</p>
+
+<p>Can anyone suggest how I might perform binary addition on a mod type? </p>
+
+<p>Any starting places in the language would be of great help. </p>
+"
+716247,24373670,3727724.0,2014-06-23T19:18:41Z,,1,how to rewrite head.phtml in magento,"<p>I want to change the page title in magento. 
+In my <code>app/design/frontend/default/customPackage/template/page/html/head.phtml</code>, there are lines control all page title(what I want just to modify the catalog page's title)</p>
+
+<pre><code>&lt;title&gt;
+&lt;?php 
+     if ($current_product = Mage::registry('current_product')) { 
+        echo substr($current_product-&gt;getName() . "" - "" . Mage::helper('core')-&gt;currency($current_product-&gt;getFinalPrice(), true, false),0,69);
+    } else {
+
+        echo substr(str_replace(""- Products"","""",$this-&gt;getTitle()),0,100);
+    }
+     ?&gt;&lt;/title&gt;
+</code></pre>
+
+<p>but I don't want to modify directly from head.phtml in <code>app/design/frontend/default/customPackage/template/page/html</code>, instead, I want to replace this <code>head.phtml</code> with another <code>head.phtml</code> in my own module tempate files.Let's say , make it <code>app/design/frontend/default/customPackage/template/catalog/html/head.phtml</code> instead</p>
+"
+1172286,37767110,4007564.0,2016-06-11T18:17:13Z,,1,np.tile to repeat an 1D array,"<p>I have an ndarray, <code>A</code>, 
+and I want to multiply this ndarray element wise by another 1D array <code>b</code> where I assume that <code>A.shape[i] = len(b)</code> for some <code>i</code>. I need this generality in my application.</p>
+
+<p>I can do this using <code>np.tile</code> as follows:</p>
+
+<pre><code>A = np.random.rand(2,3,5,9)
+b = np.random.rand(5)
+i = 2
+b_shape = np.ones(len(A.shape), dtype=np.int)
+b_shape[i] = len(b)
+b_reps = list(A.shape)
+b_reps[i] = 1
+B = np.tile(b.reshape(b_shape), b_reps)
+
+# Here B.shape = A.shape and
+# B[i,j,:,k] = b for all i,j,k
+</code></pre>
+
+<p>This strikes me as ugly. Is there a better way to do this? </p>
+"
+473830,16568270,315427.0,2013-05-15T14:49:37Z,,0,GK local player authentication,"<p>My app supports iOS 5.x -> 6.x. It is using Game Kit. However, it says in documentation that </p>
+
+<pre><code>authenticateWithCompletionHandler 
+</code></pre>
+
+<p>is deprecated in iOS 6.0 and I have to use </p>
+
+<pre><code>authenticateHandler
+</code></pre>
+
+<p>Does it mean my app will get rejected for App Store if I use <code>authenticateWithCompletionHandler</code> and claim my app should work on iOS 6 as well?</p>
+"
+246355,9165120,272454.0,2012-02-06T18:21:14Z,,0,Regex username for codeigniter route,"<p>I am trying to get my regex to not allow the following words:</p>
+
+<ul>
+<li>create </li>
+<li>Forum</li>
+</ul>
+
+<p>I also would like to allow only 1 underscore..</p>
+
+<p>Here is what I have so far:</p>
+
+<pre><code>$route['(^[A-Za-z][A-Za-z0-9]{3,20}+$)'] = ""users/index"";
+</code></pre>
+"
+1019993,33654160,3707065.0,2015-11-11T15:40:01Z,,0,r- ggplot decrease number of intervals of axis or spacing the axe tiks,"<p>I've made a group plot of time series with ggplot with this syntax:</p>
+
+<pre><code>ggplot(Tur_flow, aes(x=time, group=parameter, colour=parameter))
+    + geom_point(aes(y=value), size=1)
+    + stat_smooth(aes(y=value), method=lm)
+    + facet_grid(parameter ~ Section, scale=""free_y"")
+    + theme_minimal()
+    + theme(text = element_text(size=16))
+
+dput(head(Tur_flow))
+structure(list(Section = structure(c(2L, 2L, 2L, 2L, 2L, 2L), .Label = c(""S-5"", ""S-50"", ""S+5"", ""S+50""), class = ""factor""), parameter = structure(c(3L, 
+3L, 3L, 3L, 3L, 3L), .Label = c(""Discharge"", ""Mean_Velocity"", 
+""T_15"", ""T_25"", ""T_65"", ""Water_Depth""), class = ""factor""), time = structure(c(6L, 13L, 20L, 27L, 34L, 41L), .Label = c(""11:59:55"", ""11:59:56"", 
+""11:59:58"", ""11:59:59"", ""12:00:00"", ""12:00:02"", ""12:00:05"", ""12:00:55"", 
+""12:00:56"", ""12:00:58"", ""12:00:59"", ""12:01:00"", ""12:01:01"", ""12:01:05"", 
+""12:01:55"", ""12:01:56............. ""8.30"", ""8.31"", ""8.41"", ""8.54"", ""8.94"", ""800.31"", ""822.01"", ""828.77"", ""839.30"", ""846.11"", ""847.60"", ""8497.25"", ""894.21"", ""91.66"", ""91.67"", ""91.68"", ""91.90"", ""92.08"", ""92.23"", ""92.54"", ""93.23"", ""974.50"", ""N/A""), class = ""factor"")), .Names = c(""Section"", ""parameter"", 
+""time"", ""value""), row.names = c(NA, 6L), class = ""data.frame"")
+</code></pre>
+
+<p><a href=""http://i.stack.imgur.com/hIZMc.jpg"" rel=""nofollow""><img src=""http://i.stack.imgur.com/hIZMc.jpg"" alt=""Plot example""></a></p>
+
+<ol>
+<li>How can I reduce the interval of both x and y axis? I mean spacing the axes? The x_axis data is time?</li>
+<li>On y-axis how can I reduce decimal numbers?</li>
+</ol>
+"
+340690,12223820,293545.0,2012-09-01T00:04:32Z,,1,Build a generic helper for RestSharp for CRUD operations,"<p>I have started using RestSharp to call an webapi proejct as it seems pretty easy to use.</p>
+
+<p>I am wanting to build a helper class for all of my crud actions.</p>
+
+<p>I have this so far for a simple PUT request.</p>
+
+<pre><code> public static IRestResponse Update(object objectToUpdate,string apiEndPoint)
+    {
+        var client = new RestClient(CreateBaseUrl(null))
+        {
+            Authenticator = new HttpBasicAuthenticator(""user"", ""Password1"")
+        };
+        var request = new RestRequest(apiEndPoint, Method.PUT);
+        request.AddObject(objectToUpdate);
+        var response = client.Execute&lt;MyViewModel&gt;(request);
+        //var response = client.ExecuteDynamic(request);
+        return response;
+    }
+</code></pre>
+
+<p>So the above code works however I have had to hardcode my viewmodel into it </p>
+
+<pre><code>  var response = client.Execute&lt;MyViewModel&gt;(request);
+</code></pre>
+
+<p>How can I change this so I dont need to know the type of model I am expecting?</p>
+
+<p>I tried using <code>var response = client.ExecuteDynamic(request);</code>
+however this throws an exception of </p>
+
+<blockquote>
+  <p>Unable to cast object of type 'RestSharp.RestResponse' to type 'RestSharp.RestResponse`1[System.Object</p>
+</blockquote>
+
+<p>Im not sure how I am meant to cast my object correctly</p>
+"
+1196402,38405210,3769451.0,2016-07-15T21:23:22Z,,0,Set PYTHONPATH for cron jobs in shared hosting,"<p>I had issues running my python script on shared hosting (bluehost), and with the help of other SO threads I was able to set PYTHONPATH and run the script with no issues. </p>
+
+<p>Now I need to run the script via a cron job. The cron jobs in shared hosting environment are just one line which I can call the script, but can't figure out how to set PYTHONPATH before calling the script.</p>
+
+<p>Example: </p>
+
+<pre><code>python /path/to/my/script.py
+</code></pre>
+
+<p>I am sure this issue should be common but I couldn't find any answer in other threads. </p>
+
+<p>Any idea how to set PYTHONPATH for the cron jobs? </p>
+
+<p>Also the codebase is developed in a local environment and the server gets a copy through git pull. So my preferred solution is not to change the source code for the server. It's ok to call another script from cron job which calls the main script and set the variables there, but changing the main script I prefer not to happen so that I don't need to maintain two versions of the code one for local and one for the server. </p>
+"
+143952,5720360,509233.0,2011-04-19T17:36:46Z,,4,What is T (& var)[N]?,"<p>In <code>boost/utility/swap.hpp</code> I have found this piece of code:  </p>
+
+<pre><code>template&lt;class T, std::size_t N&gt;
+void swap_impl(T (&amp; left)[N], T (&amp; right)[N])
+{
+  for (std::size_t i = 0; i &lt; N; ++i)
+  {
+    ::boost_swap_impl::swap_impl(left[i], right[i]);
+  }
+}
+</code></pre>
+
+<p>What are <code>left</code> and <code>right</code>? Are they references to arrays? Is this code allowed by C++ ISO standard 2003 or later?</p>
+"
+770744,26076210,3939219.0,2014-09-27T15:29:27Z,,0,TCC Error: index too large,"<p>I have been playing around with ray-casting and decided to use 3D arrays to make levels, However TCC spits out this:</p>
+
+<pre><code>M_MAIN.C:19: error: index too large
+</code></pre>
+
+<p>Is there a limit to how large an array can be?
+Code:</p>
+
+<pre><code>#define MAP_01_WIDTH 8
+#define MAP_01_HEIGHT 8
+#define MAP_01_DEPTH 8
+#define MAP_01_PLAYER_START_X 2
+#define MAP_01_PLAYER_START_Y 2
+#define MAP_01_PLAYER_START_Z 2
+
+char MAP_01[MAP_01_WIDTH][MAP_01_DEPTH][MAP_01_HEIGHT] =
+{
+    { {1, 1, 1, 1, 1, 1, 1, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 1, 1, 1, 1, 1, 1, 1} },
+    { {1, 0, 0, 0, 0, 0, 0, 1}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {1, 0, 0, 0, 0, 0, 0, 1} },
+    { {1, 0, 0, 0, 0, 0, 0, 1}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {1, 0, 0, 0, 0, 0, 0, 1} },
+    { {1, 0, 0, 0, 0, 0, 0, 1}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {1, 0, 0, 0, 0, 0, 0, 1} },
+    { {1, 0, 0, 0, 0, 0, 0, 1}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {1, 0, 0, 0, 0, 0, 0, 1} },
+    { {1, 0, 0, 0, 0, 0, 0, 1}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {1, 0, 0, 0, 0, 0, 0, 1} },
+    { {1, 0, 0, 0, 0, 0, 0, 1}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {2, 0, 3, 0, 0, 4, 0, 2}, {1, 0, 0, 0, 0, 0, 0, 1} },
+    { {1, 0, 0, 0, 0, 0, 0, 1}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {2, 0, 0, 0, 0, 0, 0, 2}, {1, 0, 0, 0, 0, 0, 0, 1} },
+    { {1, 1, 1, 1, 1, 1, 1, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 0, 0, 0, 0, 0, 0, 1}, {1, 1, 1, 1, 1, 1, 1, 1} }
+};
+</code></pre>
+"
+346583,12417780,1222656.0,2012-09-14T03:37:34Z,,1,' Cleaning and building all projects is recommended',"<blockquote>
+  <p>""The project cannot be built
+  until its prerequisite upomp_Res is built. Cleaning and building all
+  projects is recommended""</p>
+</blockquote>
+
+<p>When I build an android project as usual, an error occurred as above.
+Follow that infomation ,i cleaned my 'upomp_Res ' project and then cleaned my main project for  several times and the error still remains,and I reopend the project ,and even reopend my eclipse,it dosen't help,the error remains.</p>
+
+<p>How to solve this?
+Any suggestion would be appreciated.</p>
+"
+204631,7776320,607588.0,2011-10-15T06:53:22Z,,2,"How to grant permission dynamically in android, i.e while running an application, Is this achievable?","<p>I have few doubts.</p>
+
+<ol>
+<li><p>Is it possible for Android application after installation, to ask user for permission for accessing certain functions? Like say the app A wants to read contacts for a specific purpose. If the user grants permission, then the activity will take place. Else it wont. Is it possible? </p></li>
+<li><p>Is there a way of allowing user to select/de-select permissions during installation time?</p></li>
+<li><p>I have read that using CyanogenMod grants user these kind of priveleges. Is there any solution for non-rooted user, apart from take-it-or-leave-it approach?   </p></li>
+</ol>
+"
+1084111,35402490,4869884.0,2016-02-15T06:05:05Z,,0,The type Merge.CustomDependencyResolver does not appear to implement Microsoft.Practices.ServiceLocation.IServiceLocator,"<p>I am trying to create generic controller for that i am following this approach(<a href=""http://jonahacquah.blogspot.in/2011/12/writing-aspnet-mvc-3-generic.html"" rel=""nofollow"">http://jonahacquah.blogspot.in/2011/12/writing-aspnet-mvc-3-generic.html</a>) after completion of coding while running the application i am getting these error(The type Merge.CustomDependencyResolver does not appear to implement Microsoft.Practices.ServiceLocation.IServiceLocator), in the Global.asax file. 
+This is my Global.asax.cs file </p>
+
+<pre><code>using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Web;
+using System.Web.Http;
+using System.Web.Mvc;
+using System.Web.Routing;
+
+namespace Merge
+{
+    // Note: For instructions on enabling IIS6 or IIS7 classic mode, 
+    // visit http://go.microsoft.com/?LinkId=9394801
+    public class MvcApplication : System.Web.HttpApplication
+    {
+        protected void Application_Start()
+        {
+            ControllerBuilder.Current.SetControllerFactory(typeof(controllerFactory));
+
+            AreaRegistration.RegisterAllAreas();
+
+            WebApiConfig.Register(GlobalConfiguration.Configuration);
+            FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
+            RouteConfig.RegisterRoutes(RouteTable.Routes);
+
+            System.Web.Mvc.DependencyResolver.SetResolver(new CustomDependencyResolver()); // I am getting the error in this line 
+
+
+
+
+        }
+    }
+}
+</code></pre>
+
+<p>can any one please help me to solve this problem, Thank you</p>
+"
+907216,30306720,4553745.0,2015-05-18T15:05:44Z,,0,Write .vsdx file to Response stream using asp.net,"<p>What I tried so far</p>
+
+<pre><code>Response.AddHeader(""Content-Disposition"", ""attachment; filename="" + file.Name);
+Response.AddHeader(""Content-Length"", file.Length.ToString());
+Response.ContentType = ""application/vnd.ms-visio"";
+Response.WriteFile(file.FullName);
+Response.End();
+</code></pre>
+
+<p>Here file is of FileInfo type, I am not sure how to write this .vsdx file to response Stream.</p>
+"
+1036110,34083200,4515690.0,2015-12-04T07:37:45Z,,0,Mapbox and Parse iOS Api compatibility,"<p>I am writing a swift app with Mapbox and Parse Api supports. I installed Mapbox SDK 3.0.0 by CocoaPods and set up environment using <a href=""https://www.mapbox.com/ios-sdk/#cocoapods"" rel=""nofollow"">this guide</a> provided by their website and everything works fine. However, when I was using CocoaPods to add Parse iOS framework by <a href=""https://parse.com/apps/quickstart#parse_data/mobile/ios/native/new"" rel=""nofollow"">this guide</a>, something went wrong: my app crashes at the beginning of launching with error shown below. But the strange thing is this crash only happens while I was testing this app on simulator, it works well and functional on actual device. Can anybody help me to solve this issue? Thanks </p>
+
+<pre><code>    CoreFoundation`CFStringCompare:
+    0x10a2d3590 &lt;+0&gt;:   pushq  %rbp
+    0x10a2d3591 &lt;+1&gt;:   movq   %rsp, %rbp
+    0x10a2d3594 &lt;+4&gt;:   pushq  %r15
+    0x10a2d3596 &lt;+6&gt;:   pushq  %r14
+    0x10a2d3598 &lt;+8&gt;:   pushq  %r12
+    0x10a2d359a &lt;+10&gt;:  pushq  %rbx
+    0x10a2d359b &lt;+11&gt;:  movq   %rdx, %r14
+    0x10a2d359e &lt;+14&gt;:  movq   %rsi, %r15
+    0x10a2d35a1 &lt;+17&gt;:  movq   %rdi, %rbx
+    0x10a2d35a4 &lt;+20&gt;:  testq  %rbx, %rbx
+    0x10a2d35a7 &lt;+23&gt;:  js     0x10a2d3613               ; &lt;+131&gt;
+-&gt;  0x10a2d35a9 &lt;+25&gt;:  movq   (%rbx), %rax
+    0x10a2d35ac &lt;+28&gt;:  testq  %rax, %rax
+    0x10a2d35af &lt;+31&gt;:  je     0x10a2d35f1               ; &lt;+97&gt;
+    0x10a2d35b1 &lt;+33&gt;:  leaq   0x3551b8(%rip), %rcx      ; __CFConstantStringClassReferencePtr
+    0x10a2d35b8 &lt;+40&gt;:  cmpq   (%rcx), %rax
+    0x10a2d35bb &lt;+43&gt;:  je     0x10a2d35f1               ; &lt;+97&gt;
+    0x10a2d35bd &lt;+45&gt;:  movq   0x34e3c4(%rip), %rcx      ; __kCFStringTypeID
+    0x10a2d35c4 &lt;+52&gt;:  xorl   %r12d, %r12d
+    0x10a2d35c7 &lt;+55&gt;:  cmpq   $0x3ff, %rcx
+    0x10a2d35ce &lt;+62&gt;:  ja     0x10a2d35db               ; &lt;+75&gt;
+    0x10a2d35d0 &lt;+64&gt;:  leaq   0x353199(%rip), %rdx      ; __CFRuntimeObjCClassTable
+    0x10a2d35d7 &lt;+71&gt;:  movq   (%rdx,%rcx,8), %r12
+    0x10a2d35db &lt;+75&gt;:  cmpq   %r12, %rax
+    0x10a2d35de &lt;+78&gt;:  je     0x10a2d35f1               ; &lt;+97&gt;
+    0x10a2d35e0 &lt;+80&gt;:  testb  $0x1, %al
+    0x10a2d35e2 &lt;+82&gt;:  je     0x10a2d3613               ; &lt;+131&gt;
+    0x10a2d35e4 &lt;+84&gt;:  movq   %rbx, %rdi
+    0x10a2d35e7 &lt;+87&gt;:  callq  0x10a4548a8               ; symbol stub for: object_getClass
+    0x10a2d35ec &lt;+92&gt;:  cmpq   %r12, %rax
+    0x10a2d35ef &lt;+95&gt;:  jne    0x10a2d3613               ; &lt;+131&gt;
+    0x10a2d35f1 &lt;+97&gt;:  movb   0x8(%rbx), %cl
+    0x10a2d35f4 &lt;+100&gt;: movb   %cl, %al
+    0x10a2d35f6 &lt;+102&gt;: andb   $0x5, %al
+    0x10a2d35f8 &lt;+104&gt;: movzbl %al, %eax
+    0x10a2d35fb &lt;+107&gt;: andb   $0x60, %cl
+    0x10a2d35fe &lt;+110&gt;: cmpl   $0x4, %eax
+    0x10a2d3601 &lt;+113&gt;: jne    0x10a2d3628               ; &lt;+152&gt;
+    0x10a2d3603 &lt;+115&gt;: leaq   0x10(%rbx), %rax
+    0x10a2d3607 &lt;+119&gt;: testb  %cl, %cl
+    0x10a2d3609 &lt;+121&gt;: je     0x10a2d360e               ; &lt;+126&gt;
+    0x10a2d360b &lt;+123&gt;: movq   (%rax), %rax
+    0x10a2d360e &lt;+126&gt;: movzbl (%rax), %ecx
+    0x10a2d3611 &lt;+129&gt;: jmp    0x10a2d3636               ; &lt;+166&gt;
+    0x10a2d3613 &lt;+131&gt;: movq   0x342b1e(%rip), %rsi      ; ""length""
+    0x10a2d361a &lt;+138&gt;: movq   %rbx, %rdi
+    0x10a2d361d &lt;+141&gt;: callq  *0x355bd5(%rip)           ; (void *)0x000000010c3ea800: objc_msgSend
+    0x10a2d3623 &lt;+147&gt;: movq   %rax, %rcx
+    0x10a2d3626 &lt;+150&gt;: jmp    0x10a2d3636               ; &lt;+166&gt;
+    0x10a2d3628 &lt;+152&gt;: testb  %cl, %cl
+    0x10a2d362a &lt;+154&gt;: je     0x10a2d3632               ; &lt;+162&gt;
+    0x10a2d362c &lt;+156&gt;: movq   0x18(%rbx), %rcx
+    0x10a2d3630 &lt;+160&gt;: jmp    0x10a2d3636               ; &lt;+166&gt;
+    0x10a2d3632 &lt;+162&gt;: movq   0x10(%rbx), %rcx
+    0x10a2d3636 &lt;+166&gt;: xorl   %edx, %edx
+    0x10a2d3638 &lt;+168&gt;: xorl   %r9d, %r9d
+    0x10a2d363b &lt;+171&gt;: movq   %rbx, %rdi
+    0x10a2d363e &lt;+174&gt;: movq   %r15, %rsi
+    0x10a2d3641 &lt;+177&gt;: movq   %r14, %r8
+    0x10a2d3644 &lt;+180&gt;: popq   %rbx
+    0x10a2d3645 &lt;+181&gt;: popq   %r12
+    0x10a2d3647 &lt;+183&gt;: popq   %r14
+    0x10a2d3649 &lt;+185&gt;: popq   %r15
+    0x10a2d364b &lt;+187&gt;: popq   %rbp
+    0x10a2d364c &lt;+188&gt;: jmp    0x10a2cf310               ; CFStringCompareWithOptionsAndLocale
+    0x10a2d3651 &lt;+193&gt;: nopw   %cs:(%rax,%rax)
+</code></pre>
+
+<p>The full stack trace looks like this:</p>
+
+<pre><code>  * thread #1: tid = 0x26780, 0x00000001024555a9 CoreFoundation`CFStringCompare + 25, queue = 'com.apple.main-thread', stop reason = EXC_BAD_ACCESS (code=1, address=0x0)
+  * frame #0: 0x00000001024555a9 CoreFoundation`CFStringCompare + 25
+    frame #1: 0x000000010ddde349 CoreTelephony`sCTEventForNotificationString(__CFString const*) + 77
+    frame #2: 0x000000010de15a80 CoreTelephony`_CTServerConnectionRegisterForNotification + 22
+    frame #3: 0x000000010ddfdfab CoreTelephony`-[CTTelephonyNetworkInfo setUpServerConnection] + 215
+    frame #4: 0x000000010ddfe250 CoreTelephony`-[CTTelephonyNetworkInfo init] + 257
+    frame #5: 0x0000000102004d7c Mapbox`-[MGLMapboxEventsData init] + 588
+    frame #6: 0x0000000102006be0 Mapbox`-[MGLMapboxEvents resumeMetricsCollection] + 416
+    frame #7: 0x0000000102005aa0 Mapbox`-[MGLMapboxEvents init] + 2064
+    frame #8: 0x0000000102006236 Mapbox`__32+[MGLMapboxEvents sharedManager]_block_invoke_2 + 38
+    frame #9: 0x0000000105d8449b libdispatch.dylib`_dispatch_client_callout + 8
+    frame #10: 0x0000000105d6fe28 libdispatch.dylib`dispatch_once_f + 543
+    frame #11: 0x00000001020061ff Mapbox`__32+[MGLMapboxEvents sharedManager]_block_invoke + 95
+    frame #12: 0x000000010200611d Mapbox`+[MGLMapboxEvents sharedManager] + 221
+    frame #13: 0x0000000102022a7c Mapbox`+[MGLAccountManager setAccessToken:] + 204
+    frame #14: 0x000000010202267e Mapbox`+[MGLAccountManager load] + 222
+    frame #15: 0x0000000104558dff libobjc.A.dylib`call_load_methods + 731
+    frame #16: 0x0000000104559892 libobjc.A.dylib`load_images + 123
+    frame #17: 0x0000000101e42a75
+    frame #18: 0x0000000101e4d796
+    frame #19: 0x0000000101e4d73b
+    frame #20: 0x0000000101e4caba
+    frame #21: 0x0000000101e4cb4f
+    frame #22: 0x0000000101e42d79
+    frame #23: 0x0000000101e45fed
+    frame #24: 0x0000000101e42251
+    frame #25: 0x00007fff6bb86656 dyld`dyld::useSimulatorDyld(int, macho_header const*, char const*, int, char const**, char const**, char const**, unsigned long*) + 1702
+    frame #26: 0x00007fff6bb8505c dyld`dyld::_main(macho_header const*, unsigned long, int, char const**, char const**, char const**, unsigned long*) + 208
+    frame #27: 0x00007fff6bb81276 dyld`dyldbootstrap::start(macho_header const*, int, char const**, long, macho_header const*, unsigned long*) + 512
+    frame #28: 0x00007fff6bb81036 dyld`_dyld_start + 54
+</code></pre>
+"
+804799,27142950,1762761.0,2014-11-26T06:49:24Z,,0,Indicating to main thread that Async call for calendar access has been completed,"<p>I want calendar access to the user's iphone for that i am using the async call</p>
+
+<pre><code>__block NSMutableArray* someData;
+[eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+    //We are going to fetch events from today to the next 1 year
+    if (granted) {
+        //Processing
+        [someData addObject:@""Something Added""]
+    }
+
+}];
+</code></pre>
+
+<p>I basically want to do some processing and then signal the main thread which is executing in another object that the processing has been done on <code>someData</code> and that it should now access it.</p>
+
+<p>I have attempted wrapping this in a dispatch group like this</p>
+
+<pre><code>dispatch_group_t group = dispatch_group_create();
+
+dispatch_group_async(group,dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
+    calendarData = [calender returnCalenderEvents];
+});
+
+dispatch_group_notify(group,dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^ {
+    NSLog(@""%@"",calendarData);
+});
+</code></pre>
+
+<p>however since the call is async it still notifies the group of completion before any actual completion has beeen done. </p>
+
+<p>Basically how can i just signal the main thread that processing has been done on the async call, get the results and start doing your own processing</p>
+"
+647525,22213150,3233488.0,2014-03-06T01:38:26Z,,0,How can I create a table with two categories and then sort by one of them in R?,"<p>I have a full dataset of observations and over 40 columns of categories but I only want two, NameID and Error and I want to sort Error in a descending order but still have NameID connected to each observation. Here is some code I've tried:</p>
+
+<pre><code>        z&lt;-15
+        sort(data.frame(skill$Error,skill$NameID),decreasing = TRUE)[1:z]
+        data.frame(skill$NameID,sort(kill@Error,decreasing=T)[1:z])
+        error2&lt;-skill[order(Error , )]
+</code></pre>
+
+<p>Hopefully from what I've tried you can understand what I'm trying to do. Again, I want to pull two values from my skills data set, Error and NameID, but have Error sorted at the same time with NameID attached to the values. I need this all done inside of R. Thanks!</p>
+"
+212061,8020910,1031172.0,2011-11-05T14:48:46Z,,2,Multiple PDO instances in a script?,"<p>I've got a 'best practice' question about using PDO. I'm trying to <em>finally</em> get into object-oriented development and away from the PHP habits I developed ten years ago. </p>
+
+<p>My normal method of development was to open a DB connection at the beginning of a script/page, then do a bunch of <code>mysql_query</code> calls as needed (mostly <code>SELECT</code> and <code>INSERT</code>). I'm using PDO for the first time, and it looks like the practice here is to create distinct PDO objects for each query/transaction. These seems like it would create multiple connections to the same DB during a string, which seems like a lot of unnecessary overhead. </p>
+
+<p>Is my read on this totally wrong? </p>
+
+<p>My apologies if this is covered somewhere I missed. I did look through StackOverflow, php.net, and a PHP 5.3 book I have. </p>
+"
+5693,395340,48540.0,2008-12-27T19:58:22Z,,11,Can I use a ForeignKey in __unicode__ return?,"<p>I have the following classes: Ingredients, Recipe and RecipeContent...</p>
+
+<pre><code>class Ingredient(models.Model):
+    name = models.CharField(max_length=30, primary_key=True)
+    qty_on_stock = models.IntegerField()
+
+    def __unicode__(self):
+        return self.name
+
+class Recipe(models.Model):
+    name = models.CharField(max_length=30, primary_key=True)
+    comments = models.TextField(blank=True)
+    ingredient = models.ManyToManyField(Ingredient)
+
+    def __unicode__(self):
+        return self.name
+
+class RecipeContent(models.Model):
+    recipe = models.ForeignKey(Recipe)
+    ingredients = models.ForeignKey(Ingredient)
+    qty_used = models.IntegerField()
+</code></pre>
+
+<p>but for __unicode__() in RecipeContent I would like to use the Recipe name to which this RecipeContent belongs to... is there a way to do it?</p>
+"
+1208778,38733310,6664824.0,2016-08-03T02:17:52Z,,0,Calling a JavaScript functions whose name is saved in a string,"<p>Is it possible to run a function whose name is saved in a string?</p>
+
+<p>For example: I have three functions:</p>
+
+<pre><code>function nr1(p0, p1){
+    /* [...] */
+}
+function nr2(p0, p1){
+    /* [...] */
+}
+function nr3(p0, p1){
+    /* [...] */
+}
+</code></pre>
+
+<p>and I have a string whose content is a function name, for example:</p>
+
+<pre><code>var a_string = ""nr2(27, 42)"";
+</code></pre>
+
+<p>Is it possible to execute the function whose name is stored in the string?</p>
+"
+723311,24594370,677163.0,2014-07-06T09:20:02Z,,0,Why doesnât this thread terminate?,"<p>I am trying to use the python threading module. As I am sysadmin, I struggle a little bit when developing; and this concept is kind of new for me. I launch two threads and I want to stop them, when the main thread sets a flag to <code>False</code>:</p>
+
+<pre><code>class My_Thread( threading.Thread):
+    def __init__(self, thread_id, thread_name, count):
+        threading.Thread.__init__(self)
+        self.thread_id      = thread_id
+        self.thread_name    = thread_name
+        self.count          = count
+
+    def run(self):
+        do_job(self.thread_name, self.thread_id, self.count)
+
+def do_job(t_name, t_id, count):
+    while not get_kill():
+        print ""It is ""+str(time.time())+"" and I am ""+str(t_name)
+        print get_kill()
+        time.sleep(count)
+
+kill = False
+
+def get_kill():
+    return kill
+
+def set_kill(state):
+    kill = state
+
+if __name__ == '__main__':
+    a = My_Thread(1, ""Thread-1"", 2)
+    b = My_Thread(2, ""Thread-2"", 1)
+    a.start()
+    b.start()
+
+    while(True):
+        try:
+            pass
+        except KeyboardInterrupt,ki:
+            set_kill(True)
+            sys.exit(0)
+</code></pre>
+
+<p>But the value is never read as changed in both threads and they don't exit. Why is this value not properly read from threads?</p>
+"
+856850,28765300,4614326.0,2015-02-27T12:37:05Z,,0,Is there any Javascript document viewer engine with text highlighting API?,"<p>I need a javascript doc viewing engine with some text highlighting API.</p>
+
+<p>Can you advise anything?</p>
+"
+1155895,37331220,4188683.0,2016-05-19T18:19:36Z,,-1,How to reload Image without changing the Source property in WPF?,"<p>Assume I have an <code>Image</code> object which his <code>Source</code> property being initialized in the following way:</p>
+
+<pre><code>BitmapImage source = new BitmapImage();
+source.BeginInit();
+source.CacheOption = BitmapCacheOption.OnLoad;
+source.CreateOptions = BitmapCreateOptions.IgnoreImageCache;
+source.UriSource = new Uri(""C:\\Temp\\tech\\window.jpg"");
+source.EndInit();
+image.Source = source; // image object automatically initialized in the window construction.
+</code></pre>
+
+<p>As you can implicitly see, <code>window.jpg</code> is an image that permanently changed (get deleted and replaced with a new different image <em>with the same name</em>).</p>
+
+<p>I have been using the above mentioned way to initialize the <code>Image</code> object <code>Source</code> property because I have found it at <a href=""http://stackoverflow.com/questions/10518986/image-does-not-refresh-in-custom-picture-box"">Image does not refresh in custom picture box</a> as a way to support the <code>Image</code> refreshing.</p>
+
+<p>However, when deleting and replacing <code>window.jpg</code> while the program is running, the <code>Image</code> object still shows the image that was loaded when we initialized its <code>Source</code> property (cache).</p>
+
+<p>It seems like the <code>Image</code> object ignores the <code>BitmapCreateOptions.IgnoreImageCache</code> value and doesn't refresh the image when a new one replacing the previous that was deleted.</p>
+
+<p>Any solution will be welcomed.</p>
+
+<p><strong>EDIT</strong></p>
+
+<p>I don't want to change the filename because I would need to redundantly find a random name that doesn't exist instead of just refreshing the image to load the same <code>Source</code> again.</p>
+
+<p>I don't want to change the <code>Source</code> property value because of the fact that I don't change the filename.</p>
+
+<p>The desired solution is to update the  <code>Image</code> object each time the image file changes. The image change controlled by me so there is no need to bind and wait for a change, instead, I would force an image refresh, if it possible.</p>
+"
+798215,26938310,3977935.0,2014-11-14T20:29:05Z,,11,Picasso Library - Out of Memory,"<p>I am using Picasso library latest version 2.4.0 in my app for downloading and caching images. There are roughly 25-30 images of size 300KB-400KB each. I think that this is no way something big or heavy. </p>
+
+<p>Even though the app is running fine, I'm getting out of memory allocations in my logcat. Can anyone explain why is this happening?</p>
+
+<p>Code for loading images in GridView adapter: </p>
+
+<pre><code>Picasso.with(mContext).load(getUrl()).placeholder(R.drawable.placeholder)
+            .into(viewholder.image);
+</code></pre>
+
+<p>Here is my Logcat output: </p>
+
+<pre><code>I/dalvikvm-heap(11142): Grow heap (frag case) to 53.860MB for 2720016-byte allocation
+I/dalvikvm-heap(11142): Forcing collection of SoftReferences for 3265936-byte allocation
+E/dalvikvm-heap(11142): Out of memory on a 3265936-byte allocation.
+I/dalvikvm(11142): ""Picasso-/images/posters/34.71.jpg"" prio=5 tid=18 RUNNABLE
+I/dalvikvm(11142):   | group=""main"" sCount=0 dsCount=0 obj=0x4283f248 self=0x60a47830
+I/dalvikvm(11142):   | sysTid=11196 nice=10 sched=0/0 cgrp=apps/bg_non_interactive I/dalvikvm(11142):   | state=R schedstat=( 2070202497 1858185620 3947 ) utm=172 stm=35 core=3
+I/dalvikvm(11142):   at android.graphics.Bitmap.nativeCreate(Native Method)
+I/dalvikvm(11142):   at android.graphics.Bitmap.createBitmap(Bitmap.java:726)
+I/dalvikvm(11142):   at android.graphics.Bitmap.createBitmap(Bitmap.java:703)
+I/dalvikvm(11142):   at android.graphics.Bitmap.createBitmap(Bitmap.java:636)
+I/dalvikvm(11142):   at com.squareup.picasso.BitmapHunter.transformResult(BitmapHunter.I/dalvikvm(11142):   at com.squareup.picasso.BitmapHunter.hunt(BitmapHunter.java:168)
+I/dalvikvm(11142):   at com.squareup.picasso.BitmapHunter.run(BitmapHunter.java:111)
+I/dalvikvm(11142):   at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:390I/dalvikvm(11142):   at java.util.concurrent.FutureTask.run(FutureTask.java:234)
+I/dalvikvm(11142):   at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.I/dalvikvm(11142):   at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.I/dalvikvm(11142):   at java.lang.Thread.run(Thread.java:841)
+I/dalvikvm(11142):   at com.squareup.picasso.Utils$PicassoThread.run(Utils.java:408)
+I/dalvikvm-heap(11142): Forcing collection of SoftReferences for 3265936-byte allocation
+E/dalvikvm-heap(11142): Out of memory on a 3265936-byte allocation.
+I/dalvikvm(11142): ""Picasso-/images/posters/34.71.jpg"" prio=5 tid=17 RUNNABLE
+I/dalvikvm(11142):   | group=""main"" sCount=0 dsCount=0 obj=0x42841b88 self=0x5ec91f90
+I/dalvikvm(11142):   | sysTid=11183 nice=10 sched=0/0 cgrp=apps/bg_non_interactive I/dalvikvm(11142):   | state=R schedstat=( 2050467088 1713164574 3713 ) utm=172 stm=32 core=3
+I/dalvikvm(11142):   at android.graphics.Bitmap.nativeCreate(Native Method)
+I/dalvikvm(11142):   at android.graphics.Bitmap.createBitmap(Bitmap.java:726)
+I/dalvikvm(11142):   at android.graphics.Bitmap.createBitmap(Bitmap.java:703)
+I/dalvikvm(11142):   at android.graphics.Bitmap.createBitmap(Bitmap.java:636)
+I/dalvikvm(11142):   at com.squareup.picasso.BitmapHunter.transformResult(BitmapHunter.I/dalvikvm(11142):   at com.squareup.picasso.BitmapHunter.hunt(BitmapHunter.java:168)
+I/dalvikvm(11142):   at com.squareup.picasso.BitmapHunter.run(BitmapHunter.java:111)
+I/dalvikvm(11142):   at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:390I/dalvikvm(11142):   at java.util.concurrent.FutureTask.run(FutureTask.java:234)
+I/dalvikvm(11142):   at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.I/dalvikvm(11142):   at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.I/dalvikvm(11142):   at java.lang.Thread.run(Thread.java:841)
+I/dalvikvm(11142):   at com.squareup.picasso.Utils$PicassoThread.run(Utils.java:408)
+</code></pre>
+"
+1022880,33731300,5566747.0,2015-11-16T08:46:00Z,,0,webview not POST immediately,"<p>We have a strange problem and the below is the scenario. </p>
+
+<ol>
+<li>The mobile app is a hybrid app which will open a web page from
+server in webview</li>
+<li>The web page contains several fields and the ""Submit"" button. </li>
+<li>After the input the data, the user can ""submit"" to post the data</li>
+<li>the server will process the data and redirect to the response URL </li>
+</ol>
+
+<p>Now we found that the code works good in native webview. But when migrated into Mobilefirst Platform (based on Cordova internally), click the ""submit"" button will not post the data immediately. The post happened after the ""back"" button is pressed. </p>
+
+<p>Could someone please give some help? </p>
+"
+200127,7625630,526390.0,2011-10-02T09:42:30Z,,0,Automatic Formbuilder for Mongoid 2.0 ? Rails,"<p>Is there a formbuilder for Mongoid 2.0 ? 
+Which generates automatically a form from a model.</p>
+
+<p>Thanks</p>
+"
+817812,27552620,3037361.0,2014-12-18T17:44:33Z,,0,Some problems in IE11,"<p>The problem is that I have created a dynamic navigation...
+You click on a a-tag which has a function that displays some buttons.
+I have assigned the function to the a-tag with an <code>addEventListener</code>.</p>
+
+<p>It works in all the browsers, but IE...</p>
+
+<p>When I click the  tag, buttons are not becoming visible. And no error appears.</p>
+
+<p>P.S.: I'm spanish btw, I'm sorry about my english :3</p>
+
+<p>/* Javascript */</p>
+
+<pre><code>window.onload = function() {
+    var boton_menu = document.getElementById(""boton_menu"");
+
+    /* Compatibilidad con navegadores web */
+    if(boton_menu.addEventListener){
+        boton_menu.addEventListener(""click"", menu_usuario, false);
+    } else {
+        if(boton_menu.attachEvent){
+            boton_menu.attachEvent(""onclick"", menu_usuario);
+        }
+    }
+}
+
+/* Despliega el menÃº del usuario*/
+function menu_usuario() {
+    var boton_menu = document.getElementById(""boton_menu"");
+    var perfil = document.getElementById(""perfil"");
+    var ajustes = document.getElementById(""ajustes"");
+    var desconectar = document.getElementById(""desconectar"");
+
+    if(boton_menu.className == """"){
+        boton_menu.className = ""active"";
+        perfil.className = ""active"";
+        ajustes.className = ""active"";
+        desconectar.className = ""active"";
+    } else {
+        boton_menu.className = """";
+        perfil.className = """";
+        ajustes.className = """";
+        desconectar.className = """";
+    }
+}
+</code></pre>
+"
+565936,19565300,829825.0,2013-10-24T11:58:03Z,,1,Custom Tabbar application ipad hide tabbar,"<p>Hi I am developing an iPad application. I used to custom tab bar. Also tabbar buttons on left side of screen. I want to see full screen. So I tried this code for hide tabbar, but did not hide. I see gray space in screen bottom. Gary space height is IOS 7 about  49 px but IOS 6 about 20 px. What can I do.</p>
+
+<pre><code>- (void)hideTabBar
+{
+    for(UIView *view in self.view.subviews)
+    {
+        if([view isKindOfClass:[UITabBar class]])
+        {
+            view.hidden = YES;
+            break;
+        }
+    }
+}
+</code></pre>
+
+<p><img src=""http://i.stack.imgur.com/ciY0C.png"" alt=""Gray space in IOS 7""></p>
+"
+10783,676940,81947.0,2009-03-24T11:09:23Z,,1,"XmlDocument, XmlResolver and www.w3.org","<p>One of my users had a single error while opening a file (I'm using standard xml 1.0):</p>
+
+<pre><code>The remote name could not be resolved: 'www.w3.org'
+</code></pre>
+
+<p>I found a post here in <a href=""http://stackoverflow.com/questions/217841/net-autogenerated-web-service-client-how-do-i-avoid-requesting-schemas-from-w3o"">StackOverflow</a> that deals with this and it suggest setting the XmlResolver property to null. I've tried this, and all my documents still seem to load fine. However, the last thing I want is to break the file-reading mechanism of my app, so is it actually safe to disable the resolver?</p>
+"
+172918,6708920,604843.0,2011-07-15T14:51:14Z,,1,"Javascript, Chrome Extension development, XMLHttpRequest Access-Control-Allow-Origin problem","<p>Am having a slightly confusing problem with this extension (although it might just be my inexperience)
+in my manifest file I have:</p>
+
+<pre><code>""permissions"": [
+    ""http://mafre.com/"",""http://eee.se/"",""http://ilaafire.net/"",""notifications"",""tabs""
+</code></pre>
+
+<p>And i am using this code to send an XML request:</p>
+
+<pre><code>var http = false;
+    http = new XMLHttpRequest();
+
+function replace() 
+{
+
+
+            http.open(""GET"", ""http://www.mafre.com/proj/test.php""+getquerystring(), true);
+            http.onreadystatechange=function() 
+            {
+
+            if(http.readyState &lt; 4) {show_wait_gif();}
+                else if(http.readyState == 4) 
+                {
+                    updatepage( http.responseText);
+
+                }
+            }
+          http.send(null);
+ }
+</code></pre>
+
+<p>which my script on the other end is getting the data... but when I need to get the response Chrome is throwing this error:</p>
+
+<pre><code>XMLHttpRequest cannot load http://www.mafre.com/proj/test.php?w=rn@ee.se. Origin 
+chrome-extension://kjggpdimdloblnddfbnodggchjpalihb is not allowed by Access-Control-Allow-Origin.
+</code></pre>
+
+<p>Why is that? I have already given it permission to interact with the domain so why cannot I get the response even though it is sending the query?</p>
+
+<p>The response that I should get back into my page is something like ""email accepted, thanks!1""</p>
+
+<p>Thanks!</p>
+"
+564680,19525370,2051060.0,2013-10-22T18:17:04Z,,1,AS3: calling functions in sequence without creating a huge call stack,"<p>Let's say I have a series of animations that I want to execute in sequence. If I do it like this, am I creating a huge call stack that eats up more memory than necessary?</p>
+
+<pre><code>function ch1():void {
+    var someVar:uint;
+    function doThis();
+    ...
+    ...
+    ch2();
+}
+function ch2():void {
+    var someOtherVar:String;
+    function doThat();
+    ...
+    ...
+    ch3();
+}
+function ch3():void {
+    var evenMoreVar:Number;
+    function doMore();
+    ...
+    ...
+    ch4();
+}
+</code></pre>
+
+<p>Would it be better to call the next function by doing something like this to avoid a huge call stack?</p>
+
+<pre><code>function ch1():void {
+    addEventListener(""ch1_end"",ch2);
+    var someVar:uint;
+    function doThis();
+    ...
+    ...
+    dispatchEvent(new Event(""ch1_end""));
+}
+</code></pre>
+"
+169007,6576260,525445.0,2011-07-04T21:35:50Z,,4,PHP - bind_result to array,"<p>I'm using a prepared statement for a query that returns multiple results, which I'd want to have in an array. But bind_result won't work with arrays, so this is how I do it:</p>
+
+<pre><code>$read_items = $db-&gt;stmt_init();
+$read_items-&gt;prepare(""SELECT item_id, item_name FROM items"");
+$read_items-&gt;execute();
+$read_items-&gt;bind_result($var1, $var2);
+while ($read_items-&gt;fetch()) {
+  $item_id[] = $var1; 
+  $item_name[] = $var2;
+}
+</code></pre>
+
+<p>Is there clearer/better/more elegant way to put results into $item_id and $item_name arrays?</p>
+
+<p>As it's visible from above, I'm using $var1 and $var2 like ""intermediates"" - and constantly have feeling there must be a better way.</p>
+
+<p>Thanks.</p>
+"
+65690,2960720,48310.0,2010-06-02T18:59:46Z,,1,2d Game graphics/sprites - landscape vs portrait - 2 sets?,"<p>I am working on a simple iPad game and wondering whether I should be using different graphics for portrait vs landscape or just doing some kind of transform between them?</p>
+
+<p>Thanks for any tips/advice
+Chris</p>
+"

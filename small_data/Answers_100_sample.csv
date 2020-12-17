@@ -1,0 +1,2833 @@
+,Id,OwnerUserId,CreationDate,ParentId,Score,Body
+982783,18165297,1145666.0,2013-08-10T18:52:13Z,18165270,0,"<ol>
+<li>That's not a parent class, but an interface.</li>
+<li>You can have an <code>enum</code> inside a class, you'd refer to it as <code>ClassA.ConditionEnum.*</code>:</li>
+</ol>
+
+<p>.</p>
+
+<pre><code>class MyClass : IArticle {
+    public enum ConditionEnum { Red, Blue, Yellow };
+
+    public ConditionEnum myenum;
+}
+
+MyClass c = new MyClass();
+c.myenum = MyClass.ConditionEnum.Red;
+</code></pre>
+"
+982784,18165304,811785.0,2013-08-10T18:52:35Z,18165270,2,"<p>Since <a href=""http://stackoverflow.com/questions/757684/enum-inheritance""><code>enums</code> can't derive from other <code>enum</code> types or interfaces</a>, it's almost impossible. What you describe seems polymorphism to me. But AMAIK, you can't apply polymorphism to enums.</p>
+"
+982785,18165306,22656.0,2013-08-10T18:52:46Z,18165270,5,"<p>You could make your interface generic:</p>
+
+<pre><code>public interface IArticle&lt;T&gt; where T : struct
+{
+    T ConditionStatus { get; set; }
+}
+
+public class ArticleA : IArticle&lt;ColorEnum&gt;
+{
+    public ColorEnum ConditionStatus { get; set; }
+}
+
+public class ArticleB : IArticle&lt;PunctuationEnum&gt;
+{
+    public PunctuationEnum ConditionStatus { get; set; }
+}
+</code></pre>
+
+<p>Note that you can't enforce that <code>T</code> is an enum... and you do need to specify which enum your implementation will use. It's not entirely clear whether that's going to help you or not, but it's about all there is...</p>
+"
+24513,450785,23713.0,2009-01-16T15:39:03Z,450630,0,"<p>In my experience, some of these tools are capable of looping forever (qt4: lupdate/lrelease for sure).</p>
+"
+1914581,37964197,1322150.0,2016-06-22T09:40:57Z,37279810,0,"<p>As I understood <a href=""http://docs.phinx.org/en/latest/migrations.html#limit-option-and-mysql"" rel=""nofollow"">limit option</a> <code>MysqlAdapter::INT_REGULAR</code> is something like predefined types in Phinx. But you can also use your own <code>limit</code> variable.</p>
+
+<p>Here is an example:</p>
+
+<pre><code>// using Phinx 0.5.4
+public function change() {
+  $table = $this-&gt;table('papers');
+  $table-&gt;addColumn('user_id', 'integer', ['limit' =&gt; 2])
+        -&gt;addColumn('book_id', 'integer') // by default will be int(11)
+        -&gt;addColumn('bank_id', 'integer', ['limit' =&gt; 32])
+        -&gt;create();
+</code></pre>
+
+<p>}</p>
+
+<p>MySQL describe results:</p>
+
+<pre><code>+---------+---------+------+-----+---------+----------------+
+| Field   | Type    | Null | Key | Default | Extra          |
++---------+---------+------+-----+---------+----------------+
+| id      | int(11) | NO   | PRI | NULL    | auto_increment |
+| user_id | int(2)  | NO   |     | NULL    |                |
+| book_id | int(11) | NO   |     | NULL    |                |
+| bank_id | int(32) | NO   |     | NULL    |                |
++---------+---------+------+-----+---------+----------------+
+</code></pre>
+
+<p>To get more information please check the <a href=""https://github.com/robmorgan/phinx/blob/0.6.x-dev/src/Phinx/Db/Adapter/MysqlAdapter.php#L735"" rel=""nofollow"">source code</a> of <code>getSqlType()</code> and <a href=""https://github.com/robmorgan/phinx/blob/0.6.x-dev/src/Phinx/Db/Adapter/MysqlAdapter.php#L871"" rel=""nofollow"">source code</a> of <code>getPhinxType()</code> functions.</p>
+"
+1749268,34371061,5110855.0,2015-12-19T13:00:23Z,34189440,0,"<p>Perhaps you don't let time to ""OnFinalize"" to execute. Here is a working sample code (based on <a href=""https://msdn.microsoft.com/en-us/library/windows/desktop/ff819477(v=vs.85).aspx"" rel=""nofollow"">Sink Writer Tutorial</a>) :</p>
+
+<pre><code>#include &lt;Windows.h&gt;
+#include &lt;mfapi.h&gt;
+#include &lt;mfidl.h&gt;
+#include &lt;Mfreadwrite.h&gt;
+#include &lt;mferror.h&gt;
+#include &lt;Shlwapi.h&gt;
+#include &lt;new&gt;
+
+#pragma comment(lib, ""mfreadwrite"")
+#pragma comment(lib, ""mfplat"")
+#pragma comment(lib, ""mfuuid"")
+#pragma comment(lib, ""Shlwapi"")
+
+template &lt;class T&gt; void SafeRelease(T **ppT){
+
+    if(*ppT){
+        (*ppT)-&gt;Release();
+        *ppT = NULL;
+    }
+}
+
+// Format constants
+const UINT32 VIDEO_WIDTH = 640;
+const UINT32 VIDEO_HEIGHT = 480;
+const UINT32 VIDEO_FPS = 30;
+const UINT64 VIDEO_FRAME_DURATION = 10 * 1000 * 1000 / VIDEO_FPS;
+const UINT32 VIDEO_BIT_RATE = 800000;
+const GUID   VIDEO_ENCODING_FORMAT = MFVideoFormat_WMV3;
+const GUID   VIDEO_INPUT_FORMAT = MFVideoFormat_RGB32;
+const UINT32 VIDEO_PELS = VIDEO_WIDTH * VIDEO_HEIGHT;
+const UINT32 VIDEO_FRAME_COUNT = 20 * VIDEO_FPS;
+
+// Buffer to hold the video frame data.
+DWORD videoFrameBuffer[VIDEO_PELS];
+
+class CMFSinkWriterCallback : public IMFSinkWriterCallback{
+
+    public:
+
+      CMFSinkWriterCallback(HANDLE hFinalizeEvent) : m_nRefCount(1), m_hFinalizeEvent(hFinalizeEvent){}
+      virtual ~CMFSinkWriterCallback(){}
+
+      // IMFSinkWriterCallback methods
+      STDMETHODIMP OnFinalize(HRESULT hrStatus){
+
+        OutputDebugString(L""CMFSinkWriterCallback::OnFinalize\n"");
+
+            if(m_hFinalizeEvent != NULL){
+                SetEvent(m_hFinalizeEvent);
+            }
+
+            return hrStatus;
+        }
+
+      STDMETHODIMP OnMarker(DWORD dwStreamIndex, LPVOID pvContext){
+
+        return S_OK;
+      }
+
+      // IUnknown methods
+      STDMETHODIMP QueryInterface(REFIID riid, void** ppv){
+
+        static const QITAB qit[] = {
+            QITABENT(CMFSinkWriterCallback, IMFSinkWriterCallback),
+            {0}
+        };
+
+        return QISearch(this, qit, riid, ppv);
+      }
+
+      STDMETHODIMP_(ULONG) AddRef(){
+
+        return InterlockedIncrement(&amp;m_nRefCount);
+      }
+
+      STDMETHODIMP_(ULONG) Release(){
+
+        ULONG refCount = InterlockedDecrement(&amp;m_nRefCount);
+
+        if(refCount == 0){
+            delete this;
+        }
+
+        return refCount;
+      }
+
+    private:
+
+      volatile long m_nRefCount;
+      HANDLE m_hFinalizeEvent;
+};
+
+
+HRESULT InitializeSinkWriter(IMFSinkWriter **ppWriter, DWORD *pStreamIndex, IMFSinkWriterCallback* pCallBack){
+
+    *ppWriter = NULL;
+    *pStreamIndex = NULL;
+
+    IMFAttributes   *pAttributes = NULL;
+    IMFSinkWriter   *pSinkWriter = NULL;
+    IMFMediaType    *pMediaTypeOut = NULL;
+    IMFMediaType    *pMediaTypeIn = NULL;
+    DWORD           streamIndex = 0;
+
+    // Create the empty attribute store.
+    HRESULT hr = MFCreateAttributes(&amp;pAttributes, 1);
+
+    if(SUCCEEDED(hr)){
+        hr = pAttributes-&gt;SetUnknown(MF_SINK_WRITER_ASYNC_CALLBACK, pCallBack);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = MFCreateSinkWriterFromURL(L""output.wmv"", NULL, pAttributes, &amp;pSinkWriter);
+    }
+
+    // Set the output media type.
+    if(SUCCEEDED(hr)){
+        hr = MFCreateMediaType(&amp;pMediaTypeOut);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pMediaTypeOut-&gt;SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pMediaTypeOut-&gt;SetGUID(MF_MT_SUBTYPE, VIDEO_ENCODING_FORMAT);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pMediaTypeOut-&gt;SetUINT32(MF_MT_AVG_BITRATE, VIDEO_BIT_RATE);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pMediaTypeOut-&gt;SetUINT32(MF_MT_INTERLACE_MODE, MFVideoInterlace_Progressive);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = MFSetAttributeSize(pMediaTypeOut, MF_MT_FRAME_SIZE, VIDEO_WIDTH, VIDEO_HEIGHT);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = MFSetAttributeRatio(pMediaTypeOut, MF_MT_FRAME_RATE, VIDEO_FPS, 1);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = MFSetAttributeRatio(pMediaTypeOut, MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pSinkWriter-&gt;AddStream(pMediaTypeOut, &amp;streamIndex);
+    }
+
+    // Set the input media type.
+    if(SUCCEEDED(hr)){
+        hr = MFCreateMediaType(&amp;pMediaTypeIn);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pMediaTypeIn-&gt;SetGUID(MF_MT_MAJOR_TYPE, MFMediaType_Video);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pMediaTypeIn-&gt;SetGUID(MF_MT_SUBTYPE, VIDEO_INPUT_FORMAT);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pMediaTypeIn-&gt;SetUINT32(MF_MT_INTERLACE_MODE, MFVideoInterlace_Progressive);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = MFSetAttributeSize(pMediaTypeIn, MF_MT_FRAME_SIZE, VIDEO_WIDTH, VIDEO_HEIGHT);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = MFSetAttributeRatio(pMediaTypeIn, MF_MT_FRAME_RATE, VIDEO_FPS, 1);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = MFSetAttributeRatio(pMediaTypeIn, MF_MT_PIXEL_ASPECT_RATIO, 1, 1);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pSinkWriter-&gt;SetInputMediaType(streamIndex, pMediaTypeIn, NULL);
+    }
+
+    // Tell the sink writer to start accepting data.
+    if(SUCCEEDED(hr)){
+        hr = pSinkWriter-&gt;BeginWriting();
+    }
+
+    // Return the pointer to the caller.
+    if(SUCCEEDED(hr)){
+        *ppWriter = pSinkWriter;
+        (*ppWriter)-&gt;AddRef();
+        *pStreamIndex = streamIndex;
+    }
+
+    SafeRelease(&amp;pAttributes);
+    SafeRelease(&amp;pSinkWriter);
+    SafeRelease(&amp;pMediaTypeOut);
+    SafeRelease(&amp;pMediaTypeIn);
+
+    return hr;
+}
+
+HRESULT WriteFrame(IMFSinkWriter *pWriter, DWORD streamIndex, const LONGLONG&amp; rtStart){
+
+    IMFSample *pSample = NULL;
+    IMFMediaBuffer *pBuffer = NULL;
+
+    const LONG cbWidth = 4 * VIDEO_WIDTH;
+    const DWORD cbBuffer = cbWidth * VIDEO_HEIGHT;
+
+    BYTE *pData = NULL;
+
+    // Create a new memory buffer.
+    HRESULT hr = MFCreateMemoryBuffer(cbBuffer, &amp;pBuffer);
+
+    // Lock the buffer and copy the video frame to the buffer.
+    if(SUCCEEDED(hr)){
+        hr = pBuffer-&gt;Lock(&amp;pData, NULL, NULL);
+    }
+
+    if(SUCCEEDED(hr)){
+
+        hr = MFCopyImage(pData, cbWidth, (BYTE*)videoFrameBuffer, cbWidth, cbWidth, VIDEO_HEIGHT);
+    }
+
+    if(pBuffer){
+        pBuffer-&gt;Unlock();
+    }
+
+    // Set the data length of the buffer.
+    if(SUCCEEDED(hr)){
+        hr = pBuffer-&gt;SetCurrentLength(cbBuffer);
+    }
+
+    // Create a media sample and add the buffer to the sample.
+    if(SUCCEEDED(hr)){
+        hr = MFCreateSample(&amp;pSample);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pSample-&gt;AddBuffer(pBuffer);
+    }
+
+    // Set the time stamp and the duration.
+    if(SUCCEEDED(hr)){
+        hr = pSample-&gt;SetSampleTime(rtStart);
+    }
+
+    if(SUCCEEDED(hr)){
+        hr = pSample-&gt;SetSampleDuration(VIDEO_FRAME_DURATION);
+    }
+
+    // Send the sample to the Sink Writer.
+    if(SUCCEEDED(hr)){
+        hr = pWriter-&gt;WriteSample(streamIndex, pSample);
+    }
+
+    SafeRelease(&amp;pSample);
+    SafeRelease(&amp;pBuffer);
+
+    return hr;
+}
+
+void main(){
+
+    HANDLE hFinalizeEvent = CreateEvent(NULL, FALSE, FALSE, NULL);
+
+    if(hFinalizeEvent == NULL)
+        return;
+
+    // Set all pixels to green
+    for(DWORD i = 0; i &lt; VIDEO_PELS; ++i){
+        videoFrameBuffer[i] = 0x000000FF;
+    }
+
+    HRESULT hr = CoInitializeEx(NULL, COINIT_APARTMENTTHREADED);
+
+    if(SUCCEEDED(hr)){
+
+        hr = MFStartup(MF_VERSION);
+
+        if(SUCCEEDED(hr)){
+
+            IMFSinkWriterCallback* pCallBack = NULL;
+            IMFSinkWriter *pSinkWriter = NULL;
+            DWORD stream;
+
+            pCallBack = new (std::nothrow)CMFSinkWriterCallback(hFinalizeEvent);
+
+            hr = pCallBack ? S_OK : E_POINTER;
+
+            if(SUCCEEDED(hr)){
+              hr = InitializeSinkWriter(&amp;pSinkWriter, &amp;stream, pCallBack);
+            }
+
+            if(SUCCEEDED(hr)){
+
+                // Send frames to the sink writer.
+                LONGLONG rtStart = 0;
+
+                for(DWORD i = 0; i &lt; VIDEO_FRAME_COUNT; ++i){
+
+                    hr = WriteFrame(pSinkWriter, stream, rtStart);
+
+                    if(FAILED(hr)){
+                            break;
+                    }
+
+                    rtStart += VIDEO_FRAME_DURATION;
+                }
+            }
+
+            if(SUCCEEDED(hr)){
+                hr = pSinkWriter-&gt;Finalize();
+                WaitForSingleObject(hFinalizeEvent, INFINITE);
+            }
+
+            SafeRelease(&amp;pCallBack);
+            SafeRelease(&amp;pSinkWriter);
+            MFShutdown();
+        }
+
+        CoUninitialize();
+    }
+
+    CloseHandle(hFinalizeEvent);
+}
+</code></pre>
+"
+662638,11817385,555518.0,2012-08-05T14:52:12Z,11817340,3,"<p>If you're using SQL Server, check out <code>SqlDependency</code> object combined with IIS <code>Cache</code>.  Basically, if the underlying recordset changes from Server1 and the content is updated in the database, all the other web servers will be notificed to update their local copies.  Under the covers, SqlDependency uses Service Broker, so you might want read up on that as well.</p>
+
+<p>More info:</p>
+
+<p><a href=""http://msdn.microsoft.com/en-us/library/ms178604.aspx"" rel=""nofollow"">Caching in ASP.NET with the SqlCacheDependency Class</a></p>
+"
+662639,11817404,361842.0,2012-08-05T14:54:37Z,11817340,4,"<p>If you're expecting to need this scalability from day 1, look into AppFabric: <a href=""http://www.slideshare.net/chrduf/scale-your-data-tier-with-windows-server-app-fabric"" rel=""nofollow"">http://www.slideshare.net/chrduf/scale-your-data-tier-with-windows-server-app-fabric</a></p>
+
+<p><a href=""http://www.microsoft.com/en-us/server-cloud/windows-server/appfabric.aspx"" rel=""nofollow"">http://www.microsoft.com/en-us/server-cloud/windows-server/appfabric.aspx</a></p>
+
+<p>If it's something you're expecting to see a lot further down the line it may be best to get on and write the app with what you know first with a view to refactoring to AppFabric later though.  That will allow you to get something out there, rather than bogged down in learning a new technology, so that when you come to refactor, you have a better understanding of your own product which will benefit you in making decisions on any new platforms.</p>
+"
+662640,11817434,1310467.0,2012-08-05T15:00:28Z,11817340,0,"<p>The below are some of the products that serves distributed cache with pub/sub machinism</p>
+
+<p>1) Oracle's Coherence <a href=""http://coherence.oracle.com/display/COH34UG/Real+Time+Client+-+RTC"" rel=""nofollow"">http://coherence.oracle.com/display/COH34UG/Real+Time+Client+-+RTC</a> it is  also have .net version (port from java)</p>
+
+<p>2) Windows AppFabric Distributed Caching <a href=""http://msdn.microsoft.com/en-us/library/ff383731(v=azure.10).aspx"" rel=""nofollow"">http://msdn.microsoft.com/en-us/library/ff383731(v=azure.10).aspx</a> this is similar to Coherence syntactically</p>
+
+<p>Another cheap option is using Nodes.js</p>
+"
+1222975,23073628,1900189.0,2014-04-15T02:24:06Z,23071370,1,"<p>if you are asking for android then use <a href=""http://docs.appcelerator.com/titanium/3.0/#!/api/Titanium.UI.AlertDialog-property-androidView"" rel=""nofollow"">androidView</a> property of alertDialog. You can use any view like label or webview for hyperlink in android and assign it to alert dialog's view.</p>
+
+<p><strong>For IOS you need custom View which would look like alert dialog</strong></p>
+"
+1561628,30369089,284240.0,2015-05-21T09:01:30Z,30368940,2,"<p>So you want only unique rows according to the <code>ORDER_NO</code> column? </p>
+
+<p>Presuming that it's a string column you could use LINQ's <code>Enumerable.GroupBy</code>:</p>
+
+<pre><code>var uniqueRows = table.AsEnumerable()
+    .GroupBy(row =&gt; row.Field&lt;string&gt;(""ORDER_NO""))
+    .Where(group =&gt; group.Count() == 1)
+    .Select(group =&gt; group.First());
+</code></pre>
+
+<p>if you want a new <code>DataTable</code> from the unique rows you can use:</p>
+
+<pre><code>table = uniqueRows.CopyToDataTable();
+</code></pre>
+
+<p>If you instead only want this column's values:</p>
+
+<pre><code>IEnumerable&lt;string&gt; unqiueOrderNumbers = uniqueRows.Select(row =&gt; row.Field&lt;string&gt;(""ORDER_NO""));
+</code></pre>
+"
+1561645,30369382,1201313.0,2015-05-21T09:12:52Z,30368940,0,"<p>Apart from @Tim's answer you can also use DataView to simplify this thing</p>
+
+<pre><code>DataView view = new DataView(table);
+DataTable distinctValues = view.ToTable(true, ""ORDER_NO"");
+</code></pre>
+
+<p>I think this is the simplest way to get distinct values from any table. You can even mention multiple columns in the ToTable method. Just pass column name as argument like ORDER_NO is send in above sample code.</p>
+"
+1618462,31573487,1754650.0,2015-07-22T20:35:15Z,31573240,0,"<p>Try this:</p>
+
+<pre><code>SELECT A.ID, A.JOB, A.STATUS, B.START_DATE, CASE WHEN A.STATUS = 'done' THEN C.END_DATE ELSE NULL AS END_DATE
+FROM &lt;JOBS_TABLE&gt; A
+JOIN (SELECT ID, JOB, MIN(DATE) AS START_DATE FROM &lt;JOBS_TABLE&gt; GROUP BY ID, JOB) B
+ON A.ID = B.ID
+AND A.JOB = B.JOB
+JOIN (SELECT ID, JOB, MAX(DATE) AS END_DATE FROM &lt;JOBS_TABLE GROUP BY ID, JOB) C
+ON A.ID= C.ID
+AND A.JOB = C.JOB
+AND A.DATE = C.END_DATE
+</code></pre>
+
+<p>You'll need to replace &lt; JOBS_TABLE > with whatever your table name is. Ideally, this should combine the data from the  first and last rows for each distinct set of ID and JOB values. If the job is not finished, it will not show an END_DATE.</p>
+"
+1618575,31576273,4116017.0,2015-07-23T00:33:20Z,31573240,1,"<p>One way to do it is to use <code>ROW_NUMBER</code> function twice in ascending and descending order to get first and last rows of each group. See <a href=""http://sqlfiddle.com/#!6/e9ff5/2/0"" rel=""nofollow"">SQL Fiddle</a></p>
+
+<pre><code>WITH
+CTE
+AS
+(
+  SELECT
+    ID
+    ,Status
+    ,dt
+    ,Job
+    ,Note
+    ,ROW_NUMBER() OVER (PARTITION BY ID, Job ORDER BY dt ASC) AS rnASC
+    ,ROW_NUMBER() OVER (PARTITION BY ID, Job ORDER BY dt DESC) AS rnDESC
+  FROM T
+)
+SELECT 
+    ID
+    ,Status
+    ,dt
+    ,Job
+    ,Note
+FROM CTE
+WHERE rnAsc=1 OR rnDesc=1
+ORDER BY ID, Job, dt
+</code></pre>
+
+<p>This variant would scan through the whole table, calculate row numbers and discard those rows that don't satisfy the filter.</p>
+
+<p>The second variant is to use <code>CROSS APPLY</code>, which may be more efficient, if (a) your main table has millions of rows, (b) you have a small table with the list of all <code>ID</code>s and <code>Job</code>s, (c) the main table has appropriate index. In this case instead of reading all rows of the main table you can do index seek for each <code>(ID, Job)</code> (two seeks, one for first row plus one for the last row).</p>
+"
+1618614,31576867,1212725.0,2015-07-23T01:48:04Z,31573240,0,"<p>I don't think there's much wrong with your UNION idea.  Is this what you have?</p>
+
+<p>select id, job, status, max(date), job, note, 'max' as type from test1 group by job UNION
+select id, job, status, min(date), job, note, 'min' as type from test1 group by job;</p>
+"
+1726420,33882086,3418066.0,2015-11-23T22:36:41Z,33880150,1,"<p>Rather than attempting to code frame values directly, I would suggest you adopt auto layout.  Here is the basis of a UIView subclass that does what you want (I haven't bothered with the fonts, but you can add that easily) -</p>
+
+<pre><code>import UIKit
+
+@IBDesignable
+class MyView: UIView {
+
+    var headerLabel:UILabel!
+    var bodyLabel:UILabel!
+
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        self.addLabels()
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        self.addLabels()
+    }
+
+
+    func addLabels() {
+
+        self.translatesAutoresizingMaskIntoConstraints=false
+
+        self.headerLabel=UILabel()
+        self.headerLabel.translatesAutoresizingMaskIntoConstraints=false
+        self.headerLabel.textAlignment=NSTextAlignment.Center
+
+        self.addSubview(self.headerLabel)
+
+        self.bodyLabel=UILabel()
+        self.bodyLabel.translatesAutoresizingMaskIntoConstraints=false
+        self.bodyLabel.numberOfLines=0
+        self.bodyLabel.textAlignment=NSTextAlignment.Center
+
+        self.addSubview(self.bodyLabel)
+    }
+
+    override func updateConstraints() {
+        self.addConstraint(NSLayoutConstraint(item: self.headerLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self, attribute: NSLayoutAttribute.Top, multiplier: 1.0, constant: 24))
+
+        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.headerLabel, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0))
+
+        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.CenterX, relatedBy: NSLayoutRelation.Equal, toItem: self.bodyLabel, attribute: NSLayoutAttribute.CenterX, multiplier: 1.0, constant: 0))
+
+        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.Bottom, relatedBy: NSLayoutRelation.Equal, toItem: self.bodyLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 24))
+
+        self.addConstraint(NSLayoutConstraint(item: self.bodyLabel, attribute: NSLayoutAttribute.Top, relatedBy: NSLayoutRelation.Equal, toItem: self.headerLabel, attribute: NSLayoutAttribute.Bottom, multiplier: 1.0, constant: 12))
+
+        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.LeadingMargin, relatedBy: NSLayoutRelation.Equal, toItem: self.bodyLabel, attribute: NSLayoutAttribute.Leading, multiplier: 1.0, constant: 0))
+        self.addConstraint(NSLayoutConstraint(item: self, attribute: NSLayoutAttribute.TrailingMargin, relatedBy: NSLayoutRelation.Equal, toItem: self.bodyLabel, attribute: NSLayoutAttribute.Trailing, multiplier: 1.0, constant: 0))
+
+        super.updateConstraints()
+    }
+
+    override func prepareForInterfaceBuilder() {
+        self.headerLabel.text=""Header""
+        self.bodyLabel.text=""Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum Lorum Ipsum ""
+    }
+
+}
+</code></pre>
+"
+349859,6065871,134360.0,2011-05-19T23:14:44Z,6064650,3,"<p>The best approach is to completely duplicate everything from prod. That usually involves:</p>
+
+<ul>
+<li>Go on the prod server and zip up the site's root. The IIS website will point to a ""website"" folder. In addition, you'll want the site's ""data"" folder, which is usually one folder above the ""website"" so its not web-accessible. The data folder contains the license, logs, etc.</li>
+<li>In SQL management stuido, make a backup of the Core, Master, and Web databases for the site. They're listed in the <code>/Website/App_Config/ConnectionStrings.config</code> file. There may be more databases for Sitecore modules that you need</li>
+<li>Pull the site zip and databases locally and re-configure them on your local machine. Some key setting you'll need to update your local environment are
+<ul>
+<li>Settings in the <code>/Website/App_Config/ConnectionStrings.config</code> for local data sources</li>
+<li>The <code>web.config</code>'s <code>dataFolder</code> setting which maps the path on the file system to the data folder</li>
+</ul></li>
+</ul>
+"
+350046,6069100,29555.0,2011-05-20T08:04:14Z,6064650,0,"<p>Once you get everything duplicated locally(following Mark's steps ) I usually remove the web database reference from the web.config and change all references of ""web"" to ""master"". It's easier to develop this way as sitecore is running in live mode and you don't have to worry about publishing. </p>
+
+<p>My usually folder structure for a sitecore project is </p>
+
+<ul>
+<li><p>sampleproject</p>
+
+<ul>
+<li><p>lib</p>
+
+<ul>
+<li>sitecore - which contains all the sitecore sold</li>
+</ul></li>
+<li><p>src </p>
+
+<ul>
+<li><p>data - datafolder stuff goes here</p></li>
+<li><p>website </p></li>
+</ul></li>
+</ul></li>
+</ul>
+
+<p>On post build I copy all the dlls from /lib/sitecore to the bin folder. </p>
+"
+1072124,19987828,2326907.0,2013-11-14T20:35:22Z,19909240,0,"<p>JQuery Script was missing, once added it worked fine.</p>
+"
+1632736,31875418,2406032.0,2015-08-07T10:21:07Z,31872170,0,"<p>Starting in iOS 8 you should use preferredDisplayMode. As <code>shouldHideViewController</code> is deprecated in iOS8.</p>
+
+<p>To show both view controllers in portrait mode do the following:</p>
+
+<pre><code>self.splitViewController.preferredDisplayMode = UISplitViewControllerDisplayModeAllVisible;
+</code></pre>
+
+<p>Hope this helps!</p>
+"
+1782622,35084854,5856699.0,2016-01-29T12:42:46Z,34705350,0,"<p>If you are in windows 10 then change the config.xml windows target version from 8.1 to 10
+this will let the app work on windows 10 but on 8 I couldn't find yet</p>
+"
+1797107,35404729,4129129.0,2016-02-15T08:38:20Z,34705350,0,"<p>I faced the same error in windows 8.1 app using VS2015. By changing the windows target version as Windows 8.1 in config.xml solved my issue.</p>
+"
+113330,1921619,233017.0,2009-12-17T12:59:12Z,1915010,1,"<p>I solved the problem by working around the installers registry key.
+I manually create a subKey under the installers registryEntry, where I store my Context.Parameters[""TARGETSITE""] value.
+So the repair feature will not overwrite the keyValue because itÂ´s a custom key.
+Now I have my value either in the context or in the registry.</p>
+
+<p>FunFacts:
+When I create the customKey within the Installers own key, I take advantage of the standart meachnism, which delets the installers registry key and with that my customKey will also vanish.</p>
+
+<p>Maybe this might help if someone else faces this problem sometime...</p>
+"
+560694,9906825,410443.0,2012-03-28T11:45:28Z,9906720,1,"<p>You can write a wrapper method which takes Actions of Funcs as parameters and you can use try catch blocks inside this function. You can call your functions using this function; something like:</p>
+
+<pre><code>public void CallMethod(Action methodToBeCalled)
+{
+   try
+   {
+      methodToBeCalled();
+   }
+   catch 
+   .....
+   ....
+}
+</code></pre>
+
+<p>Then call your functions like:</p>
+
+<pre><code>CallMethod(() =&gt; client.OnProductChanged(products));
+</code></pre>
+"
+1151666,21609576,2255861.0,2014-02-06T17:14:25Z,21608740,1,"<p>If I understand you correctly...    </p>
+
+<pre><code>var query = dbContext.Components.Select(x =&gt; new {
+        CompName = x.CompName,
+        Parts = x.Parts.Select(p =&gt; p.PartName)
+    }).ToList();
+</code></pre>
+
+<p>Add additional filters and selectors as you require.  You may / may not need the Include statement (.Include(""Parts""))</p>
+"
+1151670,21609602,2843136.0,2014-02-06T17:15:51Z,21608740,2,"<p>If you're using entity framework, you need to add primary key for each entity, like below:</p>
+
+<pre><code>public class Component
+{
+    public int Id { get; set; }
+    public string CompName { get; set; }
+    public byte[] CompBlob { get; set; }
+    public ICollection&lt;Part&gt; Parts { get; set; }
+}
+public class Part
+{
+    public int Id { get; set; }
+    public string PartName { get; set; }
+    public byte[] PartBlob { get; set; }
+}
+</code></pre>
+
+<p>Then make the query like:</p>
+
+<p>LazyLoading Disable Case:</p>
+
+<pre><code>var result = dbContext.Components.Include(""Parts"").Select(m =&gt; new 
+             {m.CompName, PartNames = m.Parts.Select(n =&gt; n.PartName)}).ToList();
+</code></pre>
+
+<p>LazyLoading Enabled Case:</p>
+
+<pre><code> var result = dbContext.Components.Select(m =&gt; new 
+         {m.CompName, PartNames = m.Parts.Select(n =&gt; n.PartName)}).ToList();
+</code></pre>
+"
+1694229,33186394,5456941.0,2015-10-17T12:02:11Z,33167910,0,"<p>I'm a CTO of Shoplo. Why You want to export all products? 
+Maybe we can find a solution ;)</p>
+"
+452390,7919303,899846.0,2011-10-27T16:38:16Z,7919170,2,"<p>Use Range.NumberFormat from the Microsoft Excel Object Library. Check this <a href=""http://support.microsoft.com/kb/302084"" rel=""nofollow"">link</a>.</p>
+
+<p>Sample code:</p>
+
+<pre><code>oRng = oSheet.get_Range(""C2"", ""C1000""); //change this range to suit your scenario
+oRng.Formula = ""&lt;any formula you may be using already or skip it&gt;"";
+oRng.NumberFormat = ""#,##0.00""; 
+</code></pre>
+
+<p><strong>References:</strong></p>
+
+<p><a href=""http://support.microsoft.com/kb/302084"" rel=""nofollow"">How to automate Microsoft Excel from Microsoft Visual C#.NET</a></p>
+
+<p><a href=""http://stackoverflow.com/questions/3828600/convert-excel-cell-value-from-text-to-number-using-c-sharp"">StackOverflow example</a></p>
+"
+452416,7919872,385844.0,2011-10-27T17:25:30Z,7919170,2,"<p>I think the trick here is to get the number into the cell as a number rather than as text.  If <code>tr.Balance</code> is a string, you can convert it to a double using TryParse:</p>
+
+<pre><code>object StringToDoubleIfPossible(string s)
+{
+    double parseResult;
+    return !string.IsNullOrEmpty(s) &amp;&amp; double.TryParse(s, out parseResult) ? (object)parseResult : s;
+}
+</code></pre>
+
+<p>EDIT: The string.IsNullOrEmpty() call is not necessary.  I put it in because I wasn't sure whether TryParse could handle a null string.  It can.  This is better:</p>
+
+<pre><code>object StringToDoubleIfPossible(string s)
+{
+    double parseResult;
+    return double.TryParse(s, out parseResult) ? (object)parseResult : s;
+}
+</code></pre>
+
+<p>EDIT:</p>
+
+<p>Duh!  barrowc is correct.  I was wondering why the number was going in as text in the first place.  I should have paid more attention to that '@' format.</p>
+"
+452562,7922577,2127508.0,2011-10-27T21:22:53Z,7919170,2,"<p>Your code <code>ndcRange.NumberFormat = ""@""</code> is what is setting the number format to Text in the first place. Just change the <code>@</code> to an appropriate number format instead (e.g. the one suggested in Kash's answer) before you insert the data</p>
+"
+1463030,28262094,4463040.0,2015-02-01T11:18:35Z,28254950,1,"<p>If you put it in your core-toolbar it should work.
+Have you tried using other html to test if it really is just the papÃªr-input, or any html ? If this is only the paper-input, it's probably just an import issue (as peter said). If not, it's probably a css issue.
+Anyway, sending us a plunk link would help us.</p>
+"
+1235090,23328707,1108098.0,2014-04-27T20:38:58Z,21512490,2,"<p>There is an option on the configuration <strong>ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION</strong>. It is True by default. Set it to False.</p>
+
+<pre><code>ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = False
+</code></pre>
+"
+252355,4343493,335507.0,2010-12-03T07:54:36Z,4343390,16,"<p>You can set the scroller right inset value of the UITextView to negative value and disable the clip subview option to achieve your require. No other scrollview is needed.
+<img src=""http://i.stack.imgur.com/j5Pj0.jpg"" alt=""alt text""></p>
+"
+252356,4343497,233602.0,2010-12-03T07:55:53Z,4343390,0,"<p>Alternatively you could set the Right contentInset property.</p>
+"
+1312203,24999946,2460348.0,2014-07-28T16:37:42Z,4343390,0,"<pre><code>UIEdgeInsets insets =  textView.scrollIndicatorInsets;
+insets.right += 5; //add what ever is your margain
+textView.scrollIndicatorInsets = insets;
+</code></pre>
+"
+63714,1096998,56672.0,2009-07-08T09:12:09Z,1096000,1,"<p>This should happen automatically in most cases. If you are doing something a little strange you may need to use <a href=""http://api.drupal.org/api/function/drupal%5Fadd%5Ffeed/6"" rel=""nofollow"">drupal_add_feed()</a> to add the feed to the page</p>
+"
+66564,1144606,102282.0,2009-07-17T17:14:20Z,1096000,2,"<p>In Drupal 6 this is no longer automatic.</p>
+
+<p>Edit the view and under ""Feed Settings"" set ""Attach to"" to the page that you want to autodiscover the feed. </p>
+"
+707141,12680155,925891.0,2012-10-01T19:58:35Z,12680020,1,"<p>You didn't say exactly what's wrong.  But, it seems you are missing your start block for your while loop</p>
+
+<pre><code>while (.... )  :
+              ^^^
+... // div stuff
+end while
+</code></pre>
+"
+1796873,35399394,4621250.0,2016-02-14T23:35:41Z,35399300,2,"<p>Welcome to Python! :)</p>
+
+<p>As your post indicates that this is a learning exercise, I will offer advice for objectives you should try to reach, rather than writing and pasting your code for you.</p>
+
+<p>Your program needs to remember the roll for each die. One of many mechanisms for this could be:</p>
+
+<pre><code>outcomes = []
+for i in range(0,5):
+    outcomes.append(random.randint(1,6))
+</code></pre>
+
+<p>Given the above, you now have programmatic memory of each outcome. Each of the random.randint() outcomes are now kept in a list, which you can access by element later in your program, depending on what the user chooses to keep or reroll. Remember that the user's perception of ""die one"" is actually element zero in your list, due to the way indices are numbered.</p>
+
+<p>There are over a dozen ways to approach the remainder of your program, but this should be a good starter, for you. You could even explore list comprehensions to improve on the sample I provide, above.</p>
+"
+1895996,37553851,4704661.0,2016-05-31T19:12:48Z,37553090,0,"<p>Okay. This was not easy to figure out but the solution was. It turns out that eclipse do not use the notation .keystore on the file keystore. The solution was to add .keystore in the keystore filename from eclipse. Thanks for your time.</p>
+"
+1199693,22590726,2577907.0,2014-03-23T12:12:06Z,18736300,10,"<p>You can use This code for achieving your purpose.</p>
+
+<p>background.xml</p>
+
+<pre><code>&lt;?xml version=""1.0"" encoding=""utf-8""?&gt;
+&lt;layer-list
+    xmlns:android=""http://schemas.android.com/apk/res/android""&gt;
+    &lt;item&gt;
+        &lt;shape android:shape=""rectangle""&gt;
+            &lt;solid android:color=""#ff0000"" /&gt;
+        &lt;/shape&gt;
+    &lt;/item&gt;
+    &lt;item android:bottom=""5dp""&gt;
+        &lt;shape android:shape=""rectangle""&gt;
+            &lt;solid android:color=""#ffffff"" /&gt;
+        &lt;/shape&gt;
+    &lt;/item&gt;
+&lt;/layer-list&gt;
+</code></pre>
+
+<p>styles.xml</p>
+
+<pre><code>&lt;resources&gt;
+    &lt;style name=""AppTheme"" parent=""android:Theme.Holo""&gt;
+        &lt;item name=""android:actionBarStyle""&gt;@style/AppTheme.ActionBar&lt;/item&gt;
+        &lt;item name=""android:background""&gt;#ffffff&lt;/item&gt;
+        &lt;item name=""android:colorBackground""&gt;#ffffff&lt;/item&gt;
+    &lt;/style&gt;
+    &lt;style name=""AppTheme.ActionBar"" parent=""android:Widget.ActionBar""&gt;
+        &lt;item name=""android:background""&gt;@drawable/background&lt;/item&gt;
+    &lt;/style&gt;
+&lt;/resources&gt;
+</code></pre>
+
+<p>These codes are suitable when you have not any options menu like image shows in question, if you have options menu you must customize your option menu items background.</p>
+
+<p>If you have Option menu below code is suitable:</p>
+
+<pre><code>&lt;resources&gt;
+    &lt;style name=""AppTheme"" parent=""android:Theme.Holo.Light""&gt;
+        &lt;item name=""android:actionBarStyle""&gt;@style/AppTheme.ActionBar&lt;/item&gt;
+        &lt;item name=""android:popupMenuStyle""&gt;@style/AppTheme.PopUpMenu&lt;/item&gt;
+    &lt;/style&gt;
+    &lt;style name=""AppTheme.ActionBar"" parent=""android:Widget.ActionBar""&gt;
+        &lt;item name=""android:background""&gt;@drawable/background&lt;/item&gt;
+    &lt;/style&gt;
+    &lt;style name=""AppTheme.PopUpMenu"" parent=""android:Widget.Holo.Light.ListPopupWindow""&gt;
+        &lt;item name=""android:popupBackground""&gt;@drawable/background&lt;/item&gt;
+    &lt;/style&gt;
+&lt;/resources&gt;
+</code></pre>
+"
+1302638,24795300,1961262.0,2014-07-17T05:08:51Z,18736300,5,"<p>There is A simpler way than this (Creating Bunch of Styles).
+Refering to <a href=""http://stackoverflow.com/questions/20277867/how-to-custom-the-thin-line-below-actionbar-using-appcompat-in-android"">this</a> . Just set </p>
+
+<pre><code>getActionBar().setBackgroundDrawable(null);
+</code></pre>
+
+<p>This will Remove the line from Your Action Bar </p>
+"
+1380761,26476199,2108009.0,2014-10-20T22:48:23Z,18736300,1,"<p>I used this ^_^ and it is 100% working:</p>
+
+<pre><code>    super.onCreate(savedInstanceState);
+    setContentView(R.layout.main);
+    Drawable res = getResources().getDrawable(R.drawable.ab_transparent_example);
+    getActionBar().setBackgroundDrawable(res);
+</code></pre>
+
+<p>and JUST USE THIS <img src=""http://i.stack.imgur.com/3lRmT.png"" alt="".9.png""></p>
+"
+1985776,39521367,1048572.0,2016-09-15T22:39:30Z,39520930,0,"<blockquote>
+  <p>I first thought await/async replace Promise... Do they?</p>
+</blockquote>
+
+<p>No, they supplement them. They only replace <code>then</code> calls.</p>
+
+<blockquote>
+  <p>Do I really need to return Promises that way on my 2 functions?</p>
+</blockquote>
+
+<p>No, in your second function you should not create a promise like that. <strong>Never use an <code>async function</code> as a <code>new Promise</code> executor</strong>. You should only <a href=""http://stackoverflow.com/q/22519784/1048572"">promisify</a> the <code>toArray</code> method and nothing else. And actually mongodb already returns promises if you don't pass a callback, so you should use</p>
+
+<pre><code>async function addToDatabase(req) {
+    try {
+        await db.get().collection('users').insertOne({
+            req.body
+        });
+    } catch(err) {
+        throw 'Unable to insert to database on registration';
+    }
+}
+async function checkDuplicate(req) {
+    let collection = await db.get().collection('users');
+    let docs;
+    try {
+        docs = await collection.find(/* query */).toArray();
+    } catch(err) {
+        throw 'Unable to check database.';
+    }
+    if (docs.length) {
+        throw 'Email/login already used';
+    }
+}
+</code></pre>
+
+<blockquote>
+  <p>Do I call them that way before returning the result?</p>
+</blockquote>
+
+<p>Yes, your <code>register</code> function is fine.</p>
+"
+1862699,36825458,2474248.0,2016-04-24T15:52:45Z,36824990,1,"<p>Ok,then allocate a two dimensional array on the heap and declare a variable n of type <code>size_t</code> to keep track of the number of lines.Try the following:</p>
+
+<pre><code>#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+#define bufSize 1024
+
+int main(int argc, char *argv[])
+{
+    FILE* fp;
+    if (argc != 2)
+    {
+        fprintf(stderr, ""Usage: %s &lt;soure-file&gt;\n"", argv[0]);
+        return 1;
+    }
+    if ((fp = fopen(argv[1], ""r"")) == NULL)
+    { /* Open source file. */
+        perror(""fopen source-file"");
+        return 1;
+    }
+
+    size_t n = 0;
+    char(*buf)[bufSize] = malloc(bufSize * 4000);
+    if (!buf) {
+        fprintf(stderr, ""Error - Failed to allocate memory.\n"");
+        fclose(fp);
+        return 1;
+    }
+    while (1)
+    {
+        if (fgets(buf[n], bufSize, fp) != NULL) {
+            n++;
+            if (n == 4000) {
+                /* do something */
+                // ...
+                n = 0;
+            }
+        }
+        else {
+            // do something with leftover
+            break;
+        }
+    }
+    free(buf);
+    fclose(fp);
+    return 0;
+}
+</code></pre>
+"
+1862701,36825502,5982110.0,2016-04-24T15:56:57Z,36824990,2,"<p>What is the problem? </p>
+
+<p>You would need to use 2 loops. The outer one would repeat reading chunks of lines until EOF.</p>
+
+<p>The code could look like the following sketch:</p>
+
+<pre><code>...
+while (1) 
+{
+    /* read &lt;= 4000 lines and process */
+}
+</code></pre>
+
+<p>The inner would read the lines and stores them away:</p>
+
+<pre><code>size_t lines = 0; /** next index to be used with lineBuffer  
+                  (and number of lines already stored)*/
+char *lineBuffer[4000];
+char buf[bufSize];
+
+while (lines &lt; 4000 &amp;&amp; fgets(buf, sizeof(buf), fp) != NULL)
+{
+    buf[strlen(buf) - 1] = '\0';
+    lineBuffer[lines] = malloc(strlen(buf);
+    strcpy(lineBuffer[lines], buf);
+    lines++;
+}
+
+if (lines == 0) 
+{
+    break; /* we are done*/
+}
+/* do processing on data */
+
+/* deallocate dynamic memory */
+for (int i = lines - 1; lines&gt;=0; i--) 
+{
+   free(lineBuffer[i]);
+}
+
+lines = 0;
+</code></pre>
+
+<p>Of course you could use static memory allocation using</p>
+
+<pre><code>char lineBuffer[4000][bufSize];
+</code></pre>
+
+<p>instead of mallocing. That would save doing alloc/dealloc sequences, or do allocation on top-level (outside the loops) using <code>calloc(400*bufSize);</code>
+But this is left to personal preferences given the fact that a total of about 4MB of memory is being used with current settings.</p>
+
+<p>With respect to performance:<br>
+having statically allocated memory might give some speed benefit.<br>
+You might also try increasing buffer size used by stdio (by a <code>setbuffer()</code> variant to read larger chunks from file.</p>
+
+<p>Whether this will have any noticable effect is subject to some performance measurings you should take (if an issue in the first place)</p>
+"
+219463,3765951,410102.0,2010-09-22T02:39:51Z,3765940,0,"<p>for each section, use a regular expression with groups corresponding to each entry in the section, then simply create hash table as you described from these groups.</p>
+"
+219474,3766058,322020.0,2010-09-22T03:11:28Z,3765940,1,"<pre><code>fields = [:fips1,:fips2,:county,:stateid,:type]
+arraywithhashes = yourtextdata.split(""\n\n"").map { |loc|
+    Hash[
+        [[:id,loc[/\d+/]]] +
+        fields.zip(loc.scan(/""([^""]+)""/).map &amp;:first)
+    ]
+}
+</code></pre>
+
+<p>If you add new fields to your file, the only you'll need to edit is to add it to <code>fields</code>.</p>
+"
+219567,3767549,454652.0,2010-09-22T08:33:05Z,3765940,0,"<pre><code>locality.each_key { |k| locality.store(k, ""foo"") }
+</code></pre>
+
+<p>Another newbie-ish person here, but that might be a start for you.</p>
+"
+219719,3769736,290394.0,2010-09-22T13:31:42Z,3765940,0,"<p>You might want to consider using a Struct instead of a Hash.</p>
+
+<pre><code>Locality = Struct.new(:id, :fips1, :fips2, :county, :stateid, :type)
+localities = []
+DATA.each_slice(7) do |chunk|
+    chunk.pop if chunk.size == 7 
+    localities &lt;&lt; Locality.new(*chunk.map{|line| line.scan(/\w+/) })
+end
+
+p localities # =&gt; [#&lt;struct Locality id=[""1""], fips1=[""13""], fips2=[""241""], etc. 
+puts localities[1].fips2 # =&gt; 281
+
+__END__
+1
+ ""13""
+ ""241""
+ ""Rabun""
+ ""06""
+ ""County""
+
+ 2
+ ""13""
+ ""281""
+ ""Towns""
+ ""06""
+ ""County""
+</code></pre>
+
+<ul>
+<li><p>each_slice(7) takes 7 lines of
+DATA (the stuff after <code>__END__</code> ).</p></li>
+<li><p>The last line is removed unless there
+are only six lines (the last
+'record').</p></li>
+<li><p>A cleaned-up copy of the remaining 
+lines is made. With these values a 
+new Locality is created and added to 
+an array</p></li>
+</ul>
+"
+359092,6229067,6309.0,2011-06-03T15:23:16Z,6228550,3,"<p>Definitively keep those changes (code and unit test) as one commit: SCM is also about being able to <strong>reproduce</strong> a given state, and that include both the program and its tests.</p>
+
+<p>If you need to review only code changes, do a git diff on <code>src</code> only, not on <code>tst</code>.<br>
+Since those linked changes remain in one commit, you avoid the bisect issue entirely.</p>
+
+<p>In short, keep it simple ;)</p>
+"
+359108,6229512,1864976.0,2011-06-03T15:53:42Z,6228550,0,"<p>If you like, you can keep them in separate commits in a development branch. After each pair of commits, merge into the feature branch. This should give you the ability to do either way. </p>
+"
+1098884,20541547,1683414.0,2013-12-12T10:55:51Z,12071390,0,"<p>Try <code>RAISERROR(...) WITH NOWAIT</code> instead of PRINT</p>
+"
+1207232,22747550,1190965.0,2014-03-30T17:51:39Z,22746300,1,"<p>I think you're looking for so-called ""virtualization"" software, perhaps especially ""OS virtualization"".</p>
+
+<ul>
+<li><a href=""http://en.wikipedia.org/wiki/Operating_system%E2%80%93level_virtualization"" rel=""nofollow"">OS level virtualization</a>
+<ul>
+<li>Among the listed software, <a href=""http://en.wikipedia.org/wiki/Docker_%28software%29"" rel=""nofollow"">Docker</a> (a wrapper of LXC) seems to be quickly getting popular.</li>
+</ul></li>
+</ul>
+
+<p>The host OS (the existing Debian in your case) is only for managing guest OS installations.  You will mostly work on the guest OSes when you setup services such as MySQL or Wordpress and configure routing to particular guest OS on the host OS.  You can take as many snapshots of the guest OSes as you need and can rewind to a specific snapshots at any times.</p>
+
+<p>Note that the guest OS kernel must not be different from the host kernel if you choose OS virtualization software.  If you wanna avoid such a restriction, you need to select ""full"" (aka ""hardware"") virtualization software.  I like VirtualBox for this.</p>
+
+<ul>
+<li><a href=""http://en.wikipedia.org/wiki/Full_virtualization"" rel=""nofollow"">Full virtualization</a></li>
+<li><a href=""http://en.wikipedia.org/wiki/VirtualBox"" rel=""nofollow"">VirtualBox</a>
+<ul>
+<li><a href=""http://en.wikipedia.org/wiki/Vagrant_%28software%29"" rel=""nofollow"">Vagrant</a>, a wrapper of VirtualBox, seems to be quickly getting popular.</li>
+</ul></li>
+</ul>
+"
+844842,15382843,404305.0,2013-03-13T10:34:01Z,15222360,0,"<p>You can use Enumeration OlAttachmentType which has olByReference 
+as shown below and your done.</p>
+
+<pre><code>mi.Attachments.Add(""""+[path of file to Attach Reference], OlAttachmentType.olByReference, i, Type.Missing);
+</code></pre>
+"
+867577,15837973,688355.0,2013-04-05T15:36:48Z,15837630,5,"<p>If your code is actually doing what your question suggests, you are working too hard.  Once you've got your Key associated with the ArrayList.  Just get the ArrayList out of the map and add the new integer to that list.  You don't need to ""put it back"".  The reference to the List is all you need to change the List.</p>
+
+<pre><code>    Map&lt;String, ArrayList&lt;Integer&gt;&gt; m = new HashMap&lt;String, ArrayList&lt;Integer&gt;&gt;();
+    for ( int i = 0; i &lt; 5; i++ ) {
+        String key = ( i % 2 == 0 ) ? ""Bob"" : ""Robert"";
+        ArrayList&lt;Integer&gt; l = m.get( key );
+        if ( l == null ) {
+            l = new ArrayList&lt;Integer&gt;();
+            m.put( key, l );
+        }
+        l.add( i );
+    }
+    System.out.println( ""m is "" + m );
+</code></pre>
+
+<p>In my opinion, though, Guava Multimap is a far better solution to this problem:  <a href=""http://guava-libraries.googlecode.com/svn/tags/release03/javadoc/com/google/common/collect/Multimap.html"">http://guava-libraries.googlecode.com/svn/tags/release03/javadoc/com/google/common/collect/Multimap.html</a></p>
+"
+867656,15839598,2242355.0,2013-04-05T17:08:29Z,15837630,2,"<ol>
+<li>There is a huge performance overhead related to the HashMap resize. When you create new HashMap with no-arg constructor, its size is by default 16. You put more and more elements in it, so any time you exceed available space, it needs to resize. Resizing involves calculating hash codes for every key and moving keys between hashtables. It's very expensive.</li>
+</ol>
+
+<p>If you know your HashMap will store a lot of keys, you can create it with size of, for instance, 200,000.</p>
+
+<ol>
+<li>ArrayList has default capacity of ten. If you put more elements, it needs to resize. This involves creating new array (in which ArrayList internally stores elements) and copy elements from the old array to the new one. This also can be very expensive on large ArrayLists.</li>
+</ol>
+
+<p>I would suggest using LinkedList instead. Adding new elements to it is really cheap, as elements are stored as independent nodes. However, there are some drawback. Please see <a href=""http://stackoverflow.com/questions/322715/when-to-use-linkedlist-over-arraylist"">this question</a> for details.</p>
+
+<ol>
+<li>You have to be able to reserve enough memory for 200,000,000 objects. As Tom Hawtin suggested, increasing maximum heap space used by JVM may be necessary. Java is not C++, you can't just use more and more memory.</li>
+</ol>
+"
+656568,11701011,1175824.0,2012-07-28T12:26:56Z,11700850,0,"<p>If you want to use <code>MPI_Init</code> in a subfunction, you have to pass <code>int argc, char **argv</code> to the function, in order to pass it on.</p>
+
+<p>But even if you just want to parallelise a part of a subfunction, you can (and should for more transparent code) use <code>MPI_Init</code> early in the programm. E.g. after other initialisation stuff is finished, or if you want to use it close to your parallelised function, immediately before you call the function.</p>
+
+<p>In principle the function does not have to know about <code>argc</code> and <code>argv</code>, does it? </p>
+"
+656595,11701856,1374437.0,2012-07-28T14:27:08Z,11700850,4,"<p>You do not need to pass <code>argc</code> and <code>argv</code> around since MPI-2 lifted the restriction in MPI-1 that compilant implementations <em>may</em> require arguments to <code>MPI_Init</code> to be the same as the arguments to <code>main</code>:</p>
+
+<blockquote>
+  <p>In MPI-2 implementations are not allowed to impose this requirement. Conforming implementations of MPI are required to allow applications to pass <code>NULL</code> for both the <code>argc</code> and <code>argv</code> arguments of <code>main</code>.</p>
+</blockquote>
+
+<p>But you still have to test if MPI is already initialised since <code>MPI_Init()</code> (or <code>MPI_Init_thread()</code>) should be called no more than once. This is done using <code>MPI_Initialized()</code>, so your code should look like this:</p>
+
+<pre class=""lang-c prettyprint-override""><code>int initialized, finalized;
+
+MPI_Initialized(&amp;initialized);
+if (!initialized)
+   MPI_Init(NULL, NULL);
+
+// Perform work in parallel
+...
+
+// You also need this when your program is about to exit
+MPI_Finalized(&amp;finalized);
+if (!finalized)
+   MPI_Finalize();
+</code></pre>
+
+<p>Note that MPI can be initialised and then finalised only once for the entire lifetime of the application. That is surrounding a block of function code with <code>MPI_Init() ... MPI_Finalize()</code> won't work if the function is to be called multiple times, i.e. MPI doesn't function the same way as OpenMP with its parallel regions does.</p>
+
+<blockquote>
+  <p>By the way, if I can init MPI int func, does A exist in every processes at this time?</p>
+</blockquote>
+
+<p>A running MPI program consists of multiple <em>processes</em> with their own private address spaces. Usually these are multiple copies of the same program code (the so-called Single Program Multiple Data or SPMD paradigm), but could also be multiple copies of several programs, written to work together (also called Multiple Programs Multiple Data or MPMD). SPMD is the more simple and more common case where all processes execute exactly the same code up to the point where their MPI rank is used to branch the execution into multiple directions. So yes, <code>A</code> exists in every process and if no (pseudo-)random numbers/events are involved in the preceding computations, then <code>A</code> would have the same value in every MPI process prior to the initialisation of the MPI library. Note that <code>MPI_Init()</code> is just a regular library call as any other library call. It doesn't change the content of user memory - it only makes the multitude of running MPI processes aware of one another and enables them to communicate with each other, thus enabling them to work collectively in order to solve the particular problem.</p>
+"
+578231,10225893,1085778.0,2012-04-19T10:09:22Z,9764170,1,"<pre><code>&lt;!DOCTYPE html PUBLIC ""-//W3C//DTD XHTML 1.0 Transitional//EN"" ""http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd""&gt;
+&lt;html xmlns=""http://www.w3.org/1999/xhtml""&gt;
+&lt;head&gt;
+    &lt;title&gt;&lt;/title&gt;
+    &lt;script type=""text/javascript"" src=""Scripts/jquery-1.7.1.min.js""&gt;&lt;/script&gt;
+    &lt;script type=""text/javascript""&gt;
+        $(document).ready(function () {
+            var data = [{ 'ID': 1, 'Name': 'A', 'NumCat': [{ 'ID': 1, 'Name': 'a' }, { 'ID': 2, 'Name': 'b' }, { 'ID': 3, 'Name': 'c'}] }, { 'ID': 2, 'Name': 'B', 'NumCat': [{ 'ID': 1, 'Name': 's'}] }, { 'ID': 3, 'Name': 'C', 'NumCat': [{ 'ID': 8, 'Name': 'r' }, { 'ID': 9, 'Name': 'y'}] }, { 'ID': 4, 'Name': 'D', 'NumCat': []}];
+
+            if (data.length &gt; 0) {
+                $('#content').append('&lt;ul id=""navmenu-v""&gt;&lt;/ul&gt;');
+
+                $.each(data, function (index, dataMenu) {
+                    var stringBuilder = [];
+                    stringBuilder.push('&lt;li class=""testList""&gt;&lt;a href=""javascript:void(0);"" id=""' + dataMenu.ID + '""&gt;' + dataMenu.Name + '&lt;/a&gt;');
+
+                    if (dataMenu.NumCat.length &gt; 0) { //NumCat is the amount of sub menu
+                        stringBuilder.push('&lt;ul&gt;');
+                        $.each(dataMenu.NumCat, function (i, dataSubmenu) {
+                            stringBuilder.push('&lt;li&gt;&lt;a&gt;' + dataSubmenu.Name + '&lt;/a&gt;&lt;/li&gt;');
+                        });
+                        stringBuilder.push('&lt;/ul&gt;');
+                    }
+
+                    stringBuilder.push('&lt;/li&gt;');
+
+                    $('#navmenu-v').append(stringBuilder.join(''));
+                });
+            }
+
+
+
+            // Or ( Above is for testing... )
+
+
+            //            var url=""/home/getmenulist""; // give u r url path here.
+
+            //            $.getJSON(url, function (data) {
+            //                if (data.length &gt; 0) {
+            //                    $('#content').append('&lt;ul id=""navmenu-v""&gt;&lt;/ul&gt;');
+
+            //                    $.each(data, function (index, dataMenu) {
+            //                        var stringBuilder = [];
+            //                        stringBuilder.push('&lt;li class=""testList""&gt;&lt;a href=""javascript:void(0);"" id=""' + dataMenu.ID + '""&gt;' + dataMenu.Name + '&lt;/a&gt;');
+
+            //                        if (dataMenu.NumCat.length &gt; 0) { //NumCat is the amount of sub menu
+            //                            stringBuilder.push('&lt;ul&gt;');
+            //                            $.each(dataMenu.NumCat, function (i, dataSubmenu) {
+            //                                stringBuilder.push('&lt;li&gt;&lt;a&gt;' + dataSubmenu.Name + '&lt;/a&gt;&lt;/li&gt;');
+            //                            });
+            //                            stringBuilder.push('&lt;/ul&gt;');
+            //                        }
+
+            //                        stringBuilder.push('&lt;/li&gt;');
+
+            //                        $('#navmenu-v').append(stringBuilder.join(''));
+            //                    });
+            //                }
+            //            });
+        });
+    &lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div id=""content""&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+"
+640224,11397138,663580.0,2012-07-09T14:29:31Z,11397030,6,"<p>From your description, it looks like you're pushing into a remote repository that is set up to check out the files to a local working directory and the permissions in that directory don't allow the checkout. If that is the case, a well-placed chmod command should do the trick (something like <code>chmod -R u+w *</code> run with the user credentials)</p>
+"
+1594902,31072594,1352747.0,2015-06-26T11:55:39Z,31072480,2,"<pre><code>  NSUInteger currentTime = [[NSDate date] timeIntervalSince1970];
+  NSLog(@""%d"",currentTime);
+</code></pre>
+
+<p>this gives me correct value of current time in Milliseconds .</p>
+"
+1594903,31072642,327565.0,2015-06-26T11:57:52Z,31072480,1,"<p>Use <code>NSTimeInterval</code> instead of <code>NSUInteger</code>although <code>NSUInteger</code> is also giving the correct answer</p>
+"
+1594910,31072853,5047165.0,2015-06-26T12:09:55Z,31072480,0,"<pre><code>NSUInteger currentTime = [[NSDate date] timeIntervalSince1970];
+NSLog(@""timeIntervalSince:%lu"",(unsigned long)currentTime);
+</code></pre>
+
+<p>as currentTime gives a unsigned long value..</p>
+"
+983930,18188539,2675162.0,2013-08-12T13:41:16Z,18157470,3,"<p>Doing the requests sequentially will take longer than doing the requests in parallel.  You'll want to do concurrent requests to speed this up.</p>
+
+<p>Take a look at <a href=""http://stackoverflow.com/a/7681663"">this answer</a> using <a href=""http://www.php.net/manual/en/function.curl-multi-init.php"" rel=""nofollow"">curl_multi</a>.</p>
+"
+378733,6586127,791553.0,2011-07-05T16:52:57Z,6586040,2,"<p>A simple python fix would be to instead use</p>
+
+<pre><code>latest_post = Post.objects.order_by('-date_created')[0:1]
+</code></pre>
+"
+378738,6586226,310431.0,2011-07-05T17:02:25Z,6586040,15,"<p>Nothing strange about that, it's completely expected behavior.  An empty list (or queryset specifically in this case) evaluates to False so you never index into the queryset.  While if you try to index into an empty list (like you do with the first approach) it will throw an IndexError.</p>
+
+<p>What you've written will work, but it's not the best imo.  A better way to write this would be like so</p>
+
+<pre><code>try:
+    latest_post = Post.objects.order_by('-date_created')[0]
+except IndexError:
+    latest_post = None
+</code></pre>
+
+<p>This is a more pythonic way of writing it and is easier to read and understand what you're trying to do.</p>
+
+<p>Or even better</p>
+
+<pre><code>try:
+    latest_post = Post.objects.latest('date_created')
+except Post.DoesNotExist:
+    latest_post = None
+</code></pre>
+
+<p>Notice in this second example that it uses the latest() queryset method.  Also note that the argument is simply the fieldname and not -fieldname.  Also you can even specify in your models Meta class <code>get_latest_by = 'date_created'</code> and then the line simply becomes <code>latest_post = Post.objects.latest()</code> without even needing to specify the fieldname argument</p>
+"
+378739,6586242,459778.0,2011-07-05T17:04:08Z,6586040,2,"<pre><code>latest_post = Post.objects.order_by('-date_created')[:1]
+if latest_post:
+    latest_post = latest_post[0]
+</code></pre>
+
+<p>This will not throw an exception and you can still check for a empty list condition on latest_post.</p>
+
+<p>Your problem arises from using an absolute index IE: [0] which may or may not exist.  By using a slice [:1] you are saying you want a list with the first item in the list if it exists... if it doesn't exist you will simply get an empty list.</p>
+"
+1912336,37916000,4746376.0,2016-06-20T06:38:35Z,37915900,0,"<p>This thing known as badge view </p>
+
+<p><a href=""https://android-arsenal.com/details/1/715"" rel=""nofollow""><strong>Library Link</strong></a></p>
+
+<p><a href=""http://i.stack.imgur.com/fZrT1.png"" rel=""nofollow""><img src=""http://i.stack.imgur.com/fZrT1.png"" alt=""enter image description here""></a></p>
+"
+1912340,37916036,6272369.0,2016-06-20T06:39:56Z,37915900,0,"<p>You can implement it using RecyclerView. Take a look at these series of tutorial:</p>
+
+<p><a href=""https://www.youtube.com/watch?v=Wq2o4EbM74k"" rel=""nofollow"">https://www.youtube.com/watch?v=Wq2o4EbM74k</a></p>
+"
+1912347,37916253,6462519.0,2016-06-20T06:55:09Z,37915900,0,"<p>Lets first define titles and icons of the navigation drawer . So open your projects strings.xml file and add two string arrays .</p>
+
+<p>After that we design xml of item of the navigation drawer. This layout is inflated every time we add a new item in the navigation drawer .</p>
+
+<p>check this link i hope is usefull for you:<a href=""https://androidbelieve.com/material-navigation-drawer-with-header/"" rel=""nofollow"">https://androidbelieve.com/material-navigation-drawer-with-header/</a></p>
+"
+1913256,37936509,5629999.0,2016-06-21T05:50:54Z,37915900,0,"<p>Got the solution, just needed to add <strong>app:actionLayout</strong> in each of my menuItem and pass the layout in it.</p>
+
+<p>And you can instantiate each of the widgets using</p>
+
+<pre><code>navigationView.getMenu().findItem(menuitemId).getActionView().findViewById(widgetId)
+</code></pre>
+"
+1731505,33990338,3002139.0,2015-11-30T01:48:16Z,33990320,4,"<p><code>std::map::operator[]</code> can modify the map as it inserts the argument key if not already present and can thus not be invoked on constant objects.</p>
+
+<p>Use <code>std::map::at()</code> instead.</p>
+"
+283228,4879980,204042.0,2011-02-02T21:19:06Z,4866970,2,"<p>The artifacts are archived when the build is done. So I don't know how you want to ""archive from all builds""? </p>
+
+<p>Nevertheless, when you are in your job configuration, go to ""Discard Old Builds"" (somewhere at the beginning of the page) and click Advanced button. There you will have the option to configure how long you want to keep your build artifacts, without deleting the run itself. If you go for number of builds, the last x builds will have their artifacts archived. If the last ten builds failed. You kind of have a problem.</p>
+
+<p>Another option would be to go to the Advanced section of ""Archive the artifacts"" and check ""Discard all but the last successful/stable artifact to save disk space"".</p>
+"
+295071,5093596,481800.0,2011-02-23T16:17:33Z,4866970,1,"<p>Actually to keep a given number of artifacts you must select ""Discard old builds"" (at the very beginning of the configuration page) and input the number of build artifacts to archives. You can also consider the number of days to keep.</p>
+
+<p>You can set a build be kept forever, either manually or by plugin with an automated 'release' or 'promoted' build.</p>
+
+<p>I agree this is confusing.</p>
+"
+523089,9206366,314488.0,2012-02-09T06:26:39Z,9206290,0,"<p>if you just want to load contenct than make use of jquery ajax function or noraml ajax to load data in you page </p>
+
+<p>Example </p>
+
+<pre><code>$(""#result"").load(""AjaxPages/Page.aspx"", function () {
+    alert(""Page.html has been loaded successfully!"")
+});
+</code></pre>
+"
+523155,9207759,159270.0,2012-02-09T08:52:05Z,9206290,0,"<p>Use iframes. Pleace for example this code inside the homep.aspx. This is only the idea, find how to show it with out border and with out scrool bars, and also how to fit it in place.</p>
+
+<pre><code>&lt;iframe src=""add.aspx""&gt;&lt;/iframe&gt;
+</code></pre>
+
+<p><a href=""http://www.w3schools.com/tags/tag_iframe.asp"" rel=""nofollow"">http://www.w3schools.com/tags/tag_iframe.asp</a><br>
+<a href=""http://htmlhelp.com/reference/html40/special/iframe.html"" rel=""nofollow"">http://htmlhelp.com/reference/html40/special/iframe.html</a></p>
+
+<h2>ajax and iframe</h2>
+
+<p>Use ajax if you have some informations only to show. Use iframe if you also need independend post backs that enters data.</p>
+
+<p>ajax is better if you care to have only one page, not working with out javascript, and maybe you need to add more ajax to make more thinks with the data that you get.</p>
+
+<p>iframe is fast, but 'dirty' because is not seo friendly, a user can open content from iframe alone, etc.</p>
+"
+300259,5186745,384838.0,2011-03-03T21:26:11Z,5186470,1,"<p>That looks right at first glance. </p>
+
+<p>How are you determining that it is ""off""?. Have you accounted for the registration point on ""tank""? Is it off consistently in the same vectors or is it random? I don't suppose that you have the swf posted on the web somewhere?</p>
+"
+1416649,27262420,78561.0,2014-12-03T02:02:20Z,16207840,0,"<p>You can get the c# binding for GTK3 from:</p>
+
+<p><a href=""https://github.com/mono/gtk-sharp/releases"" rel=""nofollow"">https://github.com/mono/gtk-sharp/releases</a></p>
+
+<p>This includes a windows installer.</p>
+
+<p>These bindings are pre release and are versioned as Gtk# 2.99.3</p>
+
+<p>My understanding is that the version will change to 3.0 when it is released as stable.</p>
+"
+937037,17247633,1917782.0,2013-06-22T05:32:20Z,17247600,0,"<p>Why You not added <code>UINavigationController</code> To <strong>""A""</strong> ?? It is more better and Easy then your Logic.</p>
+
+<p>Just Follow my code.</p>
+
+<pre><code>- (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
+{
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    // Override point for customization after application launch.
+
+    self.AViewController = [[AViewController alloc] init];
+    self.navCon = [[UINavigationController alloc] initWithRootViewController:self.AViewController];
+    self.window.rootViewController = self.navCon;
+
+    [self.window makeKeyAndVisible];
+    return YES;
+}
+</code></pre>
+"
+937048,17247894,1709337.0,2013-06-22T06:14:22Z,17247600,1,"<p>If ""A presents B"" by presentViewController:animated:completion: then you can back to A by something like this:</p>
+
+<pre><code>- (void) back: (id)sender
+{
+  [[self presentingViewController] dismissViewControllerAnimated:YES completion:nil];
+}
+</code></pre>
+"
+1629409,31803593,4873300.0,2015-08-04T07:51:53Z,31794470,0,"<p>Have you tried this?</p>
+
+<pre><code>&lt;blueprint 
+xmlns:ext=""http://aries.apache.org/blueprint/xmlns/blueprint-ext/v1.0.0"" 
+...&gt; 
+
+   &lt;!-- Load system property --&gt; 
+   &lt;ext:property-placeholder /&gt; 
+
+   &lt;bean ...&gt;&lt;property name=""foobar"" value=""${foobar}""/&gt;&lt;/bean&gt; 
+
+&lt;/blueprint&gt; 
+</code></pre>
+
+<p>I've found it here: <a href=""http://karaf.922171.n3.nabble.com/Get-environment-variable-td4025807.html"" rel=""nofollow"">http://karaf.922171.n3.nabble.com/Get-environment-variable-td4025807.html</a></p>
+"
+1630079,31818021,736643.0,2015-08-04T19:50:23Z,31794470,0,"<p>You can access to karaf enviroment vars using karaf.[something], but in camel you can access using KARAF_[SOMETHING]</p>
+
+<p>Thanks Claus Ibsen for pointing the differences in the scopes...</p>
+
+<p>nevertheless, this camel/osgi thing is really weird...It is hard to tame... </p>
+"
+1019001,18900865,1783413.0,2013-09-19T17:03:57Z,18900720,10,"<p>You can view the downloaded web fonts using the Network tab:</p>
+
+<p><a href=""http://i.stack.imgur.com/Bnq4c.png"" rel=""nofollow""><img src=""http://i.stack.imgur.com/Bnq4c.png"" alt=""Google Chrome Network tab showing downloaded web fonts""></a></p>
+"
+1019007,18900956,175063.0,2013-09-19T17:09:05Z,18900720,0,"<p>Is this what you are looking for?</p>
+
+<p><img src=""http://i.stack.imgur.com/UHrnA.png"" alt=""enter image description here""></p>
+"
+721600,12960177,1588648.0,2012-10-18T17:17:12Z,12959950,1,"<p>Using jQuery you can do it this way:</p>
+
+<p>HTML</p>
+
+<pre><code>&lt;input type=""text"" id=""output"" /&gt;
+
+&lt;ul class=""buttons""&gt;
+    &lt;li&gt;&lt;a data-value=""1""&gt;1&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a data-value=""2""&gt;2&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a data-value=""3""&gt;3&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a data-value=""4""&gt;4&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a data-value=""5""&gt;5&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a data-value=""6""&gt;6&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a data-value=""7""&gt;7&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a data-value=""8""&gt;8&lt;/a&gt;&lt;/li&gt;
+    &lt;li&gt;&lt;a data-value=""9""&gt;9&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</code></pre>
+
+<p>CSS</p>
+
+<pre><code>#output { font-size:1.6em; }
+
+ul.buttons {
+    max-width: 300px;
+}
+ul.buttons li {
+    background: #eee;
+    float: left;
+    margin: 1% 1% 0 0;
+    width: 30%;
+}
+ul.buttons li a {
+    cursor: pointer;
+    display: block;
+    height: 2em;
+    line-height: 2em;
+    text-align: center;
+}
+</code></pre>
+
+<p>JavaScript</p>
+
+<pre><code>$( document ).ready( function () {
+
+    var $output = $( '#output' )
+
+    $( 'ul.buttons a' ).unbind( 'click' ).bind( 'click', function () {
+
+        var value = $( this ).attr( 'data-value' );
+        $output.val( $output.val() + value );
+
+    } );
+
+} );
+</code></pre>
+
+<p>Fiddle: <a href=""http://jsfiddle.net/kboucher/wJ9R8/"" rel=""nofollow"">http://jsfiddle.net/kboucher/wJ9R8/</a></p>
+"
+504431,8867941,1121249.0,2012-01-15T06:21:05Z,8867920,-2,"<p>I think this can be achieved by alias directive</p>
+
+<pre><code>Alias / /physical/path/to/file/apps/view/home.php
+</code></pre>
+"
+504433,8867979,586820.0,2012-01-15T06:29:52Z,8867920,1,"<p>maybe this in htaccess?</p>
+
+<pre><code>redirect 301 / http://localhost/app/view/home.php
+</code></pre>
+"
+1720008,33742783,3506946.0,2015-11-16T19:10:56Z,33742420,4,"<p>You are getting <code>java.lang.IllegalArgumentException: Can only use lower 8 bits for requestCode</code> Error because you are using <code>-1(PackageManager.PERMISSION_DENIED)</code> as <code>requestCode</code> for <code>requestPermissions</code> method.</p>
+
+<p>To make it work use any <code>requestCode</code> between <strong>1</strong> to <strong>255</strong>.</p>
+
+<pre><code>public final int got_camera = 24;
+</code></pre>
+"
+1211900,22844580,1689624.0,2014-04-03T17:16:07Z,22844450,1,"<pre><code>grep ""KING KING"" &lt;your file&gt; | tail -n 1
+</code></pre>
+
+<p>You said you only wanted the most recent line containing KING KING. You can use tail -n 1 to grab just the last one, which is the most recent one assuming your file appends, not prepends, lines.</p>
+
+<p>If it prepends you can use <code>head</code> instead.</p>
+
+<p>EDIT:</p>
+
+<p>If you would like to look at the potentially new KING KING lines that may come in as your original log updates, you can use <code>tail -f</code> instead up there. </p>
+
+<p>Otherwise, if you want just the latest one but you want it to update, you're going to have to keep polling it over and over. </p>
+
+<p>Example:</p>
+
+<pre><code>while true
+do
+    grep ""KING KING"" &lt;your file&gt; | grep -vf &lt;your temporary file&gt;
+    grep ""KING KING"" &lt;your file&gt; &gt; &lt;your temporary file&gt;
+    sleep 2
+done
+</code></pre>
+
+<p>That's just off the top of my head. It might need some tweaks but I don't have access to a terminal right now. Also, you don't need to rewrite temp file every time, and you can use <code>cat</code> to just append to the end of your temp file but I'll leave it to you to work that one out though. :)</p>
+"
+1211919,22844865,1364218.0,2014-04-03T17:30:29Z,22844450,1,"<p>You could keep a temporary file with the day's previous matches in:</p>
+
+<pre><code>touch matches.txt
+grep ""KING KING"" output.log | grep -vFf matches.txt | tee -a matches.txt
+</code></pre>
+
+<p>This will filter out any previous matches stored in <code>matches.txt</code>, and also appends the new matches to that file. You will need to empty this at midnight, presumably.</p>
+"
+670096,11961434,,2012-08-14T21:58:09Z,11961410,5,"<p>The object is not what is expected. Consider:</p>
+
+<pre><code>k = [['a'], ['ab'], ['abc']];
+a = k[2]    // -&gt; ['abc']
+a.length    // -&gt; 1 (length of array)
+b = k[2][0] // -&gt; 'abc'
+b.length    // -&gt; 3 (length of string)
+</code></pre>
+"
+670097,11961443,251760.0,2012-08-14T21:59:08Z,11961410,1,"<p>In your example, <code>k</code> is not a normal array containing strings. It contains sub-arrays, which contain the strings. You should declare <code>k</code> this way:</p>
+
+<pre><code>k = ['a', 'ab', 'abc'];
+</code></pre>
+
+<p>If you do want to use your own declaration, you could do this:</p>
+
+<pre><code>alert(k[2][0].length);â
+</code></pre>
+"
+1007871,18673984,1353158.0,2013-09-07T13:48:43Z,18673900,1,"<p>Try putting your image into a container like so:</p>
+
+<p>HTML:</p>
+
+<pre><code>&lt;div&gt;
+    &lt;img src=""http://www.testimoniesofheavenandhell.com/Animal-Pictures/wp-content/uploads/2013/04/Dog-Animal-Picture-Siberian-Husky-Puppy-HD-Wallpaper.jpg"" /&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>CSS:</p>
+
+<pre><code>div
+{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+}
+
+div &gt; img
+{
+    width: 300px;
+}
+</code></pre>
+
+<p>Here's a <a href=""http://jsfiddle.net/J7a5R/4/"" rel=""nofollow"">fiddle</a>.</p>
+"
+1007881,18674081,1777417.0,2013-09-07T14:01:30Z,18673900,0,"<pre><code>&lt;div style=""specify your dimension:overflow:hidden""&gt;
+    &lt;div style=""margin-top:-50px""&gt;
+       &lt;img ...  /&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>The above will crop 50px from the top of the image.  You may want to compute to come up wit a top margin that will fit your requirements based on the dimension of the image.</p>
+
+<p>To crop from the bottom simply specify the height of the outer div and remove the inner div.  Apply the same principle to crop from the sides.</p>
+"
+1007887,18674139,2084581.0,2013-09-07T14:08:20Z,18673900,1,"<p><code>clip</code> property with <code>position</code> may help you</p>
+
+<pre><code>a{
+position:absolute;
+clip:rect(0px,200px,200px,0px);
+}
+
+a img{
+position:relative;
+left:-50%;
+top:-50%;
+ }
+</code></pre>
+
+<p><strong><a href=""http://jsfiddle.net/A8wwm/4/"" rel=""nofollow"">WORKING FIDDLE</a></strong></p>
+"
+1007888,18674144,1947677.0,2013-09-07T14:08:49Z,18673900,59,"<p><a href=""http://jsfiddle.net/itay1989/J7a5R/10/""><strong>jsFiddle Demo</strong></a></p>
+
+<pre><code>div
+{
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    margin: 10px;
+    position: relative;
+}
+img {
+    position: absolute;
+    margin: auto; 
+    min-height: 100%;
+    min-width: 100%;
+
+    /* For the following settings we set 100%, but it can be higher if needed 
+    See the answer's update */
+    left: -100%;
+    right: -100%;
+    top: -100%;
+    bottom: -100%;
+}
+</code></pre>
+
+<hr>
+
+<h1>Update - Improvement</h1>
+
+<p>As <a href=""http://stackoverflow.com/users/87015/salman-a"">Salman A</a> mentioned in the comments, the original solution has a flaw - it doesn't work well if the <em>img</em>'s height or width (or both) are (at least) 3 times* larger than the containing <em>div</em>. </p>
+
+<p>The problem is shown <a href=""http://jsfiddle.net/itay1989/J7a5R/768/"">here</a>.</p>
+
+<p>Salman also gave a really simple and elegant fix. We just need to update the <em>img</em>'s position coordinates (top, left, bottom, right) to work with higher percents. The following fix works with <em>1000%</em>, but of course you can adjust it according to your needs.</p>
+
+<p>The fix is shown <a href=""http://jsfiddle.net/itay1989/J7a5R/769/"">here</a>.</p>
+
+<p><a href=""http://i.stack.imgur.com/AQOyv.jpg""><img src=""http://i.stack.imgur.com/AQOyv.jpg"" alt=""Before and after the fix""></a></p>
+
+<p>* The reason is that when we set the <em>img</em>'s <em>left</em> and <em>right</em> (or: <em>top</em> and <em>bottom</em>) coordinates to be <em>-100%</em> (of the containing <em>div</em>), the overall allowed <em>width</em> (or: <em>height</em>) of the <em>img</em>, can be at most <em>300%</em> of the containing <em>div</em>'s <em>width</em> (or: <em>height</em>), because it's the sum of the <em>div</em>'s width (or: <em>height</em>) and the <em>left</em> and <em>right</em> (or: <em>top</em> and <em>bottom</em>) coordinates.</p>
+"
+1180393,22191883,3382460.0,2014-03-05T08:02:19Z,18673900,13,"<pre><code>&lt;div&gt;
+    &lt;img class=""crop"" src=""http://lorempixel.com/500/200""/&gt;
+&lt;/div&gt;
+
+&lt;img src=""http://lorempixel.com/500/200""/&gt;
+
+
+
+
+div {
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    margin: 10px;
+    position: relative;
+}
+.crop {
+    position: absolute;
+    left: -100%;
+    right: -100%;
+    top: -100%;
+    bottom: -100%;
+    margin: auto; 
+    height: auto;
+    width: auto;
+}
+</code></pre>
+
+<p><a href=""http://jsfiddle.net/J7a5R/56/"">http://jsfiddle.net/J7a5R/56/</a></p>
+"
+1324476,25259954,3638199.0,2014-08-12T08:49:06Z,18673900,1,"<p>HTML:</p>
+
+<pre><code>&lt;div class=""thumbnail""&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p>CSS:</p>
+
+<pre><code>.thumbnail { 
+background: url(image.jpg) 50% 50% no-repeat; /* 50% 50% centers image in div */
+width: 250px;
+height: 250px;
+}
+</code></pre>
+"
+1635809,31943908,1025702.0,2015-08-11T13:59:28Z,18673900,1,"<p>With the caveat of it not working in IE and some older mobile browsers, a simple <code>object-fit: cover;</code> is often the best option.</p>
+
+<pre><code>.cropper
+  width: 100px;
+  height: 100px;
+  position: relative;
+  overflow: hidden;
+.cropper img
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+</code></pre>
+
+<p>Without the <code>object-fit: cover</code> support, the image will be stretched oddly to fit the box so, if support for IE is needed, I'd recommend using one of the other answers' approach with <code>-100%</code> top, left, right and bottom values as a fallback.</p>
+
+<p><a href=""http://caniuse.com/#feat=object-fit"" rel=""nofollow"">http://caniuse.com/#feat=object-fit</a></p>
+"
+1781617,35063374,1727929.0,2016-01-28T13:52:25Z,18673900,5,"<p><code>object-fit</code> property does the magic. On <a href=""https://jsfiddle.net/dnk7oc6u/1/"">JsFiddle</a></p>
+
+<p><strong>CSS</strong></p>
+
+<pre><code>.image {
+  width: 160px;
+  height: 160px;
+}
+.object-fit_fill {
+  object-fit: fill
+}
+
+.object-fit_contain {
+  object-fit: contain
+}
+
+.object-fit_cover {
+  object-fit: cover
+}
+
+.object-fit_none {
+  object-fit: none
+}
+
+.object-fit_scale-down {
+  object-fit: scale-down
+}
+</code></pre>
+
+<p><strong>HTML</strong></p>
+
+<pre><code>&lt;div class=""original-image""&gt;
+  &lt;p&gt;original image&lt;/p&gt;
+  &lt;img src=""http://lorempixel.com/500/200""&gt;
+&lt;/div&gt;
+
+&lt;div class=""image""&gt;
+  &lt;p&gt;object-fit: fill&lt;/p&gt;
+  &lt;img class=""object-fit_fill"" src=""http://lorempixel.com/500/200""&gt;
+&lt;/div&gt;
+
+&lt;div class=""image""&gt;
+  &lt;p&gt;object-fit: contain&lt;/p&gt;
+  &lt;img class=""object-fit_contain"" src=""http://lorempixel.com/500/200""&gt;
+&lt;/div&gt;
+
+&lt;div class=""image""&gt;
+  &lt;p&gt;object-fit: cover&lt;/p&gt;
+  &lt;img class=""object-fit_cover"" src=""http://lorempixel.com/500/200""&gt;
+&lt;/div&gt;
+
+&lt;div class=""image""&gt;
+  &lt;p&gt;object-fit: none&lt;/p&gt;
+  &lt;img class=""object-fit_none"" src=""http://lorempixel.com/500/200""&gt;
+&lt;/div&gt;
+
+&lt;div class=""image""&gt;
+  &lt;p&gt;object-fit: scale-down&lt;/p&gt;
+  &lt;img class=""object-fit_scale-down"" src=""http://lorempixel.com/500/200""&gt;
+&lt;/div&gt;
+</code></pre>
+
+<p><strong>Result</strong></p>
+
+<p><a href=""http://i.stack.imgur.com/HCG3I.png""><img src=""http://i.stack.imgur.com/HCG3I.png"" alt=""enter image description here""></a></p>
+"
+30083,548099,10492.0,2009-02-13T23:28:17Z,548090,16,"<p>The big thing about SP_EXECUTESQL is that it allows you to create parameterized queries which is very good if you care about SQL injection.</p>
+"
+30084,548103,16076.0,2009-02-13T23:29:49Z,548090,69,"<p><code>sp_executesql</code> is more likely to promote query plan reuse. When using <code>sp_executesql</code>, parameters are explicitly identified in the calling signature. This excellent article descibes this <a href=""http://technet.microsoft.com/en-au/library/cc966425.aspx"">process</a>.</p>
+
+<p>The oft cited reference for many aspects of dynamic sql is Erland Sommarskog's must read: ""<a href=""http://www.sommarskog.se/dynamic_sql.html"">The Curse and Blessings of Dynamic SQL</a>"".</p>
+"
+746817,13452985,1835648.0,2012-11-19T11:37:45Z,548090,-3,"<ol>
+<li>Declare the variable </li>
+<li>Set it by your command and add dynamic parts like use parameter values of sp(here @IsMonday and @IsTuesday are sp params) </li>
+<li><p>execute the command </p>
+
+<pre><code>declare  @sql varchar (100)
+set @sql ='select * from #td1'
+
+if (@IsMonday+@IsTuesday !='')
+begin
+set @sql= @sql+' where PickupDay in ('''+@IsMonday+''','''+@IsTuesday+''' )'
+end
+exec( @sql)
+</code></pre></li>
+</ol>
+"
+931814,17144274,379641.0,2013-06-17T09:25:38Z,548090,3,"<p>Microsoft's <a href=""http://msdn.microsoft.com/en-us/library/ms175170%28v=sql.105%29.aspx"" rel=""nofollow"">Using sp_executesql</a> article recommends using <code>sp_executesql</code> instead of <code>execute</code> statement.</p>
+
+<blockquote>
+  <p>Because this stored procedure supports <strong>parameter substitution</strong>,
+  sp_executesql is more versatile than EXECUTE; and because
+  sp_executesql generates execution plans that are more likely to be
+  reused by SQL Server, sp_executesql is <strong>more efficient</strong> than EXECUTE.</p>
+</blockquote>
+
+<p>So, the take away: <strong>Do not use <code>execute</code> statement</strong>. Use <code>sp_executesql</code>.</p>
+"
+1118932,20949585,1921765.0,2014-01-06T12:00:18Z,548090,1,"<p>I would always use sp_executesql these days, all it really is is a wrapper for EXEC which handles parameters &amp; variables.</p>
+
+<p>However do not forget about OPTION RECOMPILE when tuning queries on very large databases, especially where you have data spanned over more than one database and are using a CONSTRAINT to limit index scans.</p>
+
+<p>Unless you use OPTION RECOMPILE, SQL server will attempt to create a ""one size fits all"" execution plan for your query, and will run a full index scan each time it is run. </p>
+
+<p>This is much less efficient than a seek, and means it is potentially scanning entire indexes which are constrained to ranges which you are not even querying :@</p>
+"
+1476360,28552065,1128290.0,2015-02-16T23:20:10Z,28551810,1,"<p>I think your model is missing the <code>idAttribute</code>.</p>
+
+<pre><code>define([
+    'underscore',
+    'handlebars',
+    'backbone'
+], function(_, Handlebars, Backbone){
+
+    var ClientModel = Backbone.Model.extend({
+
+        idAttribute: 'ID',
+
+        defaults: {
+            'ID' : '',
+            'name' : '',
+            'birthdate' : '',
+            'email' : ''
+        }
+    });
+});
+</code></pre>
+
+<p>By default, Backbone will look for a property name of lowercase <code>id</code> to uniquely identify each of your models unless you specifically tell it otherwise.</p>
+"
+1795765,35373137,2695387.0,2016-02-12T22:16:29Z,35372850,0,"<p>You're trying to access to <code>request.response</code> before it has been set, remember that Alamofire works <strong>asynchronously</strong>, so you have to return in your case the JSON using closures, but remember that Alamofire also returns an error, so I strongly recommend use the following code instead:</p>
+
+<pre><code>func getJSON(URLToRequest: String, completionHandler: (inner: () throws -&gt; JSON?) -&gt; ()) {
+
+   let comp:String = (prefs.valueForKey(""COMPANY"") as? String)!
+   let params = [""company"":comp]
+
+   let request = Alamofire.request(.POST, URLToRequest, parameters: params).responseJSON {
+    response in
+
+    // JSON to return
+    var json : JSON?
+
+    switch response.result {
+    case .Success:
+
+        if let value = response.result.value {
+            json = JSON(value)
+        }
+
+        completionHandler(inner: { return json })
+
+    case .Failure(let error):
+        completionHandler(inner: { throw error })
+    }
+} 
+</code></pre>
+
+<p>The trick is that the <code>getJSON</code> function takes an additional closure called <code>'inner'</code> of the type <code>() throws -&gt; JSON?</code>. This closure will either provide the result of the computation, or it will throw. The closure itself is being constructed during the computation by one of two means: </p>
+
+<ul>
+<li>In case of an error: <code>inner: {throw error}</code></li>
+<li>In case of success: <code>inner: {return json}</code></li>
+</ul>
+
+<p>And then you can call it like in this way:</p>
+
+<pre><code>self.getJSON(""urlTORequest"") { (inner: () throws -&gt; JSON?) -&gt; Void in
+  do {
+     let result = try inner()
+  } catch let error {
+     print(error)
+  }
+}
+</code></pre>
+
+<p>I hope this help you.</p>
+"
+361589,6275105,778990.0,2011-06-08T06:43:59Z,6274960,0,"<p>Use polymorphism.</p>
+
+<pre><code>enum Foo {
+    VALUE1 {
+        @Override public void someMethod() {...}
+    },
+    VALUE2 {
+        @Override public void someMethod() {...}
+    },
+    VALUE 3 {
+        @Override public void someMethod() {...}
+    };
+
+    public abstract void someMethod();
+
+}
+</code></pre>
+"
+341459,5916105,230513.0,2011-05-06T19:26:01Z,5915910,5,"<p>Just use a <a href=""http://www.adaic.org/resources/add_content/standards/05rm/html/RM-3-5-4.html"" rel=""nofollow"">modular type</a>, for which the operators do unsigned arithmetic.</p>
+
+<pre><code>type Word is mod 2 ** 16; for Word'Size use 16;
+</code></pre>
+
+<p>Addendum: For modular types, the predefined <a href=""http://www.adaic.org/resources/add_content/standards/05rm/html/RM-4-5-1.html#I2594"" rel=""nofollow"">logical operators</a> operate on a bit-by-bit basis. Moreover, ""the <a href=""http://www.adaic.org/resources/add_content/standards/05rm/html/RM-4-5-3.html#I2652"" rel=""nofollow"">binary adding operators + and â</a> on modular types include a final reduction modulo the modulus if the result is outside the base range of the type."" The <a href=""http://www.adapower.com/index.php?Command=Class&amp;ClassID=Algorithms&amp;CID=254"" rel=""nofollow""><code>function Update_Crc</code></a> is an example.</p>
+
+<p>Addendum: <a href=""http://www.adaic.org/resources/add_content/standards/05rm/html/RM-3-5-4.html"" rel=""nofollow"">Â§3.5.4 Integer Types, Â¶19</a> notes that for modular types, the results of the <a href=""http://www.adaic.org/resources/add_content/standards/05rm/html/RM-4-5.html"" rel=""nofollow"">predefined operators</a> are reduced modulo the modulus, including the <a href=""http://www.adaic.org/resources/add_content/standards/05rm/html/RM-4-5-3.html#I2652"" rel=""nofollow"">binary adding operators + and â</a>. Also, the shift functions in <a href=""http://www.adaic.org/resources/add_content/standards/05rm/html/RM-B-2.html"" rel=""nofollow"">Â§B.2 The Package Interfaces</a> are available for modular types. Taken together, the arithmetical, logical and shift capabilities are sufficient for most bitwise operations. </p>
+"
+1283426,24377821,2869218.0,2014-06-24T03:17:31Z,24373670,2,"<p>To answer your question, basically we need to find where is <code>page/html/head.phtml</code> file is defined. Answer is in layout files, more specifically in <code>page.xml</code>. Location is :<code>app/design/frontend/&lt;your_package&gt;/&lt;your_theme&gt;/layout/page.xml</code>. Inside that file, under the handle <code>&lt;default&gt;</code>, you can see</p>
+
+<pre><code>&lt;default translate=""label"" module=""page""&gt;
+    &lt;label&gt;All Pages&lt;/label&gt;
+    &lt;block type=""page/html"" name=""root"" output=""toHtml"" template=""page/3columns.phtml""&gt;
+
+        &lt;block type=""page/html_head"" name=""head"" as=""head""&gt;
+            &lt;action method=""addJs""&gt;&lt;script&gt;prototype/prototype.js&lt;/script&gt;&lt;/action&gt;
+            &lt;action method=""addJs""&gt;&lt;script&gt;lib/ccard.js&lt;/script&gt;&lt;/action&gt;
+            &lt;action method=""addJs""&gt;&lt;script&gt;prototype/validation.js&lt;/script&gt;&lt;/action&gt;
+            &lt;action method=""addJs""&gt;&lt;script&gt;scriptaculous/builder.js&lt;/script&gt;&lt;/action&gt;
+            -------
+        &lt;/block&gt;
+         ---------
+    &lt;/block&gt;
+&lt;/default&gt;
+</code></pre>
+
+<p>Where</p>
+
+<ul>
+<li><p><code>&lt;default&gt;</code> is known as layout handler. Blocks that comes under this
+handler will show in every page in magento.</p></li>
+<li><p>block <code>page/html</code> is your root block. It is the parent block of all other blocks. There should be only one root block per page. You can reference this block using its name <code>root</code> in your custom layout files, in order to alter anything inside this block.</p></li>
+<li><p>block <code>page/html_head</code> is the block which is referenced in your question. This block is use to hold the <code>&lt;head /&gt;</code> section of your page (in terms of html tree). You can see that magento loads some of its core javascripts and css inside this block. </p></li>
+</ul>
+
+<p>But <code>page/html_head</code> is not set with any template as you already see. Then how <code>page/html/head.phtml</code> came to the seen ??? It should set somewhere in magento. So let us go the backend side of this block, where all of its block methods are defined. The file location is <code>app/code/core/Mage/Page/Block/Html/Head.php</code>. Yes we found out it.</p>
+
+<pre><code>class Mage_Page_Block_Html_Head extends Mage_Core_Block_Template
+{
+/**
+ * Initialize template
+ *
+ */
+protected function _construct()
+{
+    $this-&gt;setTemplate('page/html/head.phtml');
+}
+ ------
+}
+</code></pre>
+
+<p>So Magento set template for <code>page/html_head</code> block here, through <code>_construct()</code> method. Change it to your template location </p>
+
+<pre><code> protected function _construct()
+ {
+    $this-&gt;setTemplate('app/design/frontend/default/customPackage/template/catalog/html/head.phtml');
+ }
+</code></pre>
+
+<p>It will now set location of <code>page/html_head</code> block to your custom template file.</p>
+
+<p>If you want to the block file is also untouched, you can rewrite this block file using your own module. In your config.xml file, you should use this </p>
+
+<pre><code>&lt;config&gt;
+    &lt;global&gt;
+        &lt;blocks&gt;
+            &lt;page&gt;
+                &lt;rewrite&gt;
+                    &lt;html_head&gt;Namespace_Modulename_Block_Html_Head&lt;/html_head&gt;
+                &lt;/rewrite&gt;
+            &lt;/page&gt;
+        &lt;/blocks&gt;
+    &lt;/global&gt;
+&lt;/config&gt;
+</code></pre>
+
+<p>and you should define a block file in <code>app/code/local/Namespace/Moduleame/Block/Html/Head.php</code></p>
+
+<pre><code>&lt;?php
+class Namespace_Modulename_Block_Html_Head extends Mage_Page_Block_Html_Head 
+{
+     protected function _construct()
+     {
+        $this-&gt;setTemplate('app/design/frontend/default/customPackage/template/catalog/html/head.phtml');
+     }
+}
+</code></pre>
+
+<p>This way core files are untouched and still you can alter the template path.</p>
+"
+1905602,37767508,6160119.0,2016-06-11T19:01:11Z,37767110,2,"<p>For this particular example, the following code would do the trick:</p>
+
+<pre><code>result = A*b[:, np.newaxis]
+</code></pre>
+
+<p>For any value of <code>i</code>, try this:</p>
+
+<pre><code>A2, B = np.broadcast_arrays(A, b)
+result = A2*B
+</code></pre>
+"
+903407,16568337,981049.0,2013-05-15T14:52:49Z,16568270,0,"<p>No, it won't get rejected, but to properly future proof your app you should use ""<code>authenticateHandler</code>"" first before you use ""<code>authenticateWithCompletionHandler</code>"".</p>
+
+<p>Best way to do this is to use ""<code>respondsToSelector:</code>"" for ""<code>authenticateHandler</code>"" (which I think should work on a property's accessor).</p>
+"
+520721,9165349,206881.0,2012-02-06T18:39:34Z,9165120,2,"<p>Put the routes you don't want to match before that one (it will stop at the first matched route):</p>
+
+<pre><code>$route['create(/.*)?'] = ""create$1"";
+$route['forum(/.*)?']  = ""forum$1"";
+$route['(^[A-Za-z][A-Za-z0-9]{3,20}+$)'] = ""users/index"";
+</code></pre>
+"
+520747,9165720,268273.0,2012-02-06T19:05:57Z,9165120,1,"<p>Hmm, this is the closest I can get:</p>
+
+<pre><code>^((?:(?!create|Forum)[A-Za-z0-9]){3,20})$
+</code></pre>
+
+<p><a href=""http://rubular.com/r/6wlcag1pj1"" rel=""nofollow"">Example</a></p>
+
+<p>Gotta leave now. Good luck with this!</p>
+"
+683765,12223981,1327034.0,2012-09-01T00:35:26Z,12223820,2,"<p>I'm not familiar with RestSharp. However, it sounds like generics could help you here. Either your class or method needs to accept a type. For example, the signature of your method would change to </p>
+
+<pre><code>public static IRestResponse Update&lt;T&gt;(object objectToUpdate,string apiEndPoint)
+</code></pre>
+
+<p>This would allow you to call the method as:</p>
+
+<pre><code>Update&lt;MyViewModel&gt;(objectToUpdate, apiEndPoint);
+</code></pre>
+
+<p>Your implementation would change from your concrete type to:</p>
+
+<pre><code>var response = client.Execute&lt;T&gt;(request);
+</code></pre>
+
+<p>Overall you could modify your code to something like this:</p>
+
+<pre><code> public static IRestResponse Update&lt;T&gt;(object objectToUpdate,string apiEndPoint)
+{
+    var client = new RestClient(CreateBaseUrl(null))
+    {
+        Authenticator = new HttpBasicAuthenticator(""user"", ""Password1"")
+    };
+    var request = new RestRequest(apiEndPoint, Method.PUT);
+    request.AddObject(objectToUpdate);
+    var response = client.Execute&lt;T&gt;(request);
+    //var response = client.ExecuteDynamic(request);
+    return response;
+}
+</code></pre>
+
+<p>Documentation on C# Generics can be found here: <a href=""http://msdn.microsoft.com/en-us/library/ms379564(v=vs.80).aspx"" rel=""nofollow"">http://msdn.microsoft.com/en-us/library/ms379564(v=vs.80).aspx</a></p>
+"
+1934666,38405344,494134.0,2016-07-15T21:36:36Z,38405210,2,"<p>Change your cron job to run a shell script.  Inside the shell script, set <code>PYTHONPATH</code> and then call the python program.</p>
+
+<p>Change your cron job to this:</p>
+
+<pre><code>/path/to/my_shell_script.sh
+</code></pre>
+
+<p>Contents of <code>my_shell_script.sh</code>:</p>
+
+<pre><code>export PYTHONPATH=something
+python /path/to/py/python/program.py
+</code></pre>
+
+<p>If you don't want to have a separate shell script, you can cram it all into the cron entry, although it can get very long:</p>
+
+<pre><code>PYTHONPATH=something python /path/to/py/python/program.py
+</code></pre>
+"
+330395,5720375,224671.0,2011-04-19T17:38:18Z,5720360,7,"<p>A reference to an array of type T and length N. </p>
+
+<p>This is a natural extension of C's pointer-to-array syntax, and is supported by C++03.</p>
+
+<p>You could use <a href=""http://cdecl.ridiculousfish.com/?q=int%28%26var%29%5B3%5D"" rel=""nofollow"">cdecl.org</a> to try to parse these complex type declarations.</p>
+"
+330398,5720414,415784.0,2011-04-19T17:42:13Z,5720360,2,"<blockquote>
+  <p>What are left and right? Are they references to arrays? Is this code allowed by C++ ISO standard 2003 or later?</p>
+</blockquote>
+
+<p>Yes. They're <em>references</em> to arrays.</p>
+
+<p>That means, you can call <code>swap_impl</code> as:</p>
+
+<pre><code>int a[10]; //array
+int b[10];
+//...
+swap_impl(a,b); //correct
+</code></pre>
+
+<p>But you <strong>cannot</strong> call <code>swap_impl</code> as:</p>
+
+<pre><code>int *a = new int[10]; //pointer 
+int *b = new int[10];
+//...
+swap_impl(a,b); //compilation error
+</code></pre>
+
+<hr>
+
+<p>Also note that you cannot do even this:</p>
+
+<pre><code>int a[10];
+int b[11];
+//...
+swap_impl(a,b); //compilation error - a and b are arrays of different size!
+</code></pre>
+
+<p>Important point:</p>
+
+<p><strong>- Not only arguments must be arrays, but the arrays must be of same size!</strong></p>
+"
+330399,5720422,710131.0,2011-04-19T17:43:36Z,5720360,1,"<p>This is the way to declare a reference to an array of T (of size N) named left and right.  The code is legal C++.</p>
+
+<p>This allows you to pass in:</p>
+
+<pre><code>int ones[5] = { 1,1,1,1,1 };
+int twos[5] = { 2,2,2,2,2 };
+
+swap_impl(ones, twos);
+</code></pre>
+
+<p>Then template type inference will know that you have T = int and N = 5 and do the in-place swap.  If you mismatch the types or the size, you get a handy compilation failure.</p>
+"
+330400,5720439,14065.0,2011-04-19T17:45:06Z,5720360,1,"<p>Yes this is standard C++ allowed from very early on (its basically C with the addition of a reference).</p>
+
+<p>Using typedefs makes it easier to read:</p>
+
+<pre><code>int main()
+{
+    typedef  int (&amp;MyArray)[4];
+    int      data[4];
+    MyArray  dataRef = data;
+}
+</code></pre>
+
+<p>It sort of mirrors the function typedef</p>
+
+<pre><code>typedef int (*MyFunc)();
+</code></pre>
+"
+1362612,26076287,1275169.0,2014-09-27T15:36:46Z,26076210,2,"<p>You define the array with size <code>8x8x8</code> but initializing it with <code>9x8x8</code> elements. Fix the size with:</p>
+
+<pre><code>#define MAP_01_WIDTH 9
+</code></pre>
+
+<p>Or better yet, let the compiler calculate that:</p>
+
+<pre><code>char MAP_01[][MAP_01_DEPTH][MAP_01_HEIGHT] = {...};
+</code></pre>
+"
+693676,12418442,1471341.0,2012-09-14T05:06:25Z,12417780,1,"<p>Even you cleared your 'Upomp_Res' Project , Eclipse will keep Launch configuration for that project. You need to Navigate Run->Run Configuration . Under Android Application right click on 'Upomp_Res' and click remove </p>
+"
+444575,7776459,504179.0,2011-10-15T07:31:12Z,7776320,2,"<p>It would be great, but not, all permission must be granted during installation :-(
+Only exception is access to the google profile, this will be authorized during first access.
+I hope that a future android version will can do that.</p>
+
+<p>Cyanogen can do opposite. You must grant all permissions during install, but you can explicitly remove them later. But it result in application crash very often. This is only for advanced users.</p>
+"
+1736398,34092803,4515690.0,2015-12-04T16:21:48Z,34083200,0,"<p>I just got it! 
+If you installed these two api by CocoaPod, CocoaPod will link each of these two frameworks targets with corresponding libraries. <strong>But one library must also present for Mapbox-iOS-SDK: CoreTelephony.</strong> 
+Click on <strong>Pods</strong> project then select the target as Mapbox-iOS-SDK, in Build Phases tab, go to Link Binary with Libraries and add CoreTelephony.framework for Mapbox. It should work fine.</p>
+
+<p>Also, regarding the Mapbox SDK 3.0.0 api setup, a total of 2 keys should be added to info.plist: </p>
+
+<ul>
+<li><strong>MGLMapboxAccessToken</strong> as String and value should be your Mapbox account token</li>
+<li><strong>NSLocationAlwaysUsageDescription</strong> as String and value is defined by your preference</li>
+</ul>
+
+<p>If using swift, a bridging header should be created as any name you want, then adding following code to it (you don't need to import Parse in bridging header since only Mapbox is written in Objective-C):</p>
+
+<pre><code>#import &lt;Mapbox/Mapbox.h&gt; 
+</code></pre>
+
+<p>Then change <strong>Objective - C Bridging Header</strong> value in <strong>Build Settings</strong> to path where you store your bridging header.h file(example: <strong>Briding-Header.h</strong>). </p>
+
+<p><strong>NOTE:You need to make sure you store bridging header file under the project root folder. If not, you need to first specify which subfolder it is in.</strong></p>
+
+<p>Finally, don't forget to import Mapbox and Parse at where you want to use it:</p>
+
+<pre><code>import Bolts
+import Parse
+import Mapbox
+</code></pre>
+
+<p>Hope this helps!</p>
+"
+1736413,34093107,977220.0,2015-12-04T16:37:03Z,34083200,1,"<p>There's an issue around Core Telephony that's just been fixed and will surface in 3.0.1. In the meantime, you can avoid linking Core Telephony or you can install the preview release like so: </p>
+
+<pre><code>pod 'Mapbox-iOS-SDK', :podspec =&gt; 'https://raw.githubusercontent.com/mapbox/mapbox-gl-native/ios-v3.0.1-pre.1/ios/Mapbox-iOS-SDK.podspec'
+</code></pre>
+
+<p>More here: <a href=""https://github.com/mapbox/mapbox-gl-native/issues/3112"" rel=""nofollow"">https://github.com/mapbox/mapbox-gl-native/issues/3112</a></p>
+"
+1411369,27143600,2534373.0,2014-11-26T07:38:19Z,27142950,0,"<p>Add a notification on viewDidLoad<br>
+ <code>[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(calendarPermissionGranted:) name:@""calendarProcessingCompleted"" object:nil];</code></p>
+
+<p>once the calendar permission granted it will post the notification from here. </p>
+
+<pre><code> __block NSMutableArray* someData;
+    [eventStore requestAccessToEntityType:EKEntityTypeEvent completion:^(BOOL granted, NSError *error) {
+        //We are going to fetch events from today to the next 1 year
+        if (granted) {
+            //Processing
+            [someData addObject:@""Something Added""]
+
+             dispatch_async(dispatch_get_main_queue(), ^{
+                    //notify your class that processing has been done.
+                  [[NSNotificationCenter defaultCenter]   postNotificationName:@""calendarProcessingCompleted"" object:nil userInfo:nil];
+              });
+        }
+}];
+</code></pre>
+
+<p>Capture it in method </p>
+
+<pre><code>-(void)calendarPermissionGranted:(NSNotification *)noti{
+
+}
+</code></pre>
+
+<p>May be this what you are looking for.</p>
+"
+1181484,22213226,3006597.0,2014-03-06T01:46:58Z,22213150,0,"<pre><code>df &lt;- data.frame(Error=skill$Error,NameID=skill$NameID)
+df &lt;- df[order(df$Error, decreasing=TRUE), ]
+</code></pre>
+
+<p>best of luck with whatever you are doing.  Hopefully you have someone else to learn some R from.</p>
+"
+1181485,22213227,3189041.0,2014-03-06T01:47:00Z,22213150,0,"<p>Assuming that <code>skill</code> is a data frame</p>
+
+<pre><code>Errors &lt;- skill[,c(""Error"",""NameID"")]
+Errors &lt;- Errors[order(-Errors$Error),]
+</code></pre>
+
+<p>You don't want to ever use sort in a data frame because it sorts whatever column you tell it to independently from the rest of the data frame. You only ever want order, order keeps the links between other columns intact.</p>
+"
+458058,8020920,732284.0,2011-11-05T14:50:16Z,8020910,2,"<p>No, you should not create multiple instances of PDO in that case. Just create 1 instance and use <a href=""http://www.php.net/manual/en/pdo.query.php"" rel=""nofollow""><code>PDO::query()</code></a> on it. For example:</p>
+
+<pre><code>$pdo = new PDO(...);
+
+/* ... */
+
+$pdo-&gt;query(""SELECT * FROM table1"");
+
+/* ... */
+
+$pdo-&gt;query(""SELECT * FROM table2"");
+
+/* ... etc ... */
+</code></pre>
+
+<p>If the query contains parameters, then prefer using <a href=""http://www.php.net/manual/en/pdo.prepare.php"" rel=""nofollow""><code>PDO::prepare()</code></a> and <a href=""http://www.php.net/manual/en/pdostatement.execute.php"" rel=""nofollow""><code>PDOStatement::execute()</code></a> instead of <code>PDO::query()</code>. You can find an example in the <a href=""http://www.php.net/manual/en/pdo.prepare.php"" rel=""nofollow"">documentation</a> for <code>PDO::prepare()</code>.</p>
+"
+458059,8020927,630344.0,2011-11-05T14:51:44Z,8020910,0,"<p>yes, you initially connect to the database by creating an instance of the PDO object. But you use this object to run queries with and the results are packed into another class.</p>
+
+<p>So you mainly have several classes with your query results, but just one connection to the database which runs the queries.</p>
+"
+458064,8020954,871050.0,2011-11-05T14:55:48Z,8020910,2,"<p>The PDO Object stores the <strong>connection</strong> in which the queries are carried out. Normally, you only need one of those.</p>
+
+<p>While there are cases where 2 connections might be convinient (When connecting to entirely different databases for instance), you generally only need one instance of the PDO class.</p>
+
+<p>What you will have multiple instances of, is the PDOStatement class. Which stores the query statements themselves (as well as the results). So for every query you will have a single PDOStatement instance.</p>
+"
+21119,395347,37522.0,2008-12-27T20:02:38Z,395340,24,"<pre><code>class RecipeContent(models.Model):
+  ...
+  def __unicode__(self):
+    # You can access ForeignKey properties through the field name!
+    return self.recipe.name
+</code></pre>
+"
+21565,403724,12138.0,2008-12-31T18:31:53Z,395340,0,"<p>Yes, you can (as bishanty points), but be prepared for situation when <code>__unicode__()</code> is called but FK is not set yet. I came into this few times.</p>
+"
+385873,6714575,733034.0,2011-07-16T01:01:29Z,395340,1,"<p>If you only care about the name part of the Recipe, you can do:</p>
+
+<pre><code>class Recipe(models.Model):
+    name = models.CharField(max_length=30, primary_key=True)
+    comments = models.TextField(blank=True)
+    ...
+
+    def __unicode__(self):
+        return self.name
+
+class RecipeContent(models.Model):
+    recipe = models.ForeignKey(Recipe)
+    ...
+
+    def __unicode__(self):
+        return str(self.recipe)
+</code></pre>
+"
+1949716,38733357,1464112.0,2016-08-03T02:24:23Z,38733310,1,"<p>you can <a href=""https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval"" rel=""nofollow"">eval()</a> it. Observe the following example...</p>
+
+<pre><code>function something() {
+    console.log('did');
+} 
+
+var str = 'something()'
+
+eval(str) // did
+</code></pre>
+
+<p>As comments suggest, not the best idea to take and run with - though it works... To expand on that just a bit more, I found this blog post which shares some good pointers on the somewhat controversial usage of this technique: <a href=""https://www.nczonline.net/blog/2013/06/25/eval-isnt-evil-just-misunderstood/"" rel=""nofollow"">eval() isnât evil, just misunderstood</a></p>
+
+<hr>
+
+<p><a href=""https://jsfiddle.net/8hho29bL/"" rel=""nofollow"">JSFiddle</a> - simple demo</p>
+"
+1949717,38733368,5647260.0,2016-08-03T02:25:25Z,38733310,1,"<p>You can do eval, although it is frowned upon because of it's vulnerabilities. Something you could do is find it in the window object and then execute:</p>
+
+<pre><code>window[""functionName""](args);
+</code></pre>
+
+<p>Calling with eval:</p>
+
+<pre><code>function test() { 
+    console.log('test');
+}
+
+var fnstring = ""test()"";
+eval(fnstring);
+</code></pre>
+"
+1949720,38733430,2025201.0,2016-08-03T02:32:04Z,38733310,1,"<p>you can use <a href=""https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/eval"" rel=""nofollow"">eval</a> to evaluates JavaScript code represented as a string.
+<code>eval(a_string)</code> but </p>
+
+<p><a href=""http://stackoverflow.com/questions/86513/why-is-using-the-javascript-eval-function-a-bad-idea"">eval is bad</a></p>
+
+<ul>
+<li>Improper use of eval opens up your code for injection attacks</li>
+<li>Debugging can be more challenging (no line numbers, etc.)</li>
+<li>eval'd code executes more slowly (no opportunity to compile/cache eval'd code)</li>
+</ul>
+
+<p>you better change your implementation instead of saving a <code>string function call</code></p>
+
+<p><div class=""snippet"" data-lang=""js"" data-hide=""false"" data-console=""true"" data-babel=""false"">
+<div class=""snippet-code"">
+<pre class=""snippet-code-js lang-js prettyprint-override""><code>function nr1(p0, p1){
+    console.log('nr1 p0: ', p0);
+    console.log('nr1 p1: ', p1);
+}
+
+function nr2(p0, p1){
+    console.log('nr2 p0: ', p0);
+    console.log('nr2 p1: ', p1);
+}
+
+function nr3(p0, p1){
+    console.log('nr3 p0: ', p0);
+    console.log('nr3 p1: ', p1);
+}
+
+var a_string = ""nr2(27, 42)"";
+
+eval(a_string);</code></pre>
+</div>
+</div>
+</p>
+"
+1293365,24594630,3283790.0,2014-07-06T09:52:40Z,24594370,3,"<p><strong>The problem</strong></p>
+
+<p>In <code>set_kill()</code>, you are creating a new local variable <code>kill</code> setting it to <code>state</code>, and returning from the function.  You are not actually updating the value of <code>kill</code> in the global scope.</p>
+
+<p>To do that, you would need to have:</p>
+
+<pre><code>def set_kill(state):
+    global kill
+    kill = state
+</code></pre>
+
+<p><strong>A better way</strong></p>
+
+<p>Using globals like that is generally considered bad practice, you probably want to convert your <code>kill</code> variable and functions into an object, to encapsulate that data and behaviour together:</p>
+
+<pre><code>class Kill(object):
+    kill = False
+    def get(self):
+        return self.kill
+    def set(self, value):
+        self.kill = value
+</code></pre>
+
+<p>Which you would use like this:</p>
+
+<pre><code>class MyThread(Thread):
+    def __init__(self, thread_id, thread_name, count, kill):
+        self.kill = kill
+        ...
+
+    def do_job(self, ...):
+        while not self.kill.get():
+            ...
+
+if __name__ == '__main__':
+    kill = Kill()
+    a = My_Thread(1, ""Thread-1"", 2, kill)
+    b = My_Thread(2, ""Thread-2"", 1, kill)
+    ...
+    kill.set(True)
+</code></pre>
+"
+1885802,37331272,424129.0,2016-05-19T18:22:59Z,37331220,1,"<p>I would have an <code>Image</code> in XAML, and in the XAML, I would bind <code>Image.Source</code> to a property of type <code>ImageSource</code> on my viewmodel. I'd have a <code>FileSystemWatcher</code> update that <code>ImageSource</code> property when the .jpg on the disk changed, and I would raise <code>PropertyChanged</code> when that happened. </p>
+
+<p>In XAML, you update UI control content/properties by using the <code>Binding</code> class to bind viewmodel properties to the control's dependency properties. The <code>Binding</code>s update the control in response to the raising of <code>INotifyPropertyChanged.PropertyChanged</code> and <code>INotifyCollectionChanged.CollectionChanged</code> events in your viewmodel. </p>
+"
+1891199,37447734,4188683.0,2016-05-25T21:13:52Z,37331220,0,"<p>My current solution is whenever I delete and create a new <code>window.jpg</code>, I set my <code>Image.Source</code> property with the <code>Image.Source</code> property <em>initialization mentioned in the question</em>.</p>
+"
+1401979,26938643,115145.0,2014-11-14T20:51:23Z,26938310,18,"<p>Your original code was downloading the full image, loading the full image into memory, then having Android scale the image down to fit your <code>ImageView</code>.</p>
+
+<p>In this case, you do not need the full image in memory -- you need something closer in size to what the <code>ImageView</code> is.</p>
+
+<p><code>fit()</code> on Picasso handles this. It uses <code>inSampleSize</code> on <code>BitmapFactory.Options</code> to downsample the image as it is being loaded into memory, to get you something around the size of the <code>ImageView</code>, letting Android scale from there. This will significantly reduce the memory footprint of each image, particularly depending on how big of an <code>ImageView</code> you are using.</p>
+"
+1914640,37965399,4385211.0,2016-06-22T10:31:41Z,26938310,0,"<p>Should like this </p>
+
+<pre><code>Picasso.with(mContext).load(getUrl()).fit().placeholder(R.drawable.placeholder)
+        .into(viewholder.image);
+</code></pre>
+"
+1922446,38138778,1530814.0,2016-07-01T06:46:47Z,33731300,0,"<p>This may very well be a product defect. You need to open an IBM support ticket (PMR) in order to have this investigated and possibly corrected.</p>
+"
+436471,7626840,953595.0,2011-10-02T14:08:28Z,7625630,0,"<p>Why not just use Rails sacffolding?</p>
+"
+477689,8377801,386944.0,2011-12-04T19:02:45Z,7625630,0,"<p><a href=""https://github.com/mcasimir/document_form"" rel=""nofollow"">https://github.com/mcasimir/document_form</a></p>
+
+<blockquote>
+  <p>gem document_form</p>
+</blockquote>
+
+<p>It's a fork from <a href=""https://github.com/justinfrench/formtastic"" rel=""nofollow"">https://github.com/justinfrench/formtastic</a> i've made, just moved to Mongoid 2.</p>
+
+<p>Model</p>
+
+<pre><code>  class Person
+    include Mongoid::Document
+    include Mongoid::MultiParameterAttributes
+
+    validates_presence_of :name
+
+    field :name
+    field :secret,            :private =&gt; true
+    field :birthday,          :type =&gt; Date
+    field :department_number, :type =&gt; Integer, :range =&gt; 1..10
+
+    field :description,       :long =&gt; true
+  end
+</code></pre>
+
+<p>View</p>
+
+<pre><code>    &lt;% document_form_for @object do |f| %&gt;
+      &lt;%= f.inputs %&gt;
+      &lt;%= f.buttons %&gt;
+    &lt;% end %&gt;
+</code></pre>
+
+<p>This is a basic example: here the form builder will render the fields in the same order they are declared, skipping those who have <code>:private =&gt; true</code>.</p>
+
+<p>If you are not in a hurry and you want something more flexible you can always specify fields ad options using the same syntax as formtastic, something like this:</p>
+
+<pre><code>  &lt;% f.inputs do %&gt;
+    &lt;%= f.input :title %&gt;
+    &lt;%= f.input :published, :label =&gt; ""This post is published"" %&gt;
+    &lt;%= f.input :section_id %&gt;
+    &lt;%= f.input :image_filename, :hint =&gt; ""540x300"" %&gt;
+  &lt;% end %&gt;
+</code></pre>
+
+<p>If you'll decide to give it a  try it i will appreciate any sort of feedback.</p>
+"
+1430219,27553574,3037361.0,2014-12-18T18:46:09Z,27552620,1,"<p>This works in IE:</p>
+
+<pre><code>&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+    &lt;head&gt;
+        &lt;link rel=""stylesheet"" href=""""&gt;
+        &lt;meta charset=""utf-8""&gt;
+        &lt;meta name=""author"" content=""Antonio Bueno""&gt;
+        &lt;title&gt;Button Problems&lt;/title&gt;
+        &lt;style&gt;
+            a {background-color: red; color: #FFF; padding: 10px;}
+            a.active {background-color: blue;}
+        &lt;/style&gt;
+
+        &lt;script&gt;
+            window.onload = function(){
+                var some_button = document.getElementById(""some_button"");
+
+                if(some_button.addEventListener){
+                    some_button.addEventListener(""click"", DisplayButton, false);
+                } else {
+                    if(some_button.attachEvent){
+                        some_button.attachEvent(""onclick"", DisplayButton);
+                    }
+                }
+            }
+
+            function DisplayButton(){
+                var some_button = document.getElementById(""some_button"");
+                var another_button = document.getElementById(""another_button"");
+
+                if(some_button.className == """"){
+                    some_button.className = ""active"";
+                    another_button.style.display = ""none"";
+                } else {
+                    some_button.className = """";
+                    another_button.style.display = ""inline-block"";
+                }
+            }
+        &lt;/script&gt;
+    &lt;/head&gt;
+
+    &lt;body&gt;
+        &lt;a id=""some_button"" class=""""&gt;Click on me&lt;/a&gt;
+        &lt;input id=""another_button"" type=""submit"" value=""example"" /&gt;
+    &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+"
+1051552,19565377,2354060.0,2013-10-24T12:01:08Z,19565300,0,"<p>In the custom UITabBar view controller in viewDidLoad</p>
+
+<pre><code>  [self.tabBar setHidden:YES];
+  [self.view addSubview:self.viewButton]; // you custom buttons array view
+</code></pre>
+"
+1051573,19565997,1597744.0,2013-10-24T12:29:55Z,19565300,2,"<p>You can do something like this,</p>
+
+<pre><code> for(UIView *view in self.tabBarController.view.subviews)
+    {
+        if([view isKindOfClass:[UITabBar class]])
+        {
+            [view setFrame:CGRectMake(view.frame.origin.x, 1024, view.frame.size.width, view.frame.size.height)];
+        }
+        else
+        {
+            [view setFrame:CGRectMake(view.frame.origin.x, view.frame.origin.y, view.frame.size.width, 1024)];
+        }
+
+    }
+</code></pre>
+
+<p>Note: this is tested in ios 6 and earlier versions, so if you want to run in ios 7 and more set frame and some flag for frame.</p>
+"
+1201362,22626568,1049134.0,2014-03-25T06:01:29Z,19565300,0,"<p>Apple's implementation is more elegant as it stretches the <code>UITabBarController</code> view size enough to get its <code>tabBar</code> outside the screen, and at the same time it will automatically stretch the views of the contained view controllers.</p>
+
+<p>If you just hide your tab bar, either there is no content ""under it"" (your gray space) or it won't recognize taps.</p>
+
+<p>You should better subclass <code>UITabBar</code> and draw it a you like but still let <code>UITabBarController</code> show and hide it properly for you.</p>
+
+<p><strong>Edit:</strong></p>
+
+<p>Just realized that hiding the tab bar is not in the default SDK but in a <a href=""http://stackoverflow.com/questions/21456166/ios-7-hide-tabbar-issue/22626639#22626639"">category</a> I made long time ago.</p>
+
+<p>Anyway stretching <code>UITabBarController</code>'s view frame seems to me the most elegant way to ""hide"" the tab bar (actually move it away from the screen) as you don't have to deal with subviews or hunt down the tab bar frame directly.</p>
+
+<p>Related to <a href=""http://stackoverflow.com/questions/21456166/ios-7-hide-tabbar-issue/22626639#22626639"">this</a> question.</p>
+"
+37986,676952,23354.0,2009-03-24T11:15:02Z,676940,2,"<p>It really depends on whether you make use of external references. You can always write your own <code>XmlResolver</code>, allowing it to work with the files that you <em>do</em> have (I have one that reads known files from resx for example).</p>
+
+<p>But the simplest option is just to disable it... and of course your unit tests will quickly identify any problem ;-p</p>
+"
+710719,12749557,920539.0,2012-10-05T15:35:46Z,676940,2,"<p>You will have problems disabling external references if the XML being parsed uses entities that are defined in the referenced DTD:</p>
+
+<pre><code>&lt;?xml version=""1.0"" encoding=""utf-8""?&gt;
+&lt;!DOCTYPE sample SYSTEM ""./sample.dtd""&gt;
+&lt;root&gt;&amp;text;&lt;/root&gt;
+</code></pre>
+
+<p>where <code>&amp;text;</code> is defined in <code>sample.dtd</code>. If you disable external references this XML will fail to load with an error <code>Reference to undeclared entity 'text'</code></p>
+
+<p>Another case is if your XML contains an in-line DTD with entities defined externally:</p>
+
+<pre><code>&lt;?xml version=""1.0"" encoding=""utf-8""?&gt;
+&lt;!DOCTYPE dtd_sample[
+  &lt;!ENTITY text SYSTEM "".\text.txt""&gt;
+]&gt;
+&lt;root&gt;&amp;text;&lt;/root&gt;
+</code></pre>
+
+<p>In this case the XML parses correctly, but <code>&amp;text;</code> is empty instead than being the content of the <code>text.txt</code> file.</p>
+
+<p>Both cases are pretty rare - especially the second one, so you should be OK.</p>
+
+<p>Validation is usually not a problem: by default <code>XmlReader</code> does not do any validation, so even if it cannot load the relavant DTD/XSD this does not make any difference.</p>
+
+<p>All this holds true using .NET 4.0, I did not test with other versions of the framework.</p>
+"
+710781,12750595,1168070.0,2012-10-05T16:45:00Z,676940,3,"<p>Another way to avoid connecting to the W3C site is to use <a href=""http://msdn.microsoft.com/en-us/library/system.xml.resolvers.xmlpreloadedresolver.aspx"" rel=""nofollow""><code>XmlPreloadedResolver</code></a>. The <code>XmlPreloadedResolver</code> contains a number of ""well-known"" DTDs and (AFAIR) schemas embedded and whenever your xml contains a reference to one of these the resolver will serve it without trying to connect anywhere. </p>
+"
+385568,6708939,514749.0,2011-07-15T14:52:59Z,6708920,6,"<p>I believe you should wildcard permission URLs, also <code>www.</code> is a different domain:</p>
+
+<pre><code>""http://mafre.com/*"",
+""http://www.mafre.com/*"",
+
+""http://eee.se/*"",
+""http://www.eee.se/*"",
+
+""http://ilaafire.net/*"",
+""http://www.ilaafire.net/*"",
+
+""notifications"",
+""tabs""
+</code></pre>
+
+<p>Currently you only have access to exactly <code>http://mafre.com/</code>.</p>
+"
+1049662,19527286,749657.0,2013-10-22T20:06:23Z,19525370,0,"<p>How about you return something  instead so you don't have that huge stack of interconnected functions ? </p>
+
+<pre><code>function ch1():void {
+   return true
+}
+
+ function ch2():void {
+   return true
+}
+
+function myAnim(){
+      var ani1 = ch1();
+      var ani2 = ch2();
+}
+</code></pre>
+"
+1049805,19530289,1298129.0,2013-10-22T23:46:19Z,19525370,2,"<p>Using events is a better way to deal with sequences like yours, but in some simple cases you can just delay each call a little so you can be sure they will not run in the same time and cause freezing your swf , try to use something simple like <code>setTimeout</code> and see the results, if it is not good then you should try useing the events as you have described in your question .</p>
+
+<pre><code>var nextCallDelay:Number = 20; // in milliseconds, change it to fit your needs
+
+function ch1():void {
+    var someVar:uint;
+    function doThis();
+    ...
+    ...
+    setTimeout(ch2, nextCallDelay);
+}
+function ch2():void {
+    var someOtherVar:String;
+    function doThat();
+    ...
+    ...
+    setTimeout(ch3, nextCallDelay);
+}
+function ch3():void {
+    var evenMoreVar:Number;
+    function doMore();
+    ...
+    ...
+    setTimeout(ch4, nextCallDelay);
+}
+</code></pre>
+"
+378270,6576673,114770.0,2011-07-04T22:54:02Z,6576260,3,"<p>I can't take credit for it, but the <a href=""http://www.php.net/manual/en/mysqli-stmt.bind-result.php#92505"" rel=""nofollow"">PHP manual</a> has a nice solution (pasted verbatim):</p>
+
+<pre><code>&lt;?php
+
+// blah blah...
+call_user_func_array(array($mysqli_stmt_object, ""bind_result""), $byref_array_for_fields);
+
+// returns a copy of a value
+$copy = create_function('$a', 'return $a;');
+
+$results = array();
+while ($mysqli_stmt_object-&gt;fetch()) {
+    // array_map will preserve keys when done here and this way
+    $results[] = array_map($copy, $byref_array_for_fields);
+}
+</code></pre>
+"
+431122,7528848,886555.0,2011-09-23T12:21:33Z,6576260,-1,"<p>I really don't see the point of putting your item id's and item names in different arrays, you're breaking up a single object in two collections for ??? no reason . yes.</p>
+
+<p>So, going back to this, what you should be doing is :</p>
+
+<pre><code>$items[$i]['var1']=$var1;
+
+$items[$i]['var2']=$var2;
+</code></pre>
+
+<p>But this of course is still not very good.</p>
+
+<p>The correct solution is to have a function that maps your mysqli result to an array so you can directly start working on that, whatever the query, here's mine - works in a few db's but not all are up to date at the moment :</p>
+
+<pre><code>function connectmysqldb($database,$host,$port,$user,$password){
+    global $conn;
+    $conn=mysqli_connect($host, $user, $password, $database,$port);
+    if (!$conn){ 
+        die('Error: Could not connect: ' . mysqli_connect_error()); 
+    } 
+    return $conn;
+}
+
+function connectpgdb($database,$host,$port,$user,$password){
+    $connectString = 'host=' . $host . ' port=' . $port . ' dbname=' . $database . ' user=' . $user . ' password=' . $password; 
+    $conn = pg_connect ($connectString); 
+        if (!$conn) 
+        { 
+        die('Error: Could not connect: ' . pg_last_error()); 
+        } 
+    return $conn;
+}
+
+function connectmssqldb($dbname,$host,$port,$uid,$pw){
+    $connectionOptions = array(""UID""=&gt;$uid,""PWD""=&gt;$pw);
+    $conn = sqlsrv_connect( $host, $connectionOptions);
+    if (!$conn) 
+        { 
+        die('Error: Could not connect: ' . print_r( sqlsrv_errors(), true)); 
+        } 
+    return $conn;
+}
+function sqlec($query,$dbtype,$dbname,$host,$port,$uid,$pw){
+    switch($dbtype){
+            default:
+                $res=""Database Type not Recognized : $dbtype"";
+                break;
+
+            case ""mysql"":
+                global $conn;
+                if(!isset($conn)){
+                    $conn=connectmysqldb($dbname,$host,$port,$uid,$pw);
+                }
+                $clone=mysqli_multi_query($conn,$query); 
+                if(!$clone){
+                    die('Error:  ' . mysqli_error($conn)); 
+                }else{
+                    $clonearray=array();
+                    $i=0;
+                    if ($clone = mysqli_store_result($conn)) {
+                        while ($row = mysqli_fetch_assoc($clone)){
+                            $clonearray[$i]=$row;
+                            $i++;
+                        }
+                        mysqli_free_result($clone);
+                    }
+                    $res=$clonearray;
+                }
+                break;
+
+            case ""postgres"":
+                $conn=connectpgdb($dbname,$host,$port,$uid,$pw);
+                $clone=pg_query($conn,$query); 
+                if (!$clone) 
+                { 
+                    die('Error:  ' . pg_last_error()); 
+                }else{
+                    $clonearray=array();
+                    $i=0;
+                    while ($row = pg_fetch_row($clone)) 
+                        {
+                        $count = count($row);
+                        $y = 0;
+                        while ($y &lt; $count)
+                            {
+                            $c_row = current($row);
+                            $clonearray[$i][pg_field_name($clone,$y)] = $c_row;
+                            next($row);
+                            $y = $y + 1;
+                            }
+                        $i = $i + 1;
+                        }
+                    pg_free_result($clone);
+                    pg_close($conn);
+                    $res=$clonearray;
+                }
+                break;
+
+            case ""mssql"":
+                $conn=connectmssqldb($dbname,$host,$port,$uid,$pw);
+                $res=sqlsrv_query($conn,$query);
+                if (!$res)
+                {
+                     die( ""Error in statement execution.\n"".print_r( sqlsrv_errors(), true));
+                }else{
+                    $i=0;
+                    $sqlsarray=array();
+                    while( $row = sqlsrv_fetch_array( $res, SQLSRV_FETCH_ASSOC))
+                    {
+                        if($i==0){
+                        $arrk=array_keys($row);
+                        }
+                        $j=0;
+                        while($j&lt;count($arrk)){
+                            $sqlsarray[$i][$arrk[$j]]=$row[$arrk[$j]];
+                            $j++;
+                        }
+                        $i++;
+                    }
+                    $res=$sqlsarray;
+                }
+                break;
+    }
+    return $res;
+}
+
+
+function local_sqlec($query){
+    global $db_server;
+    global $db_db;
+    global $db_port;
+    global $db_username;
+    global $db_password;
+    return sqlec($query,""mysql"",$db_db,$db_server,$db_port,$db_username,$db_password);
+}           
+</code></pre>
+
+<p>Which I use like this :</p>
+
+<pre><code>$r=local_sqlec(""SELECT test1,test2 FROM test"");
+$i=0;
+echo ""last id ="".($r[0]['test1']).""&lt;br&gt;"";
+echo ""Row count ="".($r[0]['test2']).""&lt;br&gt;"";
+
+while($i&lt;$r[0]['test2']){
+    echo ""inserted id ="".($r[0]['test1']+$i).""&lt;br&gt;"";
+    $i++;
+}
+</code></pre>
+"
+174526,2976637,47493.0,2010-06-04T18:11:36Z,2960720,1,"<p>The best answer is that it really depends on what game you make. If you want the graphics to be different, go for it. Otherwise, it is typical to use one set of graphics and maybe just organize the on-screen GUI differently. The screen is really just a viewport into the game world, and as its shape changes (from tall to wide), it should not affect the physics of the world; unless of course you WANT it to change the physics rules. It's really dependent on what game you are making.</p>
+"
