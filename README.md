@@ -15,31 +15,31 @@ The size is 3.35GB, contains 3 table:
 
 * Answers
 
-| Attribute   | Description                  | Data Format | Example               |
-|-------------|------------------------------|-------------|-----------------------|
-| ID          | *ID of This Post*            | `Numeric`   | `92`                  |
-| OwnerUserID | *ID of This Poster*          | `Numeric`   | `61`                  |
-| CreateDate  | *Post Time*                  | `UTC`       | `2008-08-01T14:45:37Z`|
-| ParentID    | *Question ID of this Answer* | `Numeric`   | `90`                  |
-| Score       | *Rating of this Post*        | `Numeric`   | `13`                  |
-| Body        | *Content of this Post*       | `Character` | `"<p><a href=""http://svnbook.red-bean.com/" ... specific, though.</p>"`|
+| Attribute   | Description                  | Data Format | Example                                                                  |
+| ----------- | ---------------------------- | ----------- | ------------------------------------------------------------------------ |
+| ID          | *ID of This Post*            | `Numeric`   | `92`                                                                     |
+| OwnerUserID | *ID of This Poster*          | `Numeric`   | `61`                                                                     |
+| CreateDate  | *Post Time*                  | `UTC`       | `2008-08-01T14:45:37Z`                                                   |
+| ParentID    | *Question ID of this Answer* | `Numeric`   | `90`                                                                     |
+| Score       | *Rating of this Post*        | `Numeric`   | `13`                                                                     |
+| Body        | *Content of this Post*       | `Character` | `"<p><a href=""http://svnbook.red-bean.com/" ... specific, though.</p>"` |
 
 * Questions
 
-| Attribute   | Description              | Data Format         | Example                                                    |
-|-------------|--------------------------|---------------------|------------------------------------------------------------|
-| ID          | *ID of This Post*        | `Numeric`           | `80`                                                         |
-| OwnerUserID | *ID of This Poster*      | `Numeric`           | `26`                                                         |
-| CreateDate  | *Post Time*              | `UTC`               | `2008-08-01T13:57:07Z`                                       |
-| CloseDate   | *Closed Time*            | `UTC (Default N/A)` | `NA`                                                         |
-| Score       | *Rating of this Post*    | `Numeric`           | `26`                                                         |
-| Title       | *Title of this Question* | `Character`         | `SQLStatement.execute() - multiple queries in one statement` |
-| Body        | *Content of this Post*   | `Character` |`<p>I've written a database generation script ... multiple queries in one statement?</p>`|
+| Attribute   | Description              | Data Format         | Example                                                                                   |
+| ----------- | ------------------------ | ------------------- | ----------------------------------------------------------------------------------------- |
+| ID          | *ID of This Post*        | `Numeric`           | `80`                                                                                      |
+| OwnerUserID | *ID of This Poster*      | `Numeric`           | `26`                                                                                      |
+| CreateDate  | *Post Time*              | `UTC`               | `2008-08-01T13:57:07Z`                                                                    |
+| CloseDate   | *Closed Time*            | `UTC (Default N/A)` | `NA`                                                                                      |
+| Score       | *Rating of this Post*    | `Numeric`           | `26`                                                                                      |
+| Title       | *Title of this Question* | `Character`         | `SQLStatement.execute() - multiple queries in one statement`                              |
+| Body        | *Content of this Post*   | `Character`         | `<p>I've written a database generation script ... multiple queries in one statement?</p>` |
 
 * Tags (Each post might have multiple tags)
 
 | Attribute | Description         | Data Format | Example |
-|-----------|---------------------|-------------|---------|
+| --------- | ------------------- | ----------- | ------- |
 | ID        | *ID of This Post*   | `Numeric`   | `80`    |
 | Tag       | *Tags for the Post* | `Character` | `flex`  |
 
@@ -47,17 +47,40 @@ The size is 3.35GB, contains 3 table:
 
 These problems are what we are focus on:
 
-* *What time does a user post a question that will get the quickest response?*
-* *What time does a user posts a question that will get the highest rating?*
-* *Does a tag or the other feature affect the response time?*
+* What time does a user post a question that will get the quickest response?*
+* What time does a user posts a question that will get the highest rating?*
+* Does a tag or the other feature affect the response time?*
 
 We are trying to find some relationship based on these problems.
 
+## Content
+
+* [Preprocessing](https://github.com/Ronaldzzzzz/StackOverflow-QA-Analysis/blob/main/0_Preprocessing.ipynb)
+* [Visualization](https://github.com/Ronaldzzzzz/StackOverflow-QA-Analysis/blob/main/1_visualization.ipynb)
+* [Decision Tree](https://github.com/Ronaldzzzzz/StackOverflow-QA-Analysis/blob/main/2_decision_tree.ipynb)
+* [Deep learning](https://github.com/Ronaldzzzzz/StackOverflow-QA-Analysis/blob/main/3_deepLearning.ipynb)
+
 ## Usage
+
+### Jupyter Notebook
 
 We are using `Python` to do the analysis.
 Access each `jupyter` file in the order to see each step.
 
+### Source code
+
+*Not recommend to execute as a normal `python` progeam.*
+
+#### Prerequisites / Libraries
+
+* Install the following `python` libiaires.
+
+  ```python
+  pip install sqlite3 pandas "dask[complete]" matplotlib scikit-learn tensorflow
+  ```
+
+* Run each files
+  
 ## Conclusion
 
 In the visualization, we can get a very first step result.
